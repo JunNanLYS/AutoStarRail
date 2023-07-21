@@ -16,5 +16,5 @@ def wait_challenge_completed():
     """
     等待挑战成功
     """
-    func.wait_image(ImagePath.CHALLENGE_COMPLETED)
+    func.wait_image(ImagePath.CHALLENGE_COMPLETED, max_time=1800)
     log.transmitAllLog("挑战成功")
