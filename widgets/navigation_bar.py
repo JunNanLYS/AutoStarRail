@@ -3,7 +3,8 @@ from PySide6.QtGui import QBrush, QColor
 from PySide6.QtWidgets import QStackedWidget, QVBoxLayout
 from qfluentwidgets import Pivot
 
-from widgets import WidgetBase, SettingWidget, InfoWidget, FeatureWidget, LogWidget, log
+from widgets import WidgetBase, SettingWidget, InfoWidget, StaminaWidget, WorldWidget, UniverseWidget,\
+    LogWidget, log
 
 
 class NavigationBar(WidgetBase):
@@ -46,13 +47,17 @@ class ScriptNavigationBar(NavigationBar):
         self.__init_widget()
 
     def __init_widget(self):
-        self.infoInterface = InfoWidget(self)
-        self.featureInterface = FeatureWidget(self)
-        self.settingInterface = SettingWidget(self)
+        self.infoInterface = InfoWidget(self)  # 信息
+        self.staminaInterface = StaminaWidget(self)  # 清体力
+        self.worldInterface = WorldWidget(self)  # 锄大地
+        self.universeInterface = UniverseWidget(self)  # 模拟宇宙
+        self.settingInterface = SettingWidget(self)  # 设置
 
         # 添加到项到pivot(add items to pivot)
         self.addSubInterface(self.infoInterface, "infoInterface", "信息")
-        self.addSubInterface(self.featureInterface, "featureInterface", "功能")
+        self.addSubInterface(self.staminaInterface, "staminaInterface", "体力")
+        self.addSubInterface(self.worldInterface, "worldInterface", "世界")
+        self.addSubInterface(self.universeInterface, "universeInterface", "模拟宇宙")
         self.addSubInterface(self.settingInterface, "settingInterface", "设置")
 
         # 设置当前导航栏的item(set current item)
