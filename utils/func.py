@@ -86,7 +86,7 @@ def closest_point(points, new_point):
     return res_point
 
 
-def find_image(image_name, max_count=3, confidence=0.8):
+def find_image(image_name, max_count=3, confidence=0.85):
     log.transmitRunLog(f"查找图片{image_name}", output=True)
     for _ in range(max_count):
         rect = pyautogui.locateOnScreen(image_name, confidence=confidence)
