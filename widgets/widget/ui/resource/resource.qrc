@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="shadow">
+    <file>stargnantShadow/冰凌之形.png</file>
+    <file>stargnantShadow/锋芒之形.png</file>
+    <file>stargnantShadow/幻光之形.png</file>
+    <file>stargnantShadow/空海之形.png</file>
+    <file>stargnantShadow/鸣雷之形.png</file>
+    <file>stargnantShadow/霜晶之形.png</file>
+    <file>stargnantShadow/天人之形.png</file>
+    <file>stargnantShadow/巽风之形.png</file>
+    <file>stargnantShadow/炎华之形.png</file>
+    <file>stargnantShadow/震厄之形.png</file>
+  </qresource>
+</RCC>
