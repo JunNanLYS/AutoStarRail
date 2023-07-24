@@ -4,7 +4,8 @@ from utils.tool import PathTool
 
 
 class ImagePath:
-    IMAGE_ROOT_PATH = os.path.join(PathTool.get_root_path(), "images\\")
+    IMAGE_ROOT_PATH = os.path.join(PathTool.get_root_path(), "images\\")  # 图片根目录
+    STAGNANT_SHADOW_PATH = IMAGE_ROOT_PATH + "shadow\\"  # 凝滞虚影的目录
 
     MANDATE = IMAGE_ROOT_PATH + r"mandate.png"  # 任务书
     BOOK = IMAGE_ROOT_PATH + r"book.png"  # 星际和平书
@@ -25,6 +26,19 @@ class ImagePath:
     CALYX_ERUDITION = IMAGE_ROOT_PATH + r"calyxErudition.png"  # 智识行迹
     CALYX_HARMONY = IMAGE_ROOT_PATH + r"calyxHarmony.png"  # 和谐行迹
     CALYX_NIHILITY = IMAGE_ROOT_PATH + r"calyxNihility.png"  # 虚无行迹
+
+    STAGNANT_SHADOW = STAGNANT_SHADOW_PATH + r"stagnantShadow.png"  # 凝滞虚影
+    SHAPE_OF_QUANTA = STAGNANT_SHADOW_PATH + r"shapeOfQuanta.png"  # 空海之形
+    SHAPE_OF_GUST = STAGNANT_SHADOW_PATH + r"shapeOfGust.png"  # 巽风之形
+    SHAPE_OF_FULMINATION = STAGNANT_SHADOW_PATH + r"shapeOfFulmination.png"  # 鸣雷之形
+    SHAPE_OF_BLAZE = STAGNANT_SHADOW_PATH + r"shapeOfBlaze.png"  # 炎华之形
+    SHAPE_OF_SPIKE = STAGNANT_SHADOW_PATH + r"shapeOfSpike.png"  # 锋芒之形
+    SHAPE_OF_RIME = STAGNANT_SHADOW_PATH + r"shapeOfRime.png"  # 霜晶之形
+    SHAPE_OF_MIRAGE = STAGNANT_SHADOW_PATH + r"shapeOfMirage.png"  # 幻光之形
+    SHAPE_OF_LCICLE = STAGNANT_SHADOW_PATH + r"shapeOfLcicle.png"  # 冰凌之形
+    SHAPE_OF_DOOM = STAGNANT_SHADOW_PATH + r"shapeOfDoom.png"  # 震厄之形
+    SHAPE_OF_CELESTIAL = STAGNANT_SHADOW_PATH + r"shapeOfCelestial.png"  # 天人之形
+
 
     CHALLENGE = IMAGE_ROOT_PATH + r"challenge.png"  # 副本的挑战按钮
     CHALLENGE_COMPLETED = IMAGE_ROOT_PATH + r"challengeCompleted.png"  # 挑战成功
