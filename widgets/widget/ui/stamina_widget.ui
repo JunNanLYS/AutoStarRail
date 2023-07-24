@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>628</width>
-    <height>704</height>
+    <width>600</width>
+    <height>2000</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,8 +39,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>626</width>
-        <height>702</height>
+        <width>598</width>
+        <height>1998</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -441,7 +441,7 @@
        </item>
        <item>
         <widget class="StaminaCard" name="shadowCard" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_5">
+         <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1,1,1,1,1,1,1,1,1,1">
           <property name="spacing">
            <number>5</number>
           </property>
@@ -458,11 +458,350 @@
            <number>5</number>
           </property>
           <item>
-           <widget class="SubtitleLabel" name="shadowLabel">
+           <widget class="SubtitleLabel" name="stagnantShadowLabel">
             <property name="text">
              <string>凝滞虚影</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/空海之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfQuantaSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_11">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_2">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/巽风之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfGustSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_12">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_3">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/鸣雷之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfFulminationSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_14">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_4">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/炎华之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfBlazeSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_13">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_5">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/锋芒之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfSpikeSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_15">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_16">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_6">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/霜晶之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfRimeSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_16">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_17">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_7">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/幻光之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfMirageSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_17">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_18">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_8">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/冰凌之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfLcicleSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_18">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_19">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_9">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/震厄之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfDoomSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_19">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_20">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_10">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/shadow/stargnantShadow/天人之形.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="shapeOfCelestialSpinBox"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_20">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -556,6 +895,11 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
+   <class>PixmapLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
    <class>SmoothScrollArea</class>
    <extends>QScrollArea</extends>
    <header>qfluentwidgets</header>
@@ -583,6 +927,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resource/resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

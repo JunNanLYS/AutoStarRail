@@ -9,19 +9,21 @@
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect)
+from PySide6.QtGui import (QPixmap)
 from PySide6.QtWidgets import (QHBoxLayout, QSizePolicy, QSpacerItem,
                                QVBoxLayout, QWidget)
-from qfluentwidgets import (BodyLabel, PushButton, SmoothScrollArea, SpinBox,
-                            SubtitleLabel)
+from qfluentwidgets import (BodyLabel, PixmapLabel, PushButton, SmoothScrollArea,
+                            SpinBox, SubtitleLabel)
 
 from ..card import StaminaCard
+from .resource import resource
 
 
 class StaminaWidgetUi(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(628, 704)
+        Form.resize(600, 2000)
         self.verticalLayout_4 = QVBoxLayout(Form)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
@@ -31,7 +33,7 @@ class StaminaWidgetUi(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidget = QWidget()
         self.scrollAreaWidget.setObjectName(u"scrollAreaWidget")
-        self.scrollAreaWidget.setGeometry(QRect(0, 0, 626, 702))
+        self.scrollAreaWidget.setGeometry(QRect(0, 0, 598, 1998))
         self.verticalLayout_3 = QVBoxLayout(self.scrollAreaWidget)
         self.verticalLayout_3.setSpacing(10)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -274,10 +276,231 @@ class StaminaWidgetUi(object):
         self.verticalLayout_5.setSpacing(5)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.verticalLayout_5.setContentsMargins(5, 5, 5, 5)
-        self.shadowLabel = SubtitleLabel(self.shadowCard)
-        self.shadowLabel.setObjectName(u"shadowLabel")
+        self.stagnantShadowLabel = SubtitleLabel(self.shadowCard)
+        self.stagnantShadowLabel.setObjectName(u"stagnantShadowLabel")
 
-        self.verticalLayout_5.addWidget(self.shadowLabel)
+        self.verticalLayout_5.addWidget(self.stagnantShadowLabel)
+
+        self.horizontalLayout_11 = QHBoxLayout()
+        self.horizontalLayout_11.setSpacing(5)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.PixmapLabel = PixmapLabel(self.shadowCard)
+        self.PixmapLabel.setObjectName(u"PixmapLabel")
+        self.PixmapLabel.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u7a7a\u6d77\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_11.addWidget(self.PixmapLabel)
+
+        self.shapeOfQuantaSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfQuantaSpinBox.setObjectName(u"shapeOfQuantaSpinBox")
+
+        self.horizontalLayout_11.addWidget(self.shapeOfQuantaSpinBox)
+
+        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_11.addItem(self.horizontalSpacer_11)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_11)
+
+        self.horizontalLayout_12 = QHBoxLayout()
+        self.horizontalLayout_12.setSpacing(5)
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.horizontalLayout_12.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_2 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_2.setObjectName(u"PixmapLabel_2")
+        self.PixmapLabel_2.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u5dfd\u98ce\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_12.addWidget(self.PixmapLabel_2)
+
+        self.shapeOfGustSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfGustSpinBox.setObjectName(u"shapeOfGustSpinBox")
+
+        self.horizontalLayout_12.addWidget(self.shapeOfGustSpinBox)
+
+        self.horizontalSpacer_12 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_12.addItem(self.horizontalSpacer_12)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_12)
+
+        self.horizontalLayout_13 = QHBoxLayout()
+        self.horizontalLayout_13.setSpacing(5)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.horizontalLayout_13.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_3 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_3.setObjectName(u"PixmapLabel_3")
+        self.PixmapLabel_3.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u9e23\u96f7\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_13.addWidget(self.PixmapLabel_3)
+
+        self.shapeOfFulminationSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfFulminationSpinBox.setObjectName(u"shapeOfFulminationSpinBox")
+
+        self.horizontalLayout_13.addWidget(self.shapeOfFulminationSpinBox)
+
+        self.horizontalSpacer_14 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_13.addItem(self.horizontalSpacer_14)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_13)
+
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setSpacing(5)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.horizontalLayout_14.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_4 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_4.setObjectName(u"PixmapLabel_4")
+        self.PixmapLabel_4.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u708e\u534e\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_14.addWidget(self.PixmapLabel_4)
+
+        self.shapeOfBlazeSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfBlazeSpinBox.setObjectName(u"shapeOfBlazeSpinBox")
+
+        self.horizontalLayout_14.addWidget(self.shapeOfBlazeSpinBox)
+
+        self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_14.addItem(self.horizontalSpacer_13)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_14)
+
+        self.horizontalLayout_15 = QHBoxLayout()
+        self.horizontalLayout_15.setSpacing(5)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.horizontalLayout_15.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_5 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_5.setObjectName(u"PixmapLabel_5")
+        self.PixmapLabel_5.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u950b\u8292\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_15.addWidget(self.PixmapLabel_5)
+
+        self.shapeOfSpikeSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfSpikeSpinBox.setObjectName(u"shapeOfSpikeSpinBox")
+
+        self.horizontalLayout_15.addWidget(self.shapeOfSpikeSpinBox)
+
+        self.horizontalSpacer_15 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_15.addItem(self.horizontalSpacer_15)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_15)
+
+        self.horizontalLayout_16 = QHBoxLayout()
+        self.horizontalLayout_16.setSpacing(5)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.horizontalLayout_16.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_6 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_6.setObjectName(u"PixmapLabel_6")
+        self.PixmapLabel_6.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u971c\u6676\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_16.addWidget(self.PixmapLabel_6)
+
+        self.shapeOfRimeSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfRimeSpinBox.setObjectName(u"shapeOfRimeSpinBox")
+
+        self.horizontalLayout_16.addWidget(self.shapeOfRimeSpinBox)
+
+        self.horizontalSpacer_16 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_16.addItem(self.horizontalSpacer_16)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_16)
+
+        self.horizontalLayout_17 = QHBoxLayout()
+        self.horizontalLayout_17.setSpacing(5)
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.horizontalLayout_17.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_7 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_7.setObjectName(u"PixmapLabel_7")
+        self.PixmapLabel_7.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u5e7b\u5149\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_17.addWidget(self.PixmapLabel_7)
+
+        self.shapeOfMirageSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfMirageSpinBox.setObjectName(u"shapeOfMirageSpinBox")
+
+        self.horizontalLayout_17.addWidget(self.shapeOfMirageSpinBox)
+
+        self.horizontalSpacer_17 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_17.addItem(self.horizontalSpacer_17)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_17)
+
+        self.horizontalLayout_18 = QHBoxLayout()
+        self.horizontalLayout_18.setSpacing(5)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.horizontalLayout_18.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_8 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_8.setObjectName(u"PixmapLabel_8")
+        self.PixmapLabel_8.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u51b0\u51cc\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_18.addWidget(self.PixmapLabel_8)
+
+        self.shapeOfLcicleSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfLcicleSpinBox.setObjectName(u"shapeOfLcicleSpinBox")
+
+        self.horizontalLayout_18.addWidget(self.shapeOfLcicleSpinBox)
+
+        self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_18.addItem(self.horizontalSpacer_18)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_18)
+
+        self.horizontalLayout_19 = QHBoxLayout()
+        self.horizontalLayout_19.setSpacing(5)
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.horizontalLayout_19.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_9 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_9.setObjectName(u"PixmapLabel_9")
+        self.PixmapLabel_9.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u9707\u5384\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_19.addWidget(self.PixmapLabel_9)
+
+        self.shapeOfDoomSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfDoomSpinBox.setObjectName(u"shapeOfDoomSpinBox")
+
+        self.horizontalLayout_19.addWidget(self.shapeOfDoomSpinBox)
+
+        self.horizontalSpacer_19 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_19.addItem(self.horizontalSpacer_19)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_19)
+
+        self.horizontalLayout_20 = QHBoxLayout()
+        self.horizontalLayout_20.setSpacing(5)
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.horizontalLayout_20.setContentsMargins(-1, 0, -1, -1)
+        self.PixmapLabel_10 = PixmapLabel(self.shadowCard)
+        self.PixmapLabel_10.setObjectName(u"PixmapLabel_10")
+        self.PixmapLabel_10.setPixmap(QPixmap(u":/shadow/stargnantShadow/\u5929\u4eba\u4e4b\u5f62.png"))
+
+        self.horizontalLayout_20.addWidget(self.PixmapLabel_10)
+
+        self.shapeOfCelestialSpinBox = SpinBox(self.shadowCard)
+        self.shapeOfCelestialSpinBox.setObjectName(u"shapeOfCelestialSpinBox")
+
+        self.horizontalLayout_20.addWidget(self.shapeOfCelestialSpinBox)
+
+        self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_20.addItem(self.horizontalSpacer_20)
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_20)
+
+        self.verticalLayout_5.setStretch(1, 1)
+        self.verticalLayout_5.setStretch(2, 1)
+        self.verticalLayout_5.setStretch(3, 1)
+        self.verticalLayout_5.setStretch(4, 1)
+        self.verticalLayout_5.setStretch(5, 1)
+        self.verticalLayout_5.setStretch(6, 1)
+        self.verticalLayout_5.setStretch(7, 1)
+        self.verticalLayout_5.setStretch(8, 1)
+        self.verticalLayout_5.setStretch(9, 1)
+        self.verticalLayout_5.setStretch(10, 1)
 
         self.verticalLayout_3.addWidget(self.shadowCard)
 
@@ -340,7 +563,7 @@ class StaminaWidgetUi(object):
         self.BodyLabel_8.setText(QCoreApplication.translate("Form", u"\u667a\u8bc6", None))
         self.BodyLabel_9.setText(QCoreApplication.translate("Form", u"\u540c\u8c10", None))
         self.BodyLabel_10.setText(QCoreApplication.translate("Form", u"\u865a\u65e0", None))
-        self.shadowLabel.setText(QCoreApplication.translate("Form", u"\u51dd\u6ede\u865a\u5f71", None))
+        self.stagnantShadowLabel.setText(QCoreApplication.translate("Form", u"\u51dd\u6ede\u865a\u5f71", None))
         self.cavernLabel.setText(QCoreApplication.translate("Form", u"\u4fb5\u8680\u96a7\u6d1e", None))
         self.warLabel.setText(QCoreApplication.translate("Form", u"\u5386\u6218\u56de\u54cd", None))
         self.staminaButton.setText(QCoreApplication.translate("Form", u"\u6e05\u7406\u5f00\u62d3\u529b", None))

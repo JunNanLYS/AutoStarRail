@@ -19,7 +19,17 @@ class StaminaWidget(WidgetBase, StaminaWidgetUi):
             "calyxAbundance": self.calyxAbundanceSpinBox.value(),
             "calyxErudition": self.calyxEruditionSpinBox.value(),
             "calyxHarmony": self.calyxHarmonySpinBox.value(),
-            "calyxNihility": self.calyxNihilitySpinBox.value()
+            "calyxNihility": self.calyxNihilitySpinBox.value(),
+            "shapeOfQuanta": self.shapeOfQuantaSpinBox.value(),
+            "shapeOfGust": self.shapeOfGustSpinBox.value(),
+            "shapeOfFulmination": self.shapeOfFulminationSpinBox.value(),
+            "shapeOfBlaze": self.shapeOfBlazeSpinBox.value(),
+            "shapeOfSpike": self.shapeOfSpikeSpinBox.value(),
+            "shapeOfRime": self.shapeOfRimeSpinBox.value(),
+            "shapeOfMirage": self.shapeOfMirageSpinBox.value(),
+            "shapeOfLcicle": self.shapeOfLcicleSpinBox.value(),
+            "shapeOfDoom": self.shapeOfDoomSpinBox.value(),
+            "shapeOfCelestial": self.shapeOfCelestialSpinBox.value(),
         }
 
         return copies_count
@@ -31,6 +41,6 @@ class StaminaWidget(WidgetBase, StaminaWidgetUi):
             label.setFixedWidth(60)
         self.calyxGoldCard.setTitleLabel(self.calyxGoldLabel)
         self.calyxRedCard.setTitleLabel(self.calyxRedLabel)
-        # self.shadowCard.setTitleLabel()
+        self.shadowCard.setTitleLabel(self.stagnantShadowLabel)
         # self.cavernCard.setTitleLabel()
         # self.warCard.setTitleLabel()
