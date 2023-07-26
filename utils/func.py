@@ -86,32 +86,34 @@ def closest_point(points, new_point):
     return res_point
 
 
-def find_image(image_name, max_count=3, confidence=0.85):
-    log.transmitRunLog(f"查找图片{image_name}", output=True)
+def find_image(filename, max_count=3, confidence=0.85):
+    image_name = filename.split('\\')[-1]
+    log.transmitRunLog(f"查找图片{image_name}", debug=True)
     for _ in range(max_count):
-        rect = pyautogui.locateOnScreen(image_name, confidence=confidence)
+        rect = pyautogui.locateOnScreen(filename, confidence=confidence)
         if rect:
-            log.transmitRunLog("查找到图片", output=True)
+            log.transmitRunLog("查找到图片", debug=True)
             return rect
         time.sleep(1)
-    log.transmitRunLog("未查找到图片", output=True)
+    log.transmitRunLog("未查找到图片", debug=True)
     return None
 
 
-def wait_image(image_name, confidence=0.8, max_time=100):
-    log.transmitRunLog(f"等待图片{image_name}", output=True)
+def wait_image(filename: str, confidence=0.8, max_time=100):
+    image_name = filename.split('\\')[-1]
+    log.transmitRunLog(f"等待图片{image_name}", debug=True)
     count = 0
     while True:
-        rect = pyautogui.locateOnScreen(image_name, confidence=confidence)
+        rect = pyautogui.locateOnScreen(filename, confidence=confidence)
         if rect:
-            log.transmitRunLog("找到图片", output=True)
+            log.transmitRunLog("找到图片", debug=True)
             return rect
-        time.sleep(1)
+        time.sleep(2)
         count += 1
 
         # 超时了退出循环
         if count >= max_time:
-            log.transmitRunLog("等待超过100秒", output=True)
+            log.transmitRunLog("等待超过100秒", debug=True)
             break
-    log.transmitRunLog("未查找到图片", output=True)
+    log.transmitRunLog("未查找到图片", debug=True)
     return None

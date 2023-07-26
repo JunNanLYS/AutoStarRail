@@ -49,3 +49,12 @@ class JsonTool:
             res = json.load(f)
         return res
 
+    @classmethod
+    def dump_config_json(cls, config: dict):
+        """
+        :param config: 配置文件
+        """
+        path = os.path.join(PathTool.get_root_path(), "config.json")
+        with open(path, 'w', encoding='UTF-8') as f:
+            json.dump(config, f)
+

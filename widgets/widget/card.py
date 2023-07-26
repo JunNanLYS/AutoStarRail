@@ -52,6 +52,19 @@ class StaminaCard(StretchableCard):
         self.setMinimumHeight(0)
         self.setMaximumHeight(10000)
 
+    def setStretch(self, is_stretch):
+        for child in self.children():
+            if child is self._title:
+                continue
+            if isinstance(child, (QLabel, QSpinBox, QSpacerItem)):
+                child.hide() if self._isStretch else child.show()
+        if not is_stretch:
+            self.startAnimation(self._title.height() + 10)
+            self._isStretch = False
+        else:
+            self._isStretch = True
+            self.recover()
+
     def mousePressEvent(self, event) -> None:
         """
         点击卡片标题伸缩
