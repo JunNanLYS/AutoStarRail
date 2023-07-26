@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>2000</height>
+    <height>3500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,7 +40,7 @@
         <x>0</x>
         <y>0</y>
         <width>598</width>
-        <height>1998</height>
+        <height>3498</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -103,7 +103,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="characterEXPSpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_1"/>
             </item>
             <item>
              <spacer name="horizontalSpacer">
@@ -139,7 +139,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="coneEXPSpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_2"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_2">
@@ -175,7 +175,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="creditSpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_3"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_3">
@@ -239,7 +239,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="calyxDestructionSpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_4"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_4">
@@ -269,7 +269,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="calyxPreservationSpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_5"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_5">
@@ -299,7 +299,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="calyxHuntSpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_6"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_6">
@@ -329,7 +329,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="calyxAbundanceSpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_7"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_7">
@@ -359,7 +359,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="calyxEruditionSpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_8"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_8">
@@ -389,7 +389,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="calyxHarmonySpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_9"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_9">
@@ -419,7 +419,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="calyxNihilitySpinBox"/>
+             <widget class="SpinBox" name="calyxSpinBox_10"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_10">
@@ -489,7 +489,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfQuantaSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_1"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_11">
@@ -522,7 +522,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfGustSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_2"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_12">
@@ -555,7 +555,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfFulminationSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_3"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_14">
@@ -588,7 +588,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfBlazeSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_4"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_13">
@@ -621,7 +621,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfSpikeSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_5"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_15">
@@ -654,7 +654,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfRimeSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_6"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_16">
@@ -687,7 +687,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfMirageSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_7"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_17">
@@ -720,7 +720,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfLcicleSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_8"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_18">
@@ -753,7 +753,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfDoomSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_9"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_19">
@@ -786,7 +786,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="shapeOfCelestialSpinBox"/>
+             <widget class="SpinBox" name="shadowSpinBox_10"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_20">
@@ -808,7 +808,7 @@
        </item>
        <item>
         <widget class="StaminaCard" name="cavernCard" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_6">
+         <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,1,1,1,1,1,1,1">
           <property name="spacing">
            <number>5</number>
           </property>
@@ -831,12 +831,222 @@
             </property>
            </widget>
           </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_28">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_14">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/cavern/cavern/1.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="cavernSpinBox1"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_24">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_29">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_15">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/cavern/cavern/2.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="cavernSpinBox2"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_26">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_27">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_16">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/cavern/cavern/3.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="cavernSpinBox3"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_27">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_30">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_17">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/cavern/cavern/4.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="cavernSpinBox4"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_25">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_26">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_18">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/cavern/cavern/5.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="cavernSpinBox5"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_28">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_25">
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_19">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/cavern/cavern/6.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="cavernSpinBox6"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_29">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_24">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_20">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/cavern/cavern/7.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="cavernSpinBox7"/>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_30">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
          </layout>
         </widget>
        </item>
        <item>
         <widget class="StaminaCard" name="warCard" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_7">
+         <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,1,1,1">
           <property name="spacing">
            <number>5</number>
           </property>
@@ -858,6 +1068,117 @@
              <string>历战回响</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_21">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_11">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/war/echoOfWar/毁灭.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="echoSpinBox1">
+              <property name="maximum">
+               <number>3</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_23">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_23">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_12">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/war/echoOfWar/可可利亚.png</pixmap>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="echoSpinBox2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximum">
+               <number>3</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_22">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_22">
+            <property name="topMargin">
+             <number>5</number>
+            </property>
+            <item>
+             <widget class="PixmapLabel" name="PixmapLabel_13">
+              <property name="pixmap">
+               <pixmap resource="resource/resource.qrc">:/war/echoOfWar/丰饶.png</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="SpinBox" name="echoSpinBox3">
+              <property name="maximum">
+               <number>3</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_21">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>

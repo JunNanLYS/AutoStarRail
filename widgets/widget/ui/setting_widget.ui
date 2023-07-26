@@ -94,7 +94,7 @@
              </widget>
             </item>
             <item>
-             <widget class="LineEdit" name="pathEdit">
+             <widget class="LineEdit" name="gamePathEdit">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -113,7 +113,7 @@
              </widget>
             </item>
             <item>
-             <widget class="ToolButton" name="setPathButton">
+             <widget class="ToolButton" name="gamePathButton">
               <property name="toolButtonStyle">
                <enum>Qt::ToolButtonIconOnly</enum>
               </property>
@@ -264,7 +264,7 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="StrongBodyLabel" name="powerLabel">
+             <widget class="StrongBodyLabel" name="exploreLabel">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -277,10 +277,10 @@
              </widget>
             </item>
             <item>
-             <widget class="SwitchButton" name="powerButton"/>
+             <widget class="SwitchButton" name="exploreButton"/>
             </item>
             <item>
-             <widget class="SpinBox" name="powerSpinBox"/>
+             <widget class="SpinBox" name="exploreSpinBox"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_2">

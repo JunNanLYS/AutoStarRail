@@ -56,19 +56,19 @@ class SettingWidgetUi(object):
 
         self.horizontalLayout_3.addWidget(self.pathLabel)
 
-        self.pathEdit = LineEdit(self.gameCard)
-        self.pathEdit.setObjectName(u"pathEdit")
-        self.pathEdit.setMinimumSize(QSize(0, 33))
-        self.pathEdit.setReadOnly(True)
-        self.pathEdit.setProperty("transparent", True)
+        self.gamePathEdit = LineEdit(self.gameCard)
+        self.gamePathEdit.setObjectName(u"gamePathEdit")
+        self.gamePathEdit.setMinimumSize(QSize(0, 33))
+        self.gamePathEdit.setReadOnly(True)
+        self.gamePathEdit.setProperty("transparent", True)
 
-        self.horizontalLayout_3.addWidget(self.pathEdit)
+        self.horizontalLayout_3.addWidget(self.gamePathEdit)
 
-        self.setPathButton = ToolButton(self.gameCard)
-        self.setPathButton.setObjectName(u"setPathButton")
-        self.setPathButton.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.gamePathButton = ToolButton(self.gameCard)
+        self.gamePathButton.setObjectName(u"gamePathButton")
+        self.gamePathButton.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
-        self.horizontalLayout_3.addWidget(self.setPathButton)
+        self.horizontalLayout_3.addWidget(self.gamePathButton)
 
         self.horizontalLayout_3.setStretch(1, 1)
 
@@ -185,7 +185,7 @@ class SettingWidgetUi(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.gameLabel.setText(QCoreApplication.translate("Form", u"\u6e38\u620f", None))
         self.pathLabel.setText(QCoreApplication.translate("Form", u"\u661f\u94c1\u542f\u52a8\u5668\u8def\u5f84", None))
-        self.pathEdit.setText("")
+        self.gamePathEdit.setText("")
         self.autofightLabel.setText(QCoreApplication.translate("Form",
                                                                u"\u6e38\u620f\u4e2d\u5df2\u5f00\u542f\u81ea\u52a8\u6cbf\u7528\u6218\u6597",
                                                                None))
