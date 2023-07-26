@@ -10,26 +10,36 @@ class StaminaWidget(WidgetBase, StaminaWidgetUi):
 
     def get_copies_count(self) -> dict:
         copies_count = {
-            "characterEXP": self.characterEXPSpinBox.value(),
-            "coneEXP": self.coneEXPSpinBox.value(),
-            "credit": self.creditSpinBox.value(),
-            "calyxDestruction": self.calyxDestructionSpinBox.value(),
-            "calyxPreservation": self.calyxPreservationSpinBox.value(),
-            "calyxHunt": self.calyxHuntSpinBox.value(),
-            "calyxAbundance": self.calyxAbundanceSpinBox.value(),
-            "calyxErudition": self.calyxEruditionSpinBox.value(),
-            "calyxHarmony": self.calyxHarmonySpinBox.value(),
-            "calyxNihility": self.calyxNihilitySpinBox.value(),
-            "shapeOfQuanta": self.shapeOfQuantaSpinBox.value(),
-            "shapeOfGust": self.shapeOfGustSpinBox.value(),
-            "shapeOfFulmination": self.shapeOfFulminationSpinBox.value(),
-            "shapeOfBlaze": self.shapeOfBlazeSpinBox.value(),
-            "shapeOfSpike": self.shapeOfSpikeSpinBox.value(),
-            "shapeOfRime": self.shapeOfRimeSpinBox.value(),
-            "shapeOfMirage": self.shapeOfMirageSpinBox.value(),
-            "shapeOfLcicle": self.shapeOfLcicleSpinBox.value(),
-            "shapeOfDoom": self.shapeOfDoomSpinBox.value(),
-            "shapeOfCelestial": self.shapeOfCelestialSpinBox.value(),
+            "calyx_1": self.calyxSpinBox_1.value(),
+            "calyx_2": self.calyxSpinBox_2.value(),
+            "calyx_3": self.calyxSpinBox_3.value(),
+            "calyx_4": self.calyxSpinBox_4.value(),
+            "calyx_5": self.calyxSpinBox_5.value(),
+            "calyx_6": self.calyxSpinBox_6.value(),
+            "calyx_7": self.calyxSpinBox_7.value(),
+            "calyx_8": self.calyxSpinBox_8.value(),
+            "calyx_9": self.calyxSpinBox_9.value(),
+            "calyx_10": self.calyxSpinBox_10.value(),
+            "shadow_1":  self.shadowSpinBox_1.value(),
+            "shadow_2": self.shadowSpinBox_2.value(),
+            "shadow_3": self.shadowSpinBox_3.value(),
+            "shadow_4": self.shadowSpinBox_4.value(),
+            "shadow_5": self.shadowSpinBox_5.value(),
+            "shadow_6": self.shadowSpinBox_6.value(),
+            "shadow_7": self.shadowSpinBox_7.value(),
+            "shadow_8": self.shadowSpinBox_8.value(),
+            "shadow_9": self.shadowSpinBox_9.value(),
+            "shadow_10": self.shadowSpinBox_10.value(),
+            "cavern_1": self.cavernSpinBox1.value(),
+            "cavern_2": self.cavernSpinBox2.value(),
+            "cavern_3": self.cavernSpinBox3.value(),
+            "cavern_4": self.cavernSpinBox4.value(),
+            "cavern_5": self.cavernSpinBox5.value(),
+            "cavern_6": self.cavernSpinBox6.value(),
+            "cavern_7": self.cavernSpinBox7.value(),
+            "echo_1": self.echoSpinBox1.value(),
+            "echo_2": self.echoSpinBox2.value(),
+            "echo_3": self.echoSpinBox3.value(),
         }
 
         return copies_count
@@ -42,5 +52,12 @@ class StaminaWidget(WidgetBase, StaminaWidgetUi):
         self.calyxGoldCard.setTitleLabel(self.calyxGoldLabel)
         self.calyxRedCard.setTitleLabel(self.calyxRedLabel)
         self.shadowCard.setTitleLabel(self.stagnantShadowLabel)
-        # self.cavernCard.setTitleLabel()
-        # self.warCard.setTitleLabel()
+        self.cavernCard.setTitleLabel(self.cavernLabel)
+        self.warCard.setTitleLabel(self.warLabel)
+
+        # 将卡片收起来
+        self.calyxGoldCard.setStretch(False)
+        self.calyxRedCard.setStretch(False)
+        self.shadowCard.setStretch(False)
+        self.cavernCard.setStretch(False)
+        self.warCard.setStretch(False)
