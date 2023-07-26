@@ -20,18 +20,18 @@ class Log:
     def setGameLogWidget(self, widget: "LogWidget"):
         self._gameLogWidget = widget
 
-    def transmitRunLog(self, content: str, output=False):
-        print(content) if output else ...
+    def transmitRunLog(self, content: str, debug=False):
+        print(content) if debug else ...
         if self._runLogWidget is not None:
             self._runLogWidget.add.emit(content)
 
-    def transmitGameLog(self, content: str, output=False):
-        print(content) if output else ...
+    def transmitGameLog(self, content: str, debug=False):
+        print(content) if debug else ...
         if self._gameLogWidget is not None:
             self._gameLogWidget.add.emit(content)
 
-    def transmitAllLog(self, content: str, output=False):
-        print(content) if output else ...
+    def transmitAllLog(self, content: str, debug=False):
+        print(content) if debug else ...
         self.transmitRunLog(content)
         self.transmitGameLog(content)
 
