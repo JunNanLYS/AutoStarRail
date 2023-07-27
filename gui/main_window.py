@@ -1,11 +1,10 @@
-import PySide6
 from PySide6.QtCore import QSize
+from PySide6.QtWidgets import QApplication
 from qframelesswindow import FramelessMainWindow, FramelessWindow
-from PySide6.QtWidgets import QApplication, QWidget
-from script.use_of_stamina import use_of_stamina
 
-from widgets.navigation_bar import ScriptNavigationBar, LogNavigationBar
+from script.use_of_stamina import use_of_stamina
 from threadpool import script_thread
+from widgets.navigation_bar import ScriptNavigationBar, LogNavigationBar
 
 
 class LogWindow(FramelessWindow):
@@ -34,8 +33,8 @@ class MainWindow(FramelessMainWindow):
         super().__init__()
         self.__init_widget()
 
-        self.setMinimumSize(QSize(500, 500))
-        self.resize(1000, 800)
+        self.setMinimumSize(QSize(300, 300))
+        self.resize(700, 600)
 
         # 连接信号
         stamina = self.navigationBar.staminaInterface.staminaButton
@@ -44,7 +43,7 @@ class MainWindow(FramelessMainWindow):
             lambda: script_thread.submit(use_of_stamina, self.navigationBar.staminaInterface.get_copies_count())
         )
 
-    def resizeEvent(self, size: PySide6.QtCore.QSize) -> None:
+    def resizeEvent(self, size: QSize) -> None:
         super().resizeEvent(size)
         self.navigationBar.resize(self.width(), self.height() - self.titleBar.height())
 
@@ -55,10 +54,8 @@ class MainWindow(FramelessMainWindow):
         self.logWindow = LogWindow()
         self.logWindow.hide()
 
-
 if __name__ == "__main__":
     app = QApplication()
     win = MainWindow()
     win.show()
-
     app.exec()
