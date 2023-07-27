@@ -16,7 +16,9 @@ def use_of_stamina(copies: dict):
     copies = {name: count}
     副本名称对应着次数
     """
-    start_game()  # 开启游戏
+    if not start_game():  # 开启游戏
+        log.transmitAllLog("没有检测到游戏，请检查是否设置游戏路径，或者手动开启游戏")
+        return
     func.wait_image(ImagePath.MANDATE)  # 等待进入游戏
 
     for c, cnt in copies.items():
@@ -44,6 +46,21 @@ def use_of_stamina(copies: dict):
             # 进入挑战
             func.challenge()
             log.transmitAllLog("进入挑战")
+            # 需要补充体力
+            if check.is_no_stamina():
+                log.transmitRunLog("暂时不支持使用燃料和星穹兑换开拓力")
+                break
+                # json_ = tool.JsonTool.get_config_json()
+                # flag = False
+                # # 使用燃料
+                # if json_['use_fuel']:
+                #     flag = True
+                #     number = json_['fuel_number']
+                #     pass
+                # # 使用星穹
+                # if not flag and json_['use_explore']:
+                #     number = json_['explore_number']
+                # func.challenge()
             # 开始挑战
             func.start_challenge()
             log.transmitRunLog("开始挑战")

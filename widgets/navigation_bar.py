@@ -47,22 +47,22 @@ class ScriptNavigationBar(NavigationBar):
         self.__init_widget()
 
     def __init_widget(self):
-        self.infoInterface = InfoWidget(self)  # 信息
         self.staminaInterface = StaminaWidget(self)  # 清体力
         self.worldInterface = WorldWidget(self)  # 锄大地
         self.universeInterface = UniverseWidget(self)  # 模拟宇宙
         self.settingInterface = SettingWidget(self)  # 设置
+        self.infoInterface = InfoWidget(self)  # 信息
 
         # 添加到项到pivot(add items to pivot)
-        self.addSubInterface(self.infoInterface, "infoInterface", "信息")
         self.addSubInterface(self.staminaInterface, "staminaInterface", "体力")
         self.addSubInterface(self.worldInterface, "worldInterface", "世界")
         self.addSubInterface(self.universeInterface, "universeInterface", "模拟宇宙")
         self.addSubInterface(self.settingInterface, "settingInterface", "设置")
+        self.addSubInterface(self.infoInterface, "infoInterface", "信息")
 
         # 设置当前导航栏的item(set current item)
-        self.stackedWidget.setCurrentWidget(self.infoInterface)
-        self.pivot.setCurrentItem(self.infoInterface.objectName())
+        self.stackedWidget.setCurrentWidget(self.staminaInterface)
+        self.pivot.setCurrentItem(self.staminaInterface.objectName())
 
 
 class LogNavigationBar(NavigationBar):

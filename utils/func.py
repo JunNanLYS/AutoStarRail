@@ -117,3 +117,11 @@ def wait_image(filename: str, confidence=0.8, max_time=100):
             break
     log.transmitRunLog("未查找到图片", debug=True)
     return None
+
+
+def use_fuel(number: int):
+    pass
+
+
+def use_explore(number: int):
+    pass

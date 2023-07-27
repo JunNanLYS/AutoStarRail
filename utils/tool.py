@@ -1,5 +1,6 @@
 ﻿import json
 import os
+import sys
 
 
 class PathTool:
@@ -10,7 +11,7 @@ class PathTool:
         """
         :return: 项目根目录
         """
-        cur_path: str = __file__
+        cur_path: str = sys.argv[0]
         while cur_path.split('\\')[-1] != cls.PROJECT_NAME:
             cur_path = os.path.dirname(cur_path)
         return cur_path

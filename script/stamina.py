@@ -23,7 +23,7 @@ def search_transmission(image_path):
     image_rect = func.find_image(image_path)
     if not image_rect:
         return None
-    log.transmitRunLog("找传送", debug=True)
+    log.transmitRunLog("找传送")
     transmission = ImagePath.TRANSMISSION
     rects = pyautogui.locateAllOnScreen(transmission, confidence=0.9)
     points = []
@@ -63,18 +63,18 @@ def enter_book() -> bool:
     """
     进入星际和平指南界面
     """
-    log.transmitRunLog("命令：进入星际和平书", debug=True)
+    log.transmitRunLog("命令：进入星际和平书")
     book = ImagePath.BOOK
     box = func.find_image(book)
     if box:
-        log.transmitRunLog("找到书", debug=True)
+        log.transmitRunLog("找到书")
         time.sleep(1)
         pyautogui.keyDown('alt')
         pyautogui.moveTo(box)
         pyautogui.click()  # 进入星际和平书界面
         pyautogui.keyUp('alt')
     else:
-        log.transmitAllLog("没找到书", debug=True)
+        log.transmitAllLog("没找到书")
         # 可能是已经在书界面了
         return False
     time.sleep(1)
@@ -85,21 +85,21 @@ def enter_index() -> bool:
     """
     进入生存索引界面
     """
-    log.transmitRunLog("命令：进入生存索引", debug=True)
+    log.transmitRunLog("命令：进入生存索引")
     index = ImagePath.INDEX
     index_selected = ImagePath.INDEX_SELECTED
     index_box = func.find_image(index, max_count=1)
 
     if index_box:
-        log.transmitRunLog("找到生存索引", debug=True)
+        log.transmitRunLog("找到生存索引")
         # 进入生存索引
         pyautogui.moveTo(index_box)
         pyautogui.click()
     elif pos := func.find_image(index_selected):
-        log.transmitRunLog("检测到生存索引已被选择", debug=True)
+        log.transmitRunLog("检测到生存索引已被选择")
         pyautogui.moveTo(pos)
     else:
-        log.transmitRunLog("没找到生存索引", debug=True)
+        log.transmitRunLog("没找到生存索引")
         return False
     time.sleep(1)
     return True

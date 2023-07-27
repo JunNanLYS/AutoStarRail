@@ -3,7 +3,7 @@ from .ui.stamina_widget import StaminaWidgetUi
 
 
 class StaminaWidget(WidgetBase, StaminaWidgetUi):
-    def __init__(self, parent):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
         self.__init_widget()

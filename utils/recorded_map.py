@@ -25,6 +25,10 @@ event_list = []  # 事件
 last_time = 0  # 键盘按压的时间
 key_dict = {}  # 按键信息 {key: time}
 filename = f"./map/world.json"  # 文件名
+json_dict = {"map_name": "",
+             "number": "",
+             "name": "NanJun",
+             "keys": event_list}
 
 
 def key_to_str(key):
@@ -111,10 +115,6 @@ if __name__ == '__main__':
     time.sleep(2)
     print("录制开始")
     start()
-    json_dict = {"map_name": "",
-                 "number": "",
-                 "name": "NanJun",
-                 "keys": event_list}
     print(event_list)
     with open(filename, 'w') as f:
         json.dump(json_dict, f)

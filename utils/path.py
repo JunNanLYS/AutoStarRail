@@ -15,6 +15,7 @@ class ImagePath:
     BOOK = IMAGE_ROOT_PATH + r"book.png"  # 星际和平书
     INDEX = IMAGE_ROOT_PATH + r"index.png"  # 生存索引
     INDEX_SELECTED = IMAGE_ROOT_PATH + r"indexSelected.png"  # 选中状态下的"生存索引"
+    NO_STAMINA = IMAGE_ROOT_PATH + r"noStamina.png"  # 暂无行劽数量
 
     # 拟造花萼 calyx
     CALYX_GOLD = CALYX_PATH + r"calyxGold.png"                      # 花萼(金)
