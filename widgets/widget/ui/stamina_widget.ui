@@ -844,7 +844,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="cavernSpinBox1"/>
+             <widget class="SpinBox" name="cavernSpinBox_1"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_24">
@@ -874,7 +874,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="cavernSpinBox2"/>
+             <widget class="SpinBox" name="cavernSpinBox_2"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_26">
@@ -904,7 +904,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="cavernSpinBox3"/>
+             <widget class="SpinBox" name="cavernSpinBox_3"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_27">
@@ -934,7 +934,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="cavernSpinBox4"/>
+             <widget class="SpinBox" name="cavernSpinBox_4"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_25">
@@ -964,7 +964,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="cavernSpinBox5"/>
+             <widget class="SpinBox" name="cavernSpinBox_5"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_28">
@@ -994,7 +994,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="cavernSpinBox6"/>
+             <widget class="SpinBox" name="cavernSpinBox_6"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_29">
@@ -1024,7 +1024,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="cavernSpinBox7"/>
+             <widget class="SpinBox" name="cavernSpinBox_7"/>
             </item>
             <item>
              <spacer name="horizontalSpacer_30">
@@ -1082,7 +1082,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="echoSpinBox1">
+             <widget class="SpinBox" name="echoSpinBox_1">
               <property name="maximum">
                <number>3</number>
               </property>
@@ -1119,7 +1119,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="echoSpinBox2">
+             <widget class="SpinBox" name="echoSpinBox_2">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -1159,7 +1159,7 @@
              </widget>
             </item>
             <item>
-             <widget class="SpinBox" name="echoSpinBox3">
+             <widget class="SpinBox" name="echoSpinBox_3">
               <property name="maximum">
                <number>3</number>
               </property>

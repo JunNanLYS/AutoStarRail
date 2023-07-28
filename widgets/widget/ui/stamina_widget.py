@@ -68,7 +68,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_2 = QHBoxLayout()
@@ -89,7 +88,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
 
-
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.horizontalLayout_3 = QHBoxLayout()
@@ -109,7 +107,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer_3)
-
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
@@ -148,7 +145,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_4)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
 
         self.horizontalLayout_5 = QHBoxLayout()
@@ -167,7 +163,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_5.addItem(self.horizontalSpacer_5)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_5)
 
@@ -188,7 +183,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_6.addItem(self.horizontalSpacer_6)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_6)
 
         self.horizontalLayout_7 = QHBoxLayout()
@@ -207,7 +201,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_7.addItem(self.horizontalSpacer_7)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_7)
 
@@ -228,7 +221,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_8.addItem(self.horizontalSpacer_8)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_8)
 
         self.horizontalLayout_9 = QHBoxLayout()
@@ -248,7 +240,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_9.addItem(self.horizontalSpacer_9)
 
-
         self.verticalLayout_2.addLayout(self.horizontalLayout_9)
 
         self.horizontalLayout_10 = QHBoxLayout()
@@ -267,7 +258,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_10 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_10.addItem(self.horizontalSpacer_10)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_10)
 
@@ -311,7 +301,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_11.addItem(self.horizontalSpacer_11)
 
-
         self.verticalLayout_5.addLayout(self.horizontalLayout_11)
 
         self.horizontalLayout_12 = QHBoxLayout()
@@ -332,7 +321,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_12 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_12.addItem(self.horizontalSpacer_12)
-
 
         self.verticalLayout_5.addLayout(self.horizontalLayout_12)
 
@@ -355,7 +343,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_13.addItem(self.horizontalSpacer_14)
 
-
         self.verticalLayout_5.addLayout(self.horizontalLayout_13)
 
         self.horizontalLayout_14 = QHBoxLayout()
@@ -376,7 +363,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_13 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_14.addItem(self.horizontalSpacer_13)
-
 
         self.verticalLayout_5.addLayout(self.horizontalLayout_14)
 
@@ -399,7 +385,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_15.addItem(self.horizontalSpacer_15)
 
-
         self.verticalLayout_5.addLayout(self.horizontalLayout_15)
 
         self.horizontalLayout_16 = QHBoxLayout()
@@ -420,7 +405,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_16 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_16.addItem(self.horizontalSpacer_16)
-
 
         self.verticalLayout_5.addLayout(self.horizontalLayout_16)
 
@@ -443,7 +427,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_17.addItem(self.horizontalSpacer_17)
 
-
         self.verticalLayout_5.addLayout(self.horizontalLayout_17)
 
         self.horizontalLayout_18 = QHBoxLayout()
@@ -464,7 +447,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_18 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_18.addItem(self.horizontalSpacer_18)
-
 
         self.verticalLayout_5.addLayout(self.horizontalLayout_18)
 
@@ -487,7 +469,6 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_19.addItem(self.horizontalSpacer_19)
 
-
         self.verticalLayout_5.addLayout(self.horizontalLayout_19)
 
         self.horizontalLayout_20 = QHBoxLayout()
@@ -508,7 +489,6 @@ class StaminaWidgetUi(object):
         self.horizontalSpacer_20 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_20.addItem(self.horizontalSpacer_20)
-
 
         self.verticalLayout_5.addLayout(self.horizontalLayout_20)
 
@@ -545,15 +525,14 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_28.addWidget(self.PixmapLabel_14)
 
-        self.cavernSpinBox1 = SpinBox(self.cavernCard)
-        self.cavernSpinBox1.setObjectName(u"cavernSpinBox1")
+        self.cavernSpinBox_1 = SpinBox(self.cavernCard)
+        self.cavernSpinBox_1.setObjectName(u"cavernSpinBox_1")
 
-        self.horizontalLayout_28.addWidget(self.cavernSpinBox1)
+        self.horizontalLayout_28.addWidget(self.cavernSpinBox_1)
 
         self.horizontalSpacer_24 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_28.addItem(self.horizontalSpacer_24)
-
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_28)
 
@@ -566,15 +545,14 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_29.addWidget(self.PixmapLabel_15)
 
-        self.cavernSpinBox2 = SpinBox(self.cavernCard)
-        self.cavernSpinBox2.setObjectName(u"cavernSpinBox2")
+        self.cavernSpinBox_2 = SpinBox(self.cavernCard)
+        self.cavernSpinBox_2.setObjectName(u"cavernSpinBox_2")
 
-        self.horizontalLayout_29.addWidget(self.cavernSpinBox2)
+        self.horizontalLayout_29.addWidget(self.cavernSpinBox_2)
 
         self.horizontalSpacer_26 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_29.addItem(self.horizontalSpacer_26)
-
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_29)
 
@@ -587,15 +565,14 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_27.addWidget(self.PixmapLabel_16)
 
-        self.cavernSpinBox3 = SpinBox(self.cavernCard)
-        self.cavernSpinBox3.setObjectName(u"cavernSpinBox3")
+        self.cavernSpinBox_3 = SpinBox(self.cavernCard)
+        self.cavernSpinBox_3.setObjectName(u"cavernSpinBox_3")
 
-        self.horizontalLayout_27.addWidget(self.cavernSpinBox3)
+        self.horizontalLayout_27.addWidget(self.cavernSpinBox_3)
 
         self.horizontalSpacer_27 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_27.addItem(self.horizontalSpacer_27)
-
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_27)
 
@@ -608,15 +585,14 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_30.addWidget(self.PixmapLabel_17)
 
-        self.cavernSpinBox4 = SpinBox(self.cavernCard)
-        self.cavernSpinBox4.setObjectName(u"cavernSpinBox4")
+        self.cavernSpinBox_4 = SpinBox(self.cavernCard)
+        self.cavernSpinBox_4.setObjectName(u"cavernSpinBox_4")
 
-        self.horizontalLayout_30.addWidget(self.cavernSpinBox4)
+        self.horizontalLayout_30.addWidget(self.cavernSpinBox_4)
 
         self.horizontalSpacer_25 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_30.addItem(self.horizontalSpacer_25)
-
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_30)
 
@@ -629,15 +605,14 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_26.addWidget(self.PixmapLabel_18)
 
-        self.cavernSpinBox5 = SpinBox(self.cavernCard)
-        self.cavernSpinBox5.setObjectName(u"cavernSpinBox5")
+        self.cavernSpinBox_5 = SpinBox(self.cavernCard)
+        self.cavernSpinBox_5.setObjectName(u"cavernSpinBox_5")
 
-        self.horizontalLayout_26.addWidget(self.cavernSpinBox5)
+        self.horizontalLayout_26.addWidget(self.cavernSpinBox_5)
 
         self.horizontalSpacer_28 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_26.addItem(self.horizontalSpacer_28)
-
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_26)
 
@@ -650,15 +625,14 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_25.addWidget(self.PixmapLabel_19)
 
-        self.cavernSpinBox6 = SpinBox(self.cavernCard)
-        self.cavernSpinBox6.setObjectName(u"cavernSpinBox6")
+        self.cavernSpinBox_6 = SpinBox(self.cavernCard)
+        self.cavernSpinBox_6.setObjectName(u"cavernSpinBox_6")
 
-        self.horizontalLayout_25.addWidget(self.cavernSpinBox6)
+        self.horizontalLayout_25.addWidget(self.cavernSpinBox_6)
 
         self.horizontalSpacer_29 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_25.addItem(self.horizontalSpacer_29)
-
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_25)
 
@@ -671,15 +645,14 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_24.addWidget(self.PixmapLabel_20)
 
-        self.cavernSpinBox7 = SpinBox(self.cavernCard)
-        self.cavernSpinBox7.setObjectName(u"cavernSpinBox7")
+        self.cavernSpinBox_7 = SpinBox(self.cavernCard)
+        self.cavernSpinBox_7.setObjectName(u"cavernSpinBox_7")
 
-        self.horizontalLayout_24.addWidget(self.cavernSpinBox7)
+        self.horizontalLayout_24.addWidget(self.cavernSpinBox_7)
 
         self.horizontalSpacer_30 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_24.addItem(self.horizontalSpacer_30)
-
 
         self.verticalLayout_6.addLayout(self.horizontalLayout_24)
 
@@ -713,16 +686,15 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_21.addWidget(self.PixmapLabel_11)
 
-        self.echoSpinBox1 = SpinBox(self.warCard)
-        self.echoSpinBox1.setObjectName(u"echoSpinBox1")
-        self.echoSpinBox1.setMaximum(3)
+        self.echoSpinBox_1 = SpinBox(self.warCard)
+        self.echoSpinBox_1.setObjectName(u"echoSpinBox_1")
+        self.echoSpinBox_1.setMaximum(3)
 
-        self.horizontalLayout_21.addWidget(self.echoSpinBox1)
+        self.horizontalLayout_21.addWidget(self.echoSpinBox_1)
 
         self.horizontalSpacer_23 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_21.addItem(self.horizontalSpacer_23)
-
 
         self.verticalLayout_7.addLayout(self.horizontalLayout_21)
 
@@ -732,21 +704,20 @@ class StaminaWidgetUi(object):
         self.PixmapLabel_12 = PixmapLabel(self.warCard)
         self.PixmapLabel_12.setObjectName(u"PixmapLabel_12")
         self.PixmapLabel_12.setPixmap(QPixmap(u":/war/echoOfWar/\u53ef\u53ef\u5229\u4e9a.png"))
-        self.PixmapLabel_12.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.PixmapLabel_12.setAlignment(Qt.AlignLeading | Qt.AlignLeft | Qt.AlignVCenter)
 
         self.horizontalLayout_23.addWidget(self.PixmapLabel_12)
 
-        self.echoSpinBox2 = SpinBox(self.warCard)
-        self.echoSpinBox2.setObjectName(u"echoSpinBox2")
-        self.echoSpinBox2.setMinimumSize(QSize(0, 33))
-        self.echoSpinBox2.setMaximum(3)
+        self.echoSpinBox_2 = SpinBox(self.warCard)
+        self.echoSpinBox_2.setObjectName(u"echoSpinBox_2")
+        self.echoSpinBox_2.setMinimumSize(QSize(0, 33))
+        self.echoSpinBox_2.setMaximum(3)
 
-        self.horizontalLayout_23.addWidget(self.echoSpinBox2)
+        self.horizontalLayout_23.addWidget(self.echoSpinBox_2)
 
         self.horizontalSpacer_22 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_23.addItem(self.horizontalSpacer_22)
-
 
         self.verticalLayout_7.addLayout(self.horizontalLayout_23)
 
@@ -759,16 +730,15 @@ class StaminaWidgetUi(object):
 
         self.horizontalLayout_22.addWidget(self.PixmapLabel_13)
 
-        self.echoSpinBox3 = SpinBox(self.warCard)
-        self.echoSpinBox3.setObjectName(u"echoSpinBox3")
-        self.echoSpinBox3.setMaximum(3)
+        self.echoSpinBox_3 = SpinBox(self.warCard)
+        self.echoSpinBox_3.setObjectName(u"echoSpinBox_3")
+        self.echoSpinBox_3.setMaximum(3)
 
-        self.horizontalLayout_22.addWidget(self.echoSpinBox3)
+        self.horizontalLayout_22.addWidget(self.echoSpinBox_3)
 
         self.horizontalSpacer_21 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_22.addItem(self.horizontalSpacer_21)
-
 
         self.verticalLayout_7.addLayout(self.horizontalLayout_22)
 
@@ -791,10 +761,10 @@ class StaminaWidgetUi(object):
 
         self.verticalLayout_4.addWidget(self.scrollArea)
 
-
         self.retranslateUi(Form)
 
         QMetaObject.connectSlotsByName(Form)
+
     # setupUi
 
     def retranslateUi(self, Form):
@@ -816,4 +786,3 @@ class StaminaWidgetUi(object):
         self.warLabel.setText(QCoreApplication.translate("Form", u"\u5386\u6218\u56de\u54cd", None))
         self.staminaButton.setText(QCoreApplication.translate("Form", u"\u6e05\u7406\u5f00\u62d3\u529b", None))
     # retranslateUi
-

@@ -9,39 +9,17 @@ class StaminaWidget(WidgetBase, StaminaWidgetUi):
         self.__init_widget()
 
     def get_copies_count(self) -> dict:
-        copies_count = {
-            "calyx_1": self.calyxSpinBox_1.value(),
-            "calyx_2": self.calyxSpinBox_2.value(),
-            "calyx_3": self.calyxSpinBox_3.value(),
-            "calyx_4": self.calyxSpinBox_4.value(),
-            "calyx_5": self.calyxSpinBox_5.value(),
-            "calyx_6": self.calyxSpinBox_6.value(),
-            "calyx_7": self.calyxSpinBox_7.value(),
-            "calyx_8": self.calyxSpinBox_8.value(),
-            "calyx_9": self.calyxSpinBox_9.value(),
-            "calyx_10": self.calyxSpinBox_10.value(),
-            "shadow_1":  self.shadowSpinBox_1.value(),
-            "shadow_2": self.shadowSpinBox_2.value(),
-            "shadow_3": self.shadowSpinBox_3.value(),
-            "shadow_4": self.shadowSpinBox_4.value(),
-            "shadow_5": self.shadowSpinBox_5.value(),
-            "shadow_6": self.shadowSpinBox_6.value(),
-            "shadow_7": self.shadowSpinBox_7.value(),
-            "shadow_8": self.shadowSpinBox_8.value(),
-            "shadow_9": self.shadowSpinBox_9.value(),
-            "shadow_10": self.shadowSpinBox_10.value(),
-            "cavern_1": self.cavernSpinBox1.value(),
-            "cavern_2": self.cavernSpinBox2.value(),
-            "cavern_3": self.cavernSpinBox3.value(),
-            "cavern_4": self.cavernSpinBox4.value(),
-            "cavern_5": self.cavernSpinBox5.value(),
-            "cavern_6": self.cavernSpinBox6.value(),
-            "cavern_7": self.cavernSpinBox7.value(),
-            "echo_1": self.echoSpinBox1.value(),
-            "echo_2": self.echoSpinBox2.value(),
-            "echo_3": self.echoSpinBox3.value(),
-        }
-
+        copies_count = dict()
+        cards = [self.calyxGoldCard, self.calyxRedCard, self.shadowCard, self.cavernCard, self.warCard]
+        spin_boxs = ['calyxSpinBox', 'shadowSpinBox', 'cavernSpinBox', 'echoSpinBox']
+        for card in cards:
+            for widget in card.children():
+                for name in spin_boxs:
+                    if name in widget.objectName():
+                        number = widget.objectName().split('_')[1]
+                        name = name.replace('SpinBox', '')
+                        copies_count[f'{name}_{number}'] = widget.value()
+                        break
         return copies_count
 
     def __init_widget(self):
@@ -56,7 +34,7 @@ class StaminaWidget(WidgetBase, StaminaWidgetUi):
         self.warCard.setTitleLabel(self.warLabel)
 
         # 将卡片收起来
-        self.calyxGoldCard.setStretch(False)
+        # self.calyxGoldCard.setStretch(False)
         self.calyxRedCard.setStretch(False)
         self.shadowCard.setStretch(False)
         self.cavernCard.setStretch(False)

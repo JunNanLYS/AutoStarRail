@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (QHBoxLayout, QSizePolicy, QSpacerItem,
 from qfluentwidgets import (LineEdit, SmoothScrollArea, SpinBox, StrongBodyLabel,
                             SwitchButton, TitleLabel, ToolButton)
 
-from widgets import WidgetBase
+from ..card import Card
 
 
 class SettingWidgetUi(object):
@@ -37,7 +37,7 @@ class SettingWidgetUi(object):
         self.verticalLayout_3.setSpacing(5)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(-1, 10, 10, 0)
-        self.gameCard = WidgetBase(self.scrollAreaWidget)
+        self.gameCard = Card(self.scrollAreaWidget)
         self.gameCard.setObjectName(u"gameCard")
         self.verticalLayout_2 = QVBoxLayout(self.gameCard)
         self.verticalLayout_2.setSpacing(10)
@@ -91,6 +91,7 @@ class SettingWidgetUi(object):
 
         self.horizontalLayout_4.addItem(self.horizontalSpacer_3)
 
+
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
 
         self.verticalLayout_2.setStretch(1, 1)
@@ -98,7 +99,7 @@ class SettingWidgetUi(object):
 
         self.verticalLayout_3.addWidget(self.gameCard)
 
-        self.staminaCard = WidgetBase(self.scrollAreaWidget)
+        self.staminaCard = Card(self.scrollAreaWidget)
         self.staminaCard.setObjectName(u"staminaCard")
         self.verticalLayout = QVBoxLayout(self.staminaCard)
         self.verticalLayout.setSpacing(10)
@@ -134,31 +135,33 @@ class SettingWidgetUi(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
+
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(5)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.powerLabel = StrongBodyLabel(self.staminaCard)
-        self.powerLabel.setObjectName(u"powerLabel")
-        self.powerLabel.setMaximumSize(QSize(16777215, 16777215))
+        self.exploreLabel = StrongBodyLabel(self.staminaCard)
+        self.exploreLabel.setObjectName(u"exploreLabel")
+        self.exploreLabel.setMaximumSize(QSize(16777215, 16777215))
 
-        self.horizontalLayout_2.addWidget(self.powerLabel)
+        self.horizontalLayout_2.addWidget(self.exploreLabel)
 
-        self.powerButton = SwitchButton(self.staminaCard)
-        self.powerButton.setObjectName(u"powerButton")
+        self.exploreButton = SwitchButton(self.staminaCard)
+        self.exploreButton.setObjectName(u"exploreButton")
 
-        self.horizontalLayout_2.addWidget(self.powerButton)
+        self.horizontalLayout_2.addWidget(self.exploreButton)
 
-        self.powerSpinBox = SpinBox(self.staminaCard)
-        self.powerSpinBox.setObjectName(u"powerSpinBox")
+        self.exploreSpinBox = SpinBox(self.staminaCard)
+        self.exploreSpinBox.setObjectName(u"exploreSpinBox")
 
-        self.horizontalLayout_2.addWidget(self.powerSpinBox)
+        self.horizontalLayout_2.addWidget(self.exploreSpinBox)
 
         self.horizontalSpacer_2 = QSpacerItem(40, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
+
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
@@ -175,10 +178,10 @@ class SettingWidgetUi(object):
 
         self.verticalLayout_4.addWidget(self.scrollArea)
 
+
         self.retranslateUi(Form)
 
         QMetaObject.connectSlotsByName(Form)
-
     # setupUi
 
     def retranslateUi(self, Form):
@@ -186,12 +189,11 @@ class SettingWidgetUi(object):
         self.gameLabel.setText(QCoreApplication.translate("Form", u"\u6e38\u620f", None))
         self.pathLabel.setText(QCoreApplication.translate("Form", u"\u661f\u94c1\u542f\u52a8\u5668\u8def\u5f84", None))
         self.gamePathEdit.setText("")
-        self.autofightLabel.setText(QCoreApplication.translate("Form",
-                                                               u"\u6e38\u620f\u4e2d\u5df2\u5f00\u542f\u81ea\u52a8\u6cbf\u7528\u6218\u6597",
-                                                               None))
+        self.autofightLabel.setText(QCoreApplication.translate("Form", u"\u6e38\u620f\u4e2d\u5df2\u5f00\u542f\u81ea\u52a8\u6cbf\u7528\u6218\u6597", None))
         self.autofightButton.setOnText(QCoreApplication.translate("Form", u"Yes", None))
         self.autofightButton.setOffText(QCoreApplication.translate("Form", u"No", None))
         self.staminaLabel.setText(QCoreApplication.translate("Form", u"\u4f53\u529b", None))
         self.fuelLabel.setText(QCoreApplication.translate("Form", u"\u4f7f\u7528\u71c3\u6599", None))
-        self.powerLabel.setText(QCoreApplication.translate("Form", u"\u4f7f\u7528\u5f00\u62d3\u529b", None))
+        self.exploreLabel.setText(QCoreApplication.translate("Form", u"\u4f7f\u7528\u5f00\u62d3\u529b", None))
     # retranslateUi
+

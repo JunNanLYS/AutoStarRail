@@ -57,7 +57,7 @@
         <number>0</number>
        </property>
        <item>
-        <widget class="WidgetBase" name="gameCard" native="true">
+        <widget class="Card" name="gameCard" native="true">
          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,1">
           <property name="spacing">
            <number>10</number>
@@ -162,7 +162,7 @@
         </widget>
        </item>
        <item>
-        <widget class="WidgetBase" name="staminaCard" native="true">
+        <widget class="Card" name="staminaCard" native="true">
          <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,1">
           <property name="spacing">
            <number>10</number>
@@ -357,9 +357,9 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>WidgetBase</class>
+   <class>Card</class>
    <extends>QWidget</extends>
-   <header>widgets</header>
+   <header>..card</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

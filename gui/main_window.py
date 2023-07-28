@@ -54,6 +54,7 @@ class MainWindow(FramelessMainWindow):
         self.logWindow = LogWindow()
         self.logWindow.hide()
 
+
 if __name__ == "__main__":
     app = QApplication()
     win = MainWindow()

@@ -26,6 +26,7 @@ class WorldWidget(WidgetBase, WorldWidgetUi):
         self.updateCardLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.__init_combo_box()
         self.__init_update_button()
+        self.startButton.clicked.connect(lambda: functions_not_open(self.parent().parent()))
 
     def __init_combo_box(self):
         """

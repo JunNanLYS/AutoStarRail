@@ -6,8 +6,8 @@ from gui.main_window import MainWindow
 
 app = QApplication(sys.argv)
 window = MainWindow()
-window.resize(500, 500)
+window.resize(700, 600)
 window.show()
-app.exec()
+sys.exit(app.exec())
 
 # pyinstaller --distpath . --workpath pack --specpath pack -i helpme.ico -F -w main.py
