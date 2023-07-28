@@ -25,6 +25,6 @@ def is_no_stamina() -> bool:
     检查是否没体力了
     1. 检查是否在补充开拓力界面
     """
-    if func.find_image(ImagePath.NO_STAMINA):
+    if func.find_image(ImagePath.NO_STAMINA, max_count=2):
         return True
     return False

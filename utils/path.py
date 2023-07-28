@@ -16,6 +16,12 @@ class ImagePath:
     INDEX = IMAGE_ROOT_PATH + r"index.png"  # 生存索引
     INDEX_SELECTED = IMAGE_ROOT_PATH + r"indexSelected.png"  # 选中状态下的"生存索引"
     NO_STAMINA = IMAGE_ROOT_PATH + r"noStamina.png"  # 暂无行劽数量
+    CANCEL = IMAGE_ROOT_PATH + r"cancel.png"  # 取消按钮
+    CONFIRM = IMAGE_ROOT_PATH + r"confirm.png"  # 确认按钮
+    FUEL = IMAGE_ROOT_PATH + r"fuel.png"  # 燃料
+    STELLAR_JADE = IMAGE_ROOT_PATH + r"stellarJade.png"  # 星穹币
+    AUTO_FIGHT = IMAGE_ROOT_PATH + r"autoFight.png"  # 自动战斗
+    AUTO_FIGHT_2 = IMAGE_ROOT_PATH + r"autoFight2.png"  # 自动战斗(未开启)
 
     # 拟造花萼 calyx
     CALYX_GOLD = CALYX_PATH + r"calyxGold.png"                      # 花萼(金)

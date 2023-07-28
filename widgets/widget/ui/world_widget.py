@@ -8,19 +8,15 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect,
+                            QSize, Qt)
+from PySide6.QtWidgets import (QSizePolicy, QSpacerItem, QVBoxLayout,
+                               QWidget)
+from qfluentwidgets import (ComboBox, PushButton, SmoothScrollArea, SplitPushButton,
+                            SubtitleLabel)
 
 from ..card import Card
-from qfluentwidgets import (ComboBox, PushButton, SmoothScrollArea, SplitPushButton,
-    SubtitleLabel)
+
 
 class WorldWidgetUi(object):
     def setupUi(self, Form):
@@ -48,7 +44,7 @@ class WorldWidgetUi(object):
         self.mapLabel = SubtitleLabel(self.mapCard)
         self.mapLabel.setObjectName(u"mapLabel")
         self.mapLabel.setMinimumSize(QSize(0, 30))
-        self.mapLabel.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.mapLabel.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
 
         self.mapCardLayout.addWidget(self.mapLabel)
 
@@ -63,7 +59,6 @@ class WorldWidgetUi(object):
 
         self.mapCardLayout.addWidget(self.startButton)
 
-
         self.verticalLayout_4.addWidget(self.mapCard)
 
         self.updateCard = Card(self.scrollAreaWidget)
@@ -76,7 +71,7 @@ class WorldWidgetUi(object):
         self.scripLabel.setObjectName(u"scripLabel")
         self.scripLabel.setMinimumSize(QSize(0, 30))
         self.scripLabel.setMaximumSize(QSize(16777215, 16777215))
-        self.scripLabel.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.scripLabel.setAlignment(Qt.AlignHCenter | Qt.AlignTop)
 
         self.updateCardLayout.addWidget(self.scripLabel)
 
@@ -84,7 +79,6 @@ class WorldWidgetUi(object):
         self.updateButton.setObjectName(u"updateButton")
 
         self.updateCardLayout.addWidget(self.updateButton)
-
 
         self.verticalLayout_4.addWidget(self.updateCard)
 
@@ -96,10 +90,10 @@ class WorldWidgetUi(object):
 
         self.verticalLayout.addWidget(self.scrollArea)
 
-
         self.retranslateUi(Form)
 
         QMetaObject.connectSlotsByName(Form)
+
     # setupUi
 
     def retranslateUi(self, Form):
@@ -109,4 +103,3 @@ class WorldWidgetUi(object):
         self.scripLabel.setText(QCoreApplication.translate("Form", u"\u66f4\u65b0\u811a\u672c", None))
         self.updateButton.setProperty("text_", QCoreApplication.translate("Form", u"Split push button", None))
     # retranslateUi
-

@@ -5,7 +5,7 @@ import pyautogui
 from script.stamina import STRING_TO_CALLBACK
 from script.start_game import start_game
 from utils.path import ImagePath
-from utils import func, check
+from utils import func, check, tool
 from widgets import log
 
 
@@ -20,10 +20,11 @@ def use_of_stamina(copies: dict):
         log.transmitAllLog("没有检测到游戏，请检查是否设置游戏路径，或者手动开启游戏")
         return
     func.wait_image(ImagePath.MANDATE)  # 等待进入游戏
+    json_ = tool.JsonTool.get_config_json()
 
     for c, cnt in copies.items():
         method, param = STRING_TO_CALLBACK.get(c, None)
-        if method is None:
+        if method is None or param is None:
             log.transmitRunLog(f"警告：出现不存在的字符串({c}) [use_of_stamina]", debug=True)
             continue
         # 打副本，直到达成目标或出现意外(体力不够等情况)
@@ -46,21 +47,22 @@ def use_of_stamina(copies: dict):
             # 进入挑战
             func.challenge()
             log.transmitAllLog("进入挑战")
+
             # 需要补充体力
             if check.is_no_stamina():
-                log.transmitRunLog("暂时不支持使用燃料和星穹兑换开拓力")
-                break
-                # json_ = tool.JsonTool.get_config_json()
-                # flag = False
-                # # 使用燃料
-                # if json_['use_fuel']:
-                #     flag = True
-                #     number = json_['fuel_number']
-                #     pass
-                # # 使用星穹
-                # if not flag and json_['use_explore']:
-                #     number = json_['explore_number']
-                # func.challenge()
+                flag = True
+                # 使用燃料
+                if json_['use_fuel']:
+                    flag = False
+                    number = json_['fuel_number']
+                    func.use_fuel(number)
+                # 使用星穹
+                if flag and json_['use_explore']:
+                    # 使用星穹目前还没想好怎么写
+                    number = json_['explore_number']
+                    func.use_explore()
+                func.challenge()
+
             # 开始挑战
             func.start_challenge()
             log.transmitRunLog("开始挑战")
@@ -72,6 +74,9 @@ def use_of_stamina(copies: dict):
                 time.sleep(0.5)
                 pyautogui.keyUp('w')
                 pyautogui.click()
+            if not json_['auto-fight']:
+                log.transmitAllLog("设置选项-自动战斗：否")
+                pass
             # 等待挑战完成(阻塞主线程)
             log.transmitRunLog("等待挑战完成")
             check.wait_challenge_completed()
@@ -80,3 +85,7 @@ def use_of_stamina(copies: dict):
             log.transmitAllLog("退出副本")
 
     log.transmitAllLog("体力清理完成")
+
+
+if __name__ == '__main__':
+    use_of_stamina({"calyx_4": 4})

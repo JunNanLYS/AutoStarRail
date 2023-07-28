@@ -53,14 +53,6 @@ def start_game() -> bool:
         win32gui.ShowWindow(game_id, win32con.SW_RESTORE)  # 若最小化窗口则会还原大小
         win32gui.SetForegroundWindow(game_id)
         time.sleep(1)
-        start_game_rect = func.find_image(ImagePath.START_GAME)  # 查找开启游戏按钮的位置
-        if start_game_rect is not None:
-            pyautogui.moveTo(start_game_rect)
-            pyautogui.click()
-        enter_game_rect = func.find_image(ImagePath.ENTER_GAME)  # 进入游戏
-        if enter_game_rect is not None:
-            pyautogui.moveTo(enter_game_rect)
-            pyautogui.click()
         # 不在游戏主界面
         if func.find_image(ImagePath.MANDATE) is None:
             for _ in range(5):

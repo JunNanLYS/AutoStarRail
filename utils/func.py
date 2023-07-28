@@ -120,8 +120,58 @@ def wait_image(filename: str, confidence=0.8, max_time=100):
 
 
 def use_fuel(number: int):
-    pass
+    """
+    使用燃料
+    """
+    # 点击燃料
+    fuel_rect = find_image(ImagePath.FUEL, confidence=0.7)
+    pyautogui.moveTo(fuel_rect)
+    pyautogui.click()
+    # 点击确定
+    confirm_rect = find_image(ImagePath.CONFIRM)
+    pyautogui.moveTo(confirm_rect)
+    pyautogui.click()
+
+    # 添加使用数量
+    add_rect = find_image(ImagePath.ADD_CHALLENGE)
+    pyautogui.moveTo(add_rect)
+    for _ in range(number):
+        pyautogui.click()
+        time.sleep(0.2)
+
+    # 确认
+    confirm_rect = find_image(ImagePath.CONFIRM)
+    pyautogui.moveTo(confirm_rect)
+    pyautogui.click()
+    time.sleep(0.2)
+    pyautogui.click()
 
 
-def use_explore(number: int):
-    pass
+def use_explore():
+    """
+    使用开拓力
+    """
+    # 点击星穹
+    stellar_jade_rect = find_image(ImagePath.STELLAR_JADE)
+    pyautogui.moveTo(stellar_jade_rect)
+    pyautogui.click()
+    # 点击确定
+    confirm_rect = find_image(ImagePath.CONFIRM)
+    pyautogui.moveTo(confirm_rect)
+    pyautogui.click()
+    time.sleep(0.5)
+
+    # 此时会弹出是否要使用，确认使用
+    confirm_rect = find_image(ImagePath.CONFIRM)
+    pyautogui.moveTo(confirm_rect)
+    pyautogui.click()
+    time.sleep(0.2)
+    pyautogui.click()
+
+
+def screenshot():
+    from PIL import ImageGrab
+    from utils.tool import PathTool
+    img = ImageGrab.grab()
+    root = PathTool.get_root_path()
+    img.save(root + r"\temp\screenshot.png")

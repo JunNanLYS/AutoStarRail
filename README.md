@@ -68,7 +68,7 @@ This software is open source, free of charge and for learning and exchange purpo
 
 打开main.exe需要使用管理员身份启动否则脚本无法正常运行！！！
 
-
+只想要纯净的exe运行脚本下载pack分支中的就行。`git clone -b <branch> <url>`
 
 
 
