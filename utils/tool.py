@@ -59,3 +59,29 @@ class JsonTool:
         with open(path, 'w', encoding='UTF-8') as f:
             json.dump(config, f)
 
+    @classmethod
+    def read_json_file(cls, path):
+        with open(path, 'r', encoding='UTF-8') as f:
+            res = json.load(f)
+        return res
+
+    @classmethod
+    def dump_json_file(cls, path, data):
+        with open(path, 'w', encoding='UTF-8') as f:
+            json.dump(data, f)
+
+    @classmethod
+    def get_world_json_file(cls, name):
+        root = PathTool.get_root_path()
+        path = os.path.join(root, r"StarRailAssistant\map", name)
+        with open(path, 'r', encoding='UTF-8') as f:
+            res = json.load(f)
+        return res
+
+
+class ImageTool:
+    @classmethod
+    def get_world_image_path(cls, name):
+        root = PathTool.get_root_path()
+        path = os.path.join(root, r"StarRailAssistant\picture", name)
+        return path
