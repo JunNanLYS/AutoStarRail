@@ -14,8 +14,8 @@ from ctypes import windll
 import pygetwindow as gw
 from PIL import ImageGrab
 
-from utils.config import sra_config_obj, normalize_file_path, CONFIG_FILE_NAME
-from utils.log import log
+from .utils.config import sra_config_obj, normalize_file_path, CONFIG_FILE_NAME
+from .utils.log import log_widget
 
 
 def get_width(title):
@@ -54,7 +54,7 @@ def get_width(title):
     real_width1 = 1920
     real_height1 = 1080
 
-    log.info(f"Real resolution: {real_width} x {real_height} x {scaling} x {borderless}")
+    log_widget.info(f"Real resolution: {real_width} x {real_height} x {scaling} x {borderless}")
 
     sra_config_obj.real_width = real_width1
     sra_config_obj.real_height = real_height1

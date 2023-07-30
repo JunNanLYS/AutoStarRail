@@ -3,9 +3,10 @@ import threading
 
 from pynput import keyboard
 
+from widgets import log as log_widget
 from .calculated import *
 from .config import get_file, sra_config_obj, read_json_file, read_maps, insert_key, CONFIG_FILE_NAME
-from .log import log, fight_log, set_log
+from .log import log_widget, fight_log, set_log
 from .requests import webhook_and_log
 
 
@@ -34,20 +35,18 @@ class Map:
     def set_stop(self):
         def on_press(key):
             if key == keyboard.Key.f8:
-                if not self.stop:
-                    log.info(("将在下一次选择地图时暂停"))
-                    self.stop = False
-                else:
-                    self.stop = True
+                log_widget.transmitAllLog("关闭锄大地")
+                self.stop = True
+                return False
             elif str(key) == r"'\x03'":
                 return False
-            elif key == keyboard.Key.f9:
-                return False
-
+        log_widget.transmitRunLog("开启按键监听")
         with keyboard.Listener(on_press=on_press) as listener:  # 创建按键监听线程
-            listener.join()  # 等待按键监听线程结束
+            listener.run()  # 等待按键监听线程结束
+        log_widget.transmitRunLog("关闭按键监听")
 
     def map_init(self):
+        log_widget.transmitAllLog("进行地图初始化，把地图缩小,需要缩小5次")
         # 进行地图初始化，把地图缩小,需要缩小5次
         target = cv.imread(f'./picture/pc/contraction.jpg')
         while True:
@@ -58,31 +57,35 @@ class Map:
                 if shrink_result['max_val'] < 0.98:
                     # points = self.calculated.calculated(result, target.shape)
                     points = result["max_loc"]
-                    log.debug(points)
+                    log_widget.debug(points)
                     for i in range(6):
                         self.calculated.click(points)
                 break
             time.sleep(0.1)
+        log_widget.transmitAllLog("地图初始化完成")
 
     def start_map(self, map, map_name):
-        log.info(f"map = {map}, map_name = {map_name}")
         map_data = read_json_file(f"map\\{map}.json")
         map_filename = map
         # 开始寻路
-        log.info(("开始寻路"))
+        log_widget.info(("开始寻路"))
+        log_widget.transmitAllLog("开始寻路")
         for map_index, map in enumerate(map_data["map"]):
+            if self.stop is True:
+                raise Exception("Stop World")
             self.calculated.monthly_pass()
-            log.info(("执行{map_filename}文件:{map_index}/{map_data2} {map}").format(map_filename=map_filename,
-                                                                                      map_index=map_index + 1,
-                                                                                      map_data2=len(map_data['map']),
-                                                                                      map=map))
+            log_widget.info(("执行{map_filename}文件:{map_index}/{map_data2} {map}").format(map_filename=map_filename,
+                                                                                            map_index=map_index + 1,
+                                                                                            map_data2=len(map_data['map']),
+                                                                                            map=map))
+            log_widget.transmitRunLog(f"执行{map_filename}文件:{map_index}/{len(map_data['map'])} {map}")
             key = list(map.keys())[0]
             value = map[key]
             if key in ["w", "s", "a", "d"]:
                 pos = self.calculated.move(key, value, map_name)
                 if self.DEBUG:
                     map_data["map"][map_index]["pos"] = pos
-                    log.debug(map_data["map"])
+                    log_widget.debug(map_data["map"])
             elif key == "f":
                 self.calculated.teleport(key, value)
             elif key == "mouse_move":
@@ -123,24 +126,26 @@ class Map:
             '''
 
     def auto_map(self, start):
-        log.info(f"start = {start}")
+        log_widget.info(f"start = {start}")
         __, __, __, __, __, width, length = self.calculated.take_screenshot()
-        log.info((width, length))
+        log_widget.info((width, length))
         if not (1915 <= width <= 1925 and 1075 <= length <= 1085):
-            raise Exception(("错误的PC分辨率，请调整为1920X1080，请不要在群里问怎么调整分辨率，小心被踢！"))
+            raise Exception("错误的PC分辨率，请调整为1920X1080，请不要在群里问怎么调整分辨率，小心被踢！")
         roles = self.calculated.part_ocr((88, 27, 92, 57)).keys()
-        log.info(roles)
+        log_widget.info(roles)
         if roles:
             set_log('-'.join(roles))
 
         def start_map(self: Map, start, check: bool = False):
-            log.info(f"start_map = {start}")
+            log_widget.info(f"start_map = {start}")
             wrong_map = True
             if f'map_{start}.json' in self.map_list:
+                if self.stop:
+                    raise Exception("Stop World")
                 if not check:
                     map_list = self.map_list[self.map_list.index(f'map_{start}.json'):len(self.map_list)]
                 else:
-                    log.info("开始捡漏")
+                    log_widget.info("开始捡漏")
                     map_list = sra_config_obj.fight_data.get("data", [])
                 for map in map_list:
                     while self.stop:
@@ -152,13 +157,13 @@ class Map:
                     name: str = map_data['name']
                     author = map_data['author']
                     start_dict = map_data['start']
-                    webhook_and_log(("开始\033[0;34;40m{name}\033[0m锄地").format(name=name))
-                    log.info(("该路线导航作者：\033[0;31;40m{author}\033[0m").format(author=author))
-                    log.info(("感谢每一位无私奉献的作者"))
+                    log_widget.transmitRunLog(f"将要执行\033[0;34;40m{name}\033[0m锄地")
+                    log_widget.transmitRunLog(f"该路线导航作者：\033[0;31;40m{author}\033[0m")
+                    log_widget.transmitRunLog("感谢每一位无私奉献的作者")
                     for start in start_dict:
                         self.calculated.monthly_pass()
                         key: str = list(start.keys())[0]
-                        log.debug(key)
+                        log_widget.debug(key)
                         value = start[key]
                         if key == 'map':
                             time.sleep(1)  # 防止卡顿
@@ -195,12 +200,13 @@ class Map:
                                 self.calculated.click_target(key, 0.98, map=planet_number)
                     # time.sleep(3)
                     count = self.calculated.wait_join()
-                    log.info(('地图加载完毕，加载时间为 {count} 秒').format(count=count))
+                    log_widget.transmitRunLog(f"地图加载完毕，加载时间为 {count} 秒")
                     time.sleep(2)  # 加2s防止人物未加载
                     # map_name = name.split("-")[0]
                     self.start_map(map, name)
             else:
-                log.info(('地图编号 {start} 不存在，请尝试检查更新').format(start=start))
+                log_widget(f'地图编号 {start} 不存在，请尝试检查更新')
+                log_widget.info(('地图编号 {start} 不存在，请尝试检查更新').format(start=start))
 
         threading.Thread(target=self.set_stop).start()
         start_map(self, start)

@@ -1191,6 +1191,13 @@
         </widget>
        </item>
        <item>
+        <widget class="PushButton" name="stopButton">
+         <property name="text">
+          <string>停止</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="vSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

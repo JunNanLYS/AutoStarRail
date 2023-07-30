@@ -27,6 +27,7 @@ class StaminaWidget(WidgetBase, StaminaWidgetUi):
         labels = [self.characterEXPLabel, self.coneEXPLabel, self.creditLabel]
         for label in labels:
             label.setFixedWidth(60)
+        # 设置卡片标题
         self.calyxGoldCard.setTitleLabel(self.calyxGoldLabel)
         self.calyxRedCard.setTitleLabel(self.calyxRedLabel)
         self.shadowCard.setTitleLabel(self.stagnantShadowLabel)

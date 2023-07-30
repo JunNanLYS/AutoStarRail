@@ -99,11 +99,12 @@ def find_image(filename, max_count=3, confidence=0.85):
     return None
 
 
-def wait_image(filename: str, confidence=0.8, max_time=100):
+def wait_image(filename: str, confidence=0.8, max_time=60):
     image_name = filename.split('\\')[-1]
     log.transmitRunLog(f"等待图片{image_name}", debug=True)
     count = 0
     while True:
+        print("查找图片")
         rect = pyautogui.locateOnScreen(filename, confidence=confidence)
         if rect:
             log.transmitRunLog("找到图片", debug=True)

@@ -24,7 +24,7 @@ from threading import Thread
 
 from .calculated import *
 from .config import get_file, read_json_file, modify_json_file, CONFIG_FILE_NAME, _
-from .log import log
+from .log import log_widget
 from .requests import webhook_and_log
 #from .yolo import predict
 from .adb import ADB
@@ -55,7 +55,7 @@ class Simulated_Universe:
         """
         self.role_list = get_file('./picture/Simulated_Universe/role')
         self.role_list = [i.split('.jpg')[0] for i in self.role_list]
-        log.debug(self.role_list)
+        log_widget.debug(self.role_list)
         return self.role_list
     
     def choose_level(self, level: int, start: int, pos):
@@ -84,7 +84,7 @@ class Simulated_Universe:
                 self.calculated.click((left+pos[0], top+pos[1]))
                 break
             if time.time() - start_time > 10:
-                log.info(_("识别超时"))
+                log_widget.info(_("识别超时"))
                 break
 
     def choose_role(self, roles: list):
@@ -112,7 +112,7 @@ class Simulated_Universe:
             if len(roles) == 0:
                 break
             elif time.time() - start_time > 15:
-                log.info(_("识别超时"))
+                log_widget.info(_("识别超时"))
                 break
 
     def choose_presets(self, choose_presets):
@@ -126,7 +126,7 @@ class Simulated_Universe:
         if choose_presets == _("设置预设"):
             role_presets_num = int(questionary.text(_("请输入预设数量：")).ask())
             for r in range(1, role_presets_num + 1):
-                log.info(_('当前是第{r}只队伍预设').format(r=r))
+                log_widget.info(_('当前是第{r}只队伍预设').format(r=r))
                 roles = [_("三月七"), _("丹恒"), _("佩拉"), _("姬子"), _("娜塔莎"), _("婷云"), _("布洛尼亚"), _("希儿"), _("希露瓦"), _("彦卿"), _("景元"), _("杰帕德"), _("桑博"), _("火主"), _("火主1"), _("物主"), _("瓦尔特"), _("素裳"), _("艾丝妲"), _("虎克"), _("阿兰"), _("青雀"), _("黑塔")]
                 role_list = questionary.checkbox(_("请选择角色"),choices=roles,validate=lambda a: (
                                             True if len(a) == 5 else _("请选择5名角色")
@@ -155,7 +155,7 @@ class Simulated_Universe:
             if _("选择祝福") not in result:
                 break
             elif time.time() - start_time > 15:
-                log.info(_("识别超时"))
+                log_widget.info(_("识别超时"))
                 break
 
     def choose_event(self):
@@ -169,12 +169,12 @@ class Simulated_Universe:
             if not result:
                 event_choose_list = [_("选择"),_("进入战斗")]
                 event = [_("选择")]
-                log.info(set(event_choose_list).intersection(set(event)))
+                log_widget.info(set(event_choose_list).intersection(set(event)))
             result = self.calculated.part_ocr((6,10,89,88))
             if _("选择事件") not in result:
                 break
             elif time.time() - start_time > 15:
-                log.info(_("识别超时"))
+                log_widget.info(_("识别超时"))
                 break
 
     def auto_map(self, start = 1, choose_list = []):

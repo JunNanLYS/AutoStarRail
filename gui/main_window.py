@@ -2,7 +2,8 @@ from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QApplication
 from qframelesswindow import FramelessMainWindow, FramelessWindow
 
-from script.use_of_stamina import use_of_stamina
+from script.use_of_stamina import use_of_stamina, set_stop
+from script import world
 from threadpool import script_thread
 from widgets.navigation_bar import ScriptNavigationBar, LogNavigationBar
 
@@ -36,12 +37,24 @@ class MainWindow(FramelessMainWindow):
         self.setMinimumSize(QSize(300, 300))
         self.resize(700, 600)
 
-        # 连接信号
+        # 清体力
+        stamina_stop = self.navigationBar.staminaInterface.stopButton
         stamina = self.navigationBar.staminaInterface.staminaButton
         stamina.clicked.connect(self.logWindow.show)  # 显示log
         stamina.clicked.connect(
             lambda: script_thread.submit(use_of_stamina, self.navigationBar.staminaInterface.get_copies_count())
         )
+        stamina_stop.clicked.connect(lambda: set_stop(True))
+
+        # 锄大地
+        map_combo = self.navigationBar.worldInterface.mapComboBox
+        start_world = self.navigationBar.worldInterface.startButton
+        start_world.clicked.connect(self.logWindow.show)  # 显示log
+        start_world.clicked.connect(
+            lambda: script_thread.submit(world.run, map_combo.currentText())
+        )
+
+        # 模拟宇宙
 
     def resizeEvent(self, size: QSize) -> None:
         super().resizeEvent(size)

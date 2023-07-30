@@ -8,6 +8,8 @@ from utils.path import ImagePath
 from utils import func, check, tool
 from widgets import log
 
+is_stop = False  # 设置True就能关闭运行中的脚本(use_of_stamina)
+
 
 def use_of_stamina(copies: dict):
     """
@@ -16,6 +18,7 @@ def use_of_stamina(copies: dict):
     copies = {name: count}
     副本名称对应着次数
     """
+    global is_stop
     if not start_game():  # 开启游戏
         log.transmitAllLog("没有检测到游戏，请检查是否设置游戏路径，或者手动开启游戏")
         return
@@ -29,6 +32,8 @@ def use_of_stamina(copies: dict):
             continue
         # 打副本，直到达成目标或出现意外(体力不够等情况)
         while cnt > 0:
+            if is_stop:
+                break
             res = method(*param)
             if not res:  # 没有进入副本界面
                 log.transmitRunLog(f"警告：没有进入副本界面({c}) []use_of_stamina")
@@ -83,8 +88,18 @@ def use_of_stamina(copies: dict):
             # 退出副本界面
             func.exit_copies()
             log.transmitAllLog("退出副本")
+        if is_stop:
+            is_stop = False
+            log.transmitRunLog("已停止清体力")
+            break
 
     log.transmitAllLog("体力清理完成")
+
+
+def set_stop(stop: bool):
+    global is_stop
+    is_stop = stop
+    log.transmitAllLog(f"设置stop为{stop}")
 
 
 if __name__ == '__main__':

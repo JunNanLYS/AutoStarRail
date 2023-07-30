@@ -11,7 +11,7 @@ import time
 import cv2 as cv
 import numpy as np
 
-from .log import log
+from .log import log_widget
 
 def show_img(img, scale=1, title='Image'):
     # cv.namedWindow('image', cv.WINDOW_NORMAL)
@@ -72,7 +72,7 @@ def find_best_match(img, template, scale_range=(140, 170, 1)):
 
         res = cv.matchTemplate(img, resized_template, cv.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
-        log.debug(f'正在匹配 {scale_percent}，相似度{max_loc}')
+        log_widget.debug(f'正在匹配 {scale_percent}，相似度{max_loc}')
         if max_val > max_corr:
             length, width, __ = resized_template.shape
             length = int(length)

@@ -15,7 +15,7 @@ from httpx_socks import AsyncProxyTransport
 from pathlib import Path
 from typing import Dict, Optional, Any, Union, Tuple
 
-from .log import log
+from .log import log_widget
 from .config import sra_config_obj, CONFIG_FILE_NAME
 
 proxies=sra_config_obj.proxies
@@ -96,11 +96,11 @@ async def download(url: str, save_path: Path, page: ft.Page=None, pb: ft.Progres
         f.close()
 
 def webhook_and_log(message):
-    log.info(message)
+    log_widget.info(message)
     url = sra_config_obj.webhook_url
     if url == "" or url == None:
         return
     try:
         post(url, json={"content": message})
     except Exception as e:
-        log.error(("Webhook发送失败: {e}").format(e=e))
+        log_widget.error(("Webhook发送失败: {e}").format(e=e))

@@ -11,3 +11,4 @@ window.show()
 sys.exit(app.exec())
 
 # pyinstaller --distpath . --workpath pack --specpath pack -i helpme.ico -F -w main.py
+# pyinstaller --hidden-import PySide6 -F -w main.py

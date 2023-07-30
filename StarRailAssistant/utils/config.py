@@ -9,7 +9,7 @@ import inspect
 from pathlib import Path
 from orjson import JSONDecodeError
 
-from .log import log
+from .log import log_widget
 from .exceptions import TypeError
 
 CONFIG_FILE_NAME = "config.json"
@@ -156,8 +156,8 @@ def read_maps():
         value[key2] = map_data["name"]
         map_list_map[key1] = value
     map_list.sort()
-    log.debug(map_list)
-    log.debug(map_list_map)
+    log_widget.debug(map_list)
+    log_widget.debug(map_list_map)
     return map_list, map_list_map
 
 

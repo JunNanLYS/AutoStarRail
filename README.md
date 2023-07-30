@@ -64,11 +64,10 @@ This software is open source, free of charge and for learning and exchange purpo
 
 ## 使用
 
-打开AutoStarRail运行main.exe就行了！不需要安装依赖！！！
+1. 克隆pack分支打开AutoStarRail运行main.exe就行了！不需要安装依赖！！！
 
-打开main.exe需要使用管理员身份启动否则脚本无法正常运行！！！
-
-只想要纯净的exe运行脚本下载pack分支中的就行。`git clone -b <branch> <url>`
+2. 打开main.exe需要使用管理员身份启动否则脚本无法正常运行！！！
+3. 自己安装依赖运行AutoStarRail下的main.py文件即可
 
 
 
@@ -79,4 +78,14 @@ This software is open source, free of charge and for learning and exchange purpo
 3. 锄大地
 4. 刷模拟宇宙
 5. 完成每日任务
+
+
+
+## GUI展示
+
+![stamina](./doc/readme/stamina.png)
+
+
+
+![world](./doc/readme/world.png)
 

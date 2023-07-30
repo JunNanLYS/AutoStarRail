@@ -8,18 +8,18 @@ Description:
 
 Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 '''
-from .log import log
+from .log import log_widget
 import traceback
 
 class Exception(Exception):
 
     def __init__(self, message):
         super().__init__(message)
-        log.error(message)
-        log.debug(traceback.format_exc())
+        log_widget.error(message)
+        log_widget.debug(traceback.format_exc())
 
 class TypeError(Exception):
 
     def __init__(self, message):
         super().__init__(message)
-        log.error(message)
+        log_widget.error(message)
