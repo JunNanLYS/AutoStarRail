@@ -1,16 +1,11 @@
-import json
-import os
-
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QApplication
 from qfluentwidgets import RoundMenu
 
-from .ui.world_widget import WorldWidgetUi
+from script.world import name_to_map
 from widgets import WidgetBase
-from utils.dialog import functions_not_open
-from script.world import name_to_map, update
-from threadpool import function_thread
+from .ui.world_widget import WorldWidgetUi
 
 
 class WorldWidget(WidgetBase, WorldWidgetUi):
@@ -34,21 +29,15 @@ class WorldWidget(WidgetBase, WorldWidgetUi):
 
     def __init_update_button(self):
         menu = RoundMenu(parent=self)
-        update_map_action = QAction("更新地图")
-        update_script_action = QAction("更新脚本")
-        update_image_action = QAction("更新图片")
-
-        # 连接信号
-        update_map_action.triggered.connect(lambda: function_thread.submit(update, '地图'))
-        update_image_action.triggered.connect(lambda: function_thread.submit(update, '图片'))
-        update_script_action.triggered.connect(lambda: function_thread.submit(update, '脚本'))
-        self.updateButton.clicked.connect(lambda: function_thread.submit(update, '全部'))
+        self.update_map_action = QAction("更新地图")
+        self.update_script_action = QAction("更新脚本")
+        self.update_picture_action = QAction("更新图片")
 
         # 添加至菜单栏
         menu.addActions([
-            update_map_action,
-            update_script_action,
-            update_image_action
+            self.update_map_action,
+            self.update_script_action,
+            self.update_picture_action
         ])
 
         self.updateButton.setFlyout(menu)
