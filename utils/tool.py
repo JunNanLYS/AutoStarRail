@@ -15,7 +15,7 @@ class PathTool:
         """
         cur_path: str = sys.argv[0]
         while cur_path.split('\\')[-1] != cls.PROJECT_NAME:
-            if cur_path == cls.PROJECT_NAME + '-' + cls.VERSION:
+            if cur_path.split('\\')[-1] == cls.PROJECT_NAME + '-' + cls.VERSION:
                 break
             cur_path = os.path.dirname(cur_path)
         return cur_path
