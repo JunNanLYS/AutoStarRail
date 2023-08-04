@@ -1,5 +1,7 @@
 import time
 import pyautogui
+import cv2
+from typing import Tuple
 
 from widgets import log
 from utils.path import ImagePath
@@ -170,9 +172,67 @@ def use_explore():
     pyautogui.click()
 
 
-def screenshot():
+def screenshot() -> str:
+    """
+    截取全屏
+    """
     from PIL import ImageGrab
     from utils.tool import PathTool
     img = ImageGrab.grab()
     root = PathTool.get_root_path()
-    img.save(root + r"\temp\screenshot.png")
+    filename = root + r"\temp\screenshot.png"
+    img.save(filename)
+    return filename
+
+
+def cv_find_image(filename: str) -> Tuple[int, int]:
+    """
+    相比于直接使用pyautogui，cv2更加准确精准
+    返回模板图的全局坐标
+    """
+    log.transmitRunLog("截图全屏中")
+    screenshot_filename = screenshot()
+    # 读取截取和模板
+    screen = cv2.imread(screenshot_filename)
+    template = cv2.imread(filename)
+
+    log.transmitRunLog("进行模板匹配")
+    res = cv2.matchTemplate(screen, template, cv2.TM_CCOEFF_NORMED)
+    # 获取最小匹配与位置，最大匹配与位置
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    # 不匹配
+    if max_val < 0.95:
+        log.transmitRunLog("匹配失败")
+        log.transmitDebugLog("匹配值低于0.95", debug=True, level=2)
+        return -1, -1
+    log.transmitRunLog("匹配成功")
+    return max_loc
+
+
+def in_game_main() -> bool:
+    """
+    检测是否在游戏主界面
+    """
+    log.transmitDebugLog("in_game_main运行")
+    return cv_find_image(ImagePath.MANDATE) != (-1, -1)
+
+
+def to_game_main() -> bool:
+    """
+    尝试将游戏切换至主界面
+    """
+    log.transmitDebugLog("to_game_main运行")
+    mandate = ImagePath.MANDATE
+    cnt = 0
+    max_cnt = 6
+    press = 1
+    while cv_find_image(mandate) == (-1, -1) and cnt <= max_cnt:
+        log.transmitDebugLog(f"检测到不在主界面，尝试切回主界面，这是第{cnt}次尝试")
+        for _ in range(press):
+            pyautogui.press('esc')
+            time.sleep(0.3)
+        press = 2 if press == 1 else 1
+        cnt += 1
+        time.sleep(1)
+
+    return in_game_main()
