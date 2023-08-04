@@ -7,15 +7,13 @@ Description:
 
 Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
 '''
-import sys
-
-sys.path.append("F:\AutoStarRail\StarRailAssistant")
 from ctypes import windll
+
 import pygetwindow as gw
 from PIL import ImageGrab
 
-from .utils.config import sra_config_obj, normalize_file_path, CONFIG_FILE_NAME
-from .utils.log import log_widget
+from StarRailAssistant.utils.config import sra_config_obj
+from widgets import log as log_widget
 
 
 def get_width(title):
@@ -28,12 +26,12 @@ def get_width(title):
     user32 = windll.user32
     desktop_width = user32.GetSystemMetrics(0)
     desktop_height = user32.GetSystemMetrics(1)
-    
-    #单显示器屏幕宽度和高度:
-    img = ImageGrab.grab()
-    width, height=img.size
 
-    scaling = round(width/desktop_width*100)/100
+    # 单显示器屏幕宽度和高度:
+    img = ImageGrab.grab()
+    width, height = img.size
+
+    scaling = round(width / desktop_width * 100) / 100
     """    
     # 获取当前显示器的缩放比例
     dc = win32gui.GetWindowDC(hwnd)
@@ -48,13 +46,13 @@ def get_width(title):
     # 计算出真实分辨率
     real_width = int(window_rect[0])
     real_height = int(window_rect[1])
-    borderless = True if real_width*scaling == 1920 else False
-    left_border = (real_width*scaling-1920)/2
-    up_border = (real_height*scaling-1080)-left_border
+    borderless = True if real_width * scaling == 1920 else False
+    left_border = (real_width * scaling - 1920) / 2
+    up_border = (real_height * scaling - 1080) - left_border
     real_width1 = 1920
     real_height1 = 1080
 
-    log_widget.info(f"Real resolution: {real_width} x {real_height} x {scaling} x {borderless}")
+    log_widget.transmitDebugLog(f"Real resolution: {real_width} x {real_height} x {scaling} x {borderless}")
 
     sra_config_obj.real_width = real_width1
     sra_config_obj.real_height = real_height1
@@ -65,4 +63,3 @@ def get_width(title):
 
     # 排除缩放干扰
     windll.user32.SetProcessDPIAware()
-    
