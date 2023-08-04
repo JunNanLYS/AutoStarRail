@@ -51,8 +51,9 @@ def run():
         time.sleep(1)
         flag = True
         while flag:
-            # 每次领取完或者打开新委托标题重新获取感叹号
-            pending_points = cv_tool.remove_same_position(commission.get_pending_point(), 3)
+            # 每次领取完或者打开新委托标题重新获取感叹号(感叹号会刷新)
+            pending_points = cv_tool.remove_same_position(
+                sorted(commission.get_pending_point(), key=lambda p: p[1]), 3)
             for child in pending_points:
                 if child in commission_title:
                     continue
@@ -65,7 +66,7 @@ def run():
                 time.sleep(1)
                 commission.re_commission()  # 重新委托
                 log.transmitRunLog("重新委托")
-                time.sleep(3)
+                time.sleep(2)
                 break
             else:
                 flag = False
