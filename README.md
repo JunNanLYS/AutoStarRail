@@ -20,6 +20,8 @@ This software is open source, free of charge and for learning and exchange purpo
 
 
 
+
+
 ## 脚本录制
 
 录制脚本 AutoStarRail/utils/recorded_map.py，运行即可
@@ -51,9 +53,34 @@ This software is open source, free of charge and for learning and exchange purpo
 ## 使用
 
 1. ~~克隆pack分支打开AutoStarRail运行main.exe就行了！不需要安装依赖！！！~~(为了配合星铁的开源作者们决定取消打包)
-
 2. ~~打开main.exe需要使用管理员身份启动否则脚本无法正常运行！！！~~
 3. 自己安装依赖运行AutoStarRail下的main.py文件即可
+
+### 自定义清体力
+
+按照自己需求来增加每个副本的场次，可以在进行过程中点击停止按钮来停止程序
+
+### 锄大地
+
+选择自己想要的开始的地图位置点击开始即可
+
+在进行途中按下f8将在下一个地点寻路开始时结束锄大地
+
+
+
+### 模拟宇宙
+
+...
+
+### 委托
+
+开启游戏，点击一键领取即可
+
+## 每日任务
+
+...
+
+
 
 
 
