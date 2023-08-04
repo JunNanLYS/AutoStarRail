@@ -87,12 +87,16 @@ class MainWindow(FramelessMainWindow):
         )
         update_map.triggered.connect(
             lambda: function_thread.submit(use_of_world.update, '地图'))
+        # update_script.triggered.connect(
+        #     lambda: function_thread.submit(use_of_world.update, '脚本'))
         update_script.triggered.connect(
-            lambda: function_thread.submit(use_of_world.update, '脚本'))
+            lambda: dialog.functions_not_open(self))
         update_picture.triggered.connect(
             lambda: function_thread.submit(use_of_world.update, '图片'))
+        # update_all.clicked.connect(
+        #     lambda: function_thread.submit(use_of_world.update, '全部'))
         update_all.clicked.connect(
-            lambda: function_thread.submit(use_of_world, '全部'))
+            lambda: dialog.functions_not_open(self))
 
     def __init_universe_signal(self):
         pass

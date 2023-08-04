@@ -1,0 +1,20 @@
+{
+    "name": "基座舱段-1",
+    "author": "Starry-Wind,小明",
+    "start": [
+        {"map": 1},
+        {"orientation_1.png": 1.5},
+        {"orientation_2.png": 1.5},
+        {"map_1.jpg": 2},
+        {"map_1_point.jpg": 1.5},
+        {"transfer.jpg": 1.5}
+    ],
+    "map": [
+        {
+            "s": 3
+        },
+        {
+            "fighting": 1
+        }
+    ]
+}
