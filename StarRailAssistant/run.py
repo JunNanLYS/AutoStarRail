@@ -9,3 +9,7 @@ def run_map(name='1-1_1'):
     get_width(game_title)
     map = Map(game_title)
     map.auto_map(name)
+
+
+if __name__ == '__main__':
+    run_map()

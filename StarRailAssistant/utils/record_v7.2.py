@@ -7,23 +7,22 @@ Description: wasd移动，x是进战斗，鼠标左键是打障碍物等，不�
             F9停止录制并保存
 Copyright (c) 2023 by AlisaCat, All Rights Reserved. 
 '''
-import os
 import builtins
+import os
 import time
 from collections import defaultdict
 from datetime import datetime
 from threading import Thread
 
-import win32api
-import win32con
-import orjson
-import numpy as np
 import cv2 as cv
+import numpy as np
+import orjson
 import pyautogui  # 缩放纠正
 import pygetwindow as gw
+import win32api
+import win32con
 from PIL import ImageGrab
 from pynput import keyboard
-from pynput import mouse
 from pynput.mouse import Controller as mouseController
 
 

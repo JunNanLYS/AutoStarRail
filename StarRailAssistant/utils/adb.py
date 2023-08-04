@@ -13,7 +13,7 @@ import numpy as np
 from subprocess import run, DEVNULL
 from PIL import ImageGrab, Image
 from typing import Dict, Optional, Any, Union
-from .log import log_widget
+from widgets import log as log_widget
 
 class ADB:
     def __init__(self, order="127.0.0.1:62001", adb_path="picture\\adb\\adb"):

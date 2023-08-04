@@ -18,10 +18,10 @@ from zipfile import ZipFile, BadZipFile
 
 from tqdm import tqdm as tq
 
-from .config import sra_config_obj, get_file
+from widgets import log as log_widget
+from .config import get_file
 from .exceptions import Exception
 from .requests import *
-from widgets import log as log_widget
 
 tmp_dir = "tmp"
 
@@ -52,7 +52,7 @@ class update_file:
             if not os.path.exists(file_path) and str(file_path) not in keep_file:
                 return False, file_path
             if os.path.isfile(file_path) and str(file_path) not in keep_file:
-                log_widget.debug(hashlib.md5(file_path.read_bytes()).hexdigest())
+                log_widget.transmitDebugLog(hashlib.md5(file_path.read_bytes()).hexdigest(), level=2)
                 if hashlib.md5(file_path.read_bytes()).hexdigest() != data["hash"]:
                     return False, file_path
             if self.pb:
@@ -156,10 +156,10 @@ class update_file:
                     log_widget.transmitRunLog("[资源文件更新]下载压缩包失败, 重试中: BadZipFile")
                 except BaseException as e:
                     log_widget.transmitRunLog(f"[资源文件更新]下载压缩包失败: {e}")
-                log_widget("将在10秒后重试，你可能需要设置代理")
+                log_widget.transmitRunLog("将在10秒后重试，你可能需要设置代理")
                 await asyncio.sleep(10)
             else:
-                log_widget("[资源文件更新]重试次数已达上限，更换代理可能可以解决该问题")
+                log_widget.transmitRunLog("[资源文件更新]重试次数已达上限，更换代理可能可以解决该问题")
                 raise Exception(("[资源文件更新]重试次数已达上限，更换代理可能可以解决该问题"))
 
             # shutil.rmtree("..\StarRailAssistant-beta-2.7")
@@ -199,7 +199,7 @@ class update_file:
                 await asyncio.sleep(10)
         else:
             if is_log:
-                log_widget.info(("[资源文件更新]重试次数已达上限，退出程序"))
+                log_widget.transmitDebugLog(("[资源文件更新]重试次数已达上限，退出程序"))
                 raise Exception(("[资源文件更新]重试次数已达上限，退出程序"))
             else:
                 return True, 0, local_version
@@ -351,7 +351,7 @@ class update_file:
 
             log_widget.transmitRunLog(
                 "[资源文件更新]校验完成, 更新本地{name}文件版本号 {local_version} -> {remote_version}".format(
-                name=name, local_version=local_version, remote_version=remote_version))
+                    name=name, local_version=local_version, remote_version=remote_version))
 
             # 更新版本号
             sra_config_obj.set_config(key=f"{type}_version", value=remote_version)
@@ -370,9 +370,11 @@ class update_file:
                         break
                     except BaseException as e:
                         if index < 2:
-                            log_widget.transmitRunLog("[资源文件更新]获取{name}文件列表失败, 正在重试: {e}".format(name=name, e=e))
+                            log_widget.transmitRunLog(
+                                "[资源文件更新]获取{name}文件列表失败, 正在重试: {e}".format(name=name, e=e))
                         else:
-                            log_widget.transmitRunLog("[资源文件更新]获取{name}文件列表失败: {e}".format(name=name, e=e))
+                            log_widget.transmitRunLog(
+                                "[资源文件更新]获取{name}文件列表失败: {e}".format(name=name, e=e))
                         log_widget.transmitRunLog("将在10秒后重试，你可能需要设置代理")
                         await asyncio.sleep(10)
                 else:
@@ -384,7 +386,8 @@ class update_file:
 
                 verify, path = await self.verify_file_hash(remote_map_list, keep_file)
                 if not verify:
-                    log_widget.transmitRunLog("[资源文件更新]{path}发现文件缺失, 3秒后将使用远程版本覆盖本地版本".format(path=path))
+                    log_widget.transmitRunLog(
+                        "[资源文件更新]{path}发现文件缺失, 3秒后将使用远程版本覆盖本地版本".format(path=path))
                     return "rm_all"
                 log_widget.transmitRunLog("[资源文件更新]文件校验完成.")
                 shutil.rmtree(tmp_dir, ignore_errors=True)

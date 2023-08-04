@@ -8,15 +8,17 @@ Description:
 
 Copyright (c) 2023 by ${git_name_email}, All Rights Reserved. 
 '''
-from .log import log_widget
+from widgets import log as log_widget
 import traceback
+
 
 class Exception(Exception):
 
     def __init__(self, message):
         super().__init__(message)
-        log_widget.error(message)
-        log_widget.debug(traceback.format_exc())
+        log_widget.transmitDebugLog(message, level=3)
+        log_widget.transmitDebugLog(traceback.format_exc(), level=2)
+
 
 class TypeError(Exception):
 

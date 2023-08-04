@@ -1,28 +1,28 @@
 """
 系统控制项，以及玩家控制
 """
-import re
+import itertools
 import os
+import re
 import sys
 import time
-import win32api
-import itertools
+from datetime import datetime
+from pathlib import Path
+from typing import Union, List
+
 import cv2 as cv
 import numpy as np
 import pygetwindow as gw
-
+import win32api
+from PIL import ImageGrab
 from cnocr import CnOcr
-from datetime import datetime
-from pathlib import Path
-from PIL import ImageGrab, Image
 from pynput import mouse
-from pynput.mouse import Controller as MouseController
 from pynput.keyboard import Controller as KeyboardController, Key
-from typing import Dict, Optional, Any, Union, Tuple, List, Literal
-from .config import sra_config_obj, CONFIG_FILE_NAME, get_file
-from .exceptions import Exception
-from .log import log_widget
-from .cv_tools import show_img, find_best_match, match_scaled
+from pynput.mouse import Controller as MouseController
+
+from widgets import log as log_widget
+from .config import sra_config_obj
+from .cv_tools import show_img, find_best_match
 from .exceptions import Exception
 
 
@@ -58,6 +58,7 @@ class calculated:
         self.compare_lists = lambda a, b: all(x <= y for x, y in zip(a, b))
         self.window = gw.getWindowsWithTitle(self.title)
         if not self.window:
+            log_widget.transmitRunLog("游戏没开,请检查游戏")
             raise Exception(("你游戏没开，我真服了"))
         self.window = self.window[0]
         self.hwnd = self.window._hWnd
@@ -99,17 +100,17 @@ class calculated:
         start_time = time.time()
         while True:
             x, y = int(points[0]), int(points[1])
-            log_widget.debug((x, y))
+            log_widget.transmitDebugLog((x, y), level=2)
             self.mouse.position = (x, y)
             self.mouse.press(mouse.Button.left)
             time.sleep(0.5)
             self.mouse.release(mouse.Button.left)
             result = self.get_pix_r(appoint_points)
-            log_widget.debug(result)
+            log_widget.transmitDebugLog(result, level=2)
             if result == hsv:
                 break
             if time.time() - start_time > 5:
-                log_widget.info("识别超时")
+                log_widget.transmitDebugLog("识别超时")
                 break
 
     def relative_click(self, points, click_time=0.5):
@@ -122,7 +123,7 @@ class calculated:
         left, top, right, bottom = self.window.left, self.window.top, self.window.right, self.window.bottom
         x, y = int(left + (right - left) / 100 * points[0]), \
             int(top + (bottom - top) / 100 * points[1])
-        log_widget.debug((x, y))
+        log_widget.transmitDebugLog((x, y), level=2)
         self.mouse.position = (x, y)
         self.mouse.press(mouse.Button.left)
         time.sleep(click_time)
@@ -137,7 +138,7 @@ class calculated:
         """
         left, top, __, __ = self.window.left, self.window.top, self.window.right, self.window.bottom
         x, y = int(left + points[0] + sra_config_obj.left_border), int(top + points[1] + sra_config_obj.up_border)
-        log_widget.info((x, y))
+        log_widget.transmitDebugLog((x, y))
         self.mouse.position = (x, y)
         self.mouse.press(mouse.Button.left)
         time.sleep(0.5)
@@ -157,13 +158,13 @@ class calculated:
                 # img_fp, left, top, __, __, __, __ = self.take_screenshot()
                 # show_img(img_fp)
                 __, pos = self.ocr_pos(characters, points)
-                log_widget.debug(characters)
+                log_widget.transmitDebugLog(characters)
                 if pos:
                     self.click(pos)
                     time.sleep(0.3)
                     return pos
                 if time.time() - start_time > overtime:
-                    log_widget.info(("识别超时")) if overtime != 0 else None
+                    log_widget.transmitDebugLog(("识别超时")) if overtime != 0 else None
                     return False
 
     def hsv_click(self, hsv_color, points=(0, 0, 0, 0), offset=(0, 0), flag=True, tolerance=5):
@@ -178,7 +179,7 @@ class calculated:
         start_time = time.time()
         while True:
             if time.time() - start_time > 10:
-                log_widget.info(("识别超时"))
+                log_widget.transmitDebugLog(("识别超时"))
                 return False
             img_fp, left, top, __, __, width, length = self.take_screenshot(points)
             # cv.imwrite('scr.png', img_fp)
@@ -191,7 +192,7 @@ class calculated:
                 else:
                     break
             ret = [x + pos[0] + offset[0], y + pos[1] + offset[1]]
-            log_widget.info(('点击坐标{ret}').format(ret=ret))
+            log_widget.transmitDebugLog(('点击坐标{ret}').format(ret=ret))
             self.click(ret)
             return True
 
@@ -323,13 +324,13 @@ class calculated:
             type为str时点击文字
         '''
         if temp_name in temp_ocr:
-            log_widget.info(temp_name)
+            log_widget.transmitDebugLog(temp_name)
             if "orientation" in temp_name:
-                log_widget.info(("选择星球"))
+                log_widget.transmitDebugLog(("选择星球"))
             elif "point" in temp_name:
-                log_widget.info(("选择传送锚点"))
+                log_widget.transmitDebugLog(("选择传送锚点"))
             elif "map" in temp_name:
-                log_widget.info(("选择地图"))
+                log_widget.transmitDebugLog(("选择地图"))
             if "orientation" in temp_name or "transfer" in temp_name:
                 if type(temp_ocr[temp_name]) == dict:
                     result = self.ocr_click(temp_ocr[temp_name]["name"], points=temp_ocr[temp_name]["points"])
@@ -340,7 +341,7 @@ class calculated:
                     result = self.ocr_click(temp_ocr[temp_name])
                 while True:
                     if not result:
-                        log_widget.info(("使用图片识别兜底"))
+                        log_widget.transmitDebugLog(("使用图片识别兜底"))
                         join = True
                         break
                     if not self.is_blackscreen():
@@ -360,11 +361,11 @@ class calculated:
                     first_timeout = True
                     while True:
                         ocr_data = self.part_ocr((77, 20, 95, 97))
-                        log_widget.debug(temp_ocr[temp_name])
+                        log_widget.transmitDebugLog(temp_ocr[temp_name])
                         check_dict = list(
                             filter(lambda x: re.match(f'.*{temp_ocr[temp_name]}.*', x) != None, list(ocr_data.keys())))
                         pos = ocr_data.get(check_dict[0], None) if check_dict else None
-                        log_widget.debug(pos)
+                        log_widget.transmitDebugLog(pos)
                         if pos:
                             self.appoint_click(pos, (pos[0] + 60, pos[1]), [40, 40, 40])
                             break
@@ -380,13 +381,13 @@ class calculated:
                                 self.scroll(10)
 
                         if time.time() - start_time > 15:
-                            log_widget.info(("地图识别超时"))
+                            log_widget.transmitDebugLog(("地图识别超时"))
                             # join = True
                             break
                 elif type(temp_ocr[temp_name]) == tuple:
                     self.img_click(temp_ocr[temp_name])
         if temp_name not in temp_ocr or join:
-            log_widget.info(temp_name)
+            log_widget.transmitDebugLog(temp_name)
             target = cv.imread(picture_path)
             start_time = time.time()
             first_timeout = True
@@ -395,7 +396,7 @@ class calculated:
             move_num = 0
             while True:
                 result = self.scan_screenshot(target)
-                log_widget.info(result["max_val"])
+                log_widget.transmitDebugLog(result["max_val"])
                 if result["max_val"] > threshold:
                     # points = self.calculated(result, target.shape)
                     self.click(result["max_loc"])
@@ -403,7 +404,7 @@ class calculated:
                 if time.time() - start_time > 5 and "point" in temp_name:
                     start_x = (self.window.left + self.window.right) // 2
                     start_y = (self.window.top + self.window.bottom) // 2
-                    log_widget.info(move_num % 3)
+                    log_widget.transmitDebugLog(move_num % 3)
                     if move_num % 3 == 0 and move_num != 0:
                         self.relative_click(next(level_iter))
                         time.sleep(0.2)
@@ -415,7 +416,7 @@ class calculated:
                     move_num += 1
                 if ((time.time() - start_time > 15 and "point" not in temp_name) \
                     or (time.time() - start_time > 30 and "point" in temp_name)):  # 防止卡死.重启线程
-                    log_widget.info(("传送识别超时"))
+                    log_widget.transmitDebugLog(("传送识别超时"))
                     self.keyboard.press(Key.esc)
                     time.sleep(0.1)
                     self.keyboard.release(Key.esc)
@@ -431,20 +432,20 @@ class calculated:
         if self.has_red((4, 7, 10, 19)):
             while True:
                 result = self.get_pix_rgb(pos=(1337, 62))
-                log_widget.debug(f"进入战斗取色: {result}")
+                log_widget.transmitDebugLog(f"进入战斗取色: {result}", level=2)
                 if self.compare_lists([0, 0, 222], result) and self.compare_lists(result, [0, 0, 255]):
                     self.click()
                 else:
                     break
                 time.sleep(0.1)
                 if time.time() - start_time > 10:  # 如果已经识别了10秒还未找到目标，则退出循环
-                    log_widget.info(("识别超时,此处可能漏怪!"))
+                    log_widget.transmitDebugLog(("识别超时,此处可能漏怪!"))
                     return False
             self.wait_fight_end()
             return True
         time.sleep(0.2)
         result = self.get_pix_rgb(pos=(1337, 62))
-        log_widget.debug(f"进入战斗取色: {result}")
+        log_widget.transmitDebugLog(f"进入战斗取色: {result}", level=2)
         if not (self.compare_lists([0, 0, 225], result) and self.compare_lists(result, [0, 0, 255])):
             self.wait_fight_end()  # 无论是否识别到敌人都判断是否结束战斗，反正怪物袭击
         return True
@@ -453,10 +454,10 @@ class calculated:
         while True:
             end_str = str(self.part_ocr((20, 95, 100, 100)))
             if any(substring in end_str for substring in self.end_list):
-                log_widget.info(("未在战斗状态"))
+                log_widget.transmitDebugLog("未在战斗状态", level=2)
                 break
             else:
-                log_widget.info(("未知状态,可能遇袭处于战斗状态"))
+                log_widget.transmitDebugLog(("未知状态,可能遇袭处于战斗状态"))
             time.sleep(1)  # 避免长时间ocr
 
     def fighting_old(self):
@@ -467,24 +468,24 @@ class calculated:
             :param type: 类型 大世界/模拟宇宙
         """
         start_time = time.time()
-        log_widget.info(("识别中"))
+        log_widget.transmitDebugLog(("识别中"))
         # 识别敌人
         while True:
             if time.time() - start_time > 10:  # 如果已经识别了10秒还未找到目标图片，则退出循环
-                log_widget.info(("识别超时,此处可能漏怪!"))
+                log_widget.transmitDebugLog(("识别超时,此处可能漏怪!"))
                 return False
             if self.scan_screenshot(self.attack, points=(3.75, 5.5, 11.6, 23))["max_val"] > 0.97:  # 修改检测机制,精度更高
                 self.click()
                 time.sleep(0.3)
                 doubt_time = time.time()
-                log_widget.info(("监控疑问或警告"))
+                log_widget.transmitDebugLog(("监控疑问或警告"))
                 while time.time() - doubt_time < 8:
                     if self.scan_screenshot(self.doubt, points=(3.75, 5.5, 11.6, 23))["max_val"] > 0.95 or \
                         self.scan_screenshot(self.warn, points=(3.75, 5.5, 11.6, 23))["max_val"] > 0.95:
-                        log_widget.info(("识别到疑问或警告,等待怪物开战或反击"))
+                        log_widget.transmitDebugLog(("识别到疑问或警告,等待怪物开战或反击"))
                         self.click()
                         time.sleep(1.5)
-                        log_widget.info(("识别反击"))
+                        log_widget.transmitDebugLog(("识别反击"))
                     result = self.scan_screenshot(self.finish, points=(0, 95, 100, 100))
                     if result["max_val"] < 0.95:
                         break
@@ -497,14 +498,14 @@ class calculated:
                 self.click()
                 time.sleep(0.3)
                 doubt_time = time.time() + 7
-                log_widget.info(("监控疑问或警告!"))
+                log_widget.transmitDebugLog(("监控疑问或警告!"))
                 while time.time() < doubt_time:
                     if self.scan_screenshot(self.doubt, pos=(3.75, 5.5, 11.6, 23))["max_val"] > 0.95 or \
                         self.scan_screenshot(self.warn, pos=(3.75, 5.5, 11.6, 23))["max_val"] > 0.95:
-                        log_widget.info(("识别到疑问或警告,等待怪物开战或反击"))
+                        log_widget.transmitDebugLog(("识别到疑问或警告,等待怪物开战或反击"))
                         self.click()
                         time.sleep(1.5)
-                        log_widget.info(("识别反击"))
+                        log_widget.transmitDebugLog(("识别反击"))
                         break
                     result = self.scan_screenshot(self.finish, points=(0, 95, 100, 100))
                     if result["max_val"] < 0.95:
@@ -514,7 +515,7 @@ class calculated:
                 time.sleep(0.3)
                 if result["max_val"] < 0.95:
                     break
-                log_widget.info(("未发现敌人!"))
+                log_widget.transmitDebugLog(("未发现敌人!"))
                 return True
         time.sleep(2)
         self.wait_fight_end()  # 无论是否识别到敌人都判断是否结束战斗，反正怪物袭击
@@ -535,33 +536,33 @@ class calculated:
                     time.sleep(0.3)
                     self.keyboard.press("v")
                     self.keyboard.release("v")
-                    log_widget.info(("开启自动战斗"))
+                    log_widget.transmitDebugLog(("开启自动战斗"))
                     break
                 elif time.time() - start_time > 15:
                     break
                 time.sleep(0.1)
         else:
-            log_widget.info(("跳过开启自动战斗（沿用设置）"))
+            log_widget.transmitDebugLog(("跳过开启自动战斗（沿用设置）"))
             time.sleep(5)
         start_time = time.time()  # 开始计算战斗时间
         while True:
             if type == 0:
                 end_str = str(self.part_ocr((20, 95, 100, 100)))
                 if any(substring in end_str for substring in self.end_list):
-                    log_widget.info(("完成自动战斗"))
+                    log_widget.transmitDebugLog("完成自动战斗")
                     break
             elif type == 1:
                 end_str = str(self.part_ocr((32, 85, 56, 89)))
                 if self.ocr_click("退出关卡", overtime=0, points=(32, 85, 42, 89)):
-                    log_widget.info(("完成自动战斗"))
+                    log_widget.transmitDebugLog("完成自动战斗")
                     break
                 if self.ocr_click("返回忘却之庭", overtime=0, points=(44, 85, 56, 89)):
-                    log_widget.info(("完成自动战斗"))
+                    log_widget.transmitDebugLog("完成自动战斗")
                     break
             time.sleep(1.0)  # 缓冲
             fight_time = sra_config_obj.fight_time
             if time.time() - start_time > fight_time:  # 避免卡死
-                log_widget.info(("战斗超时"))
+                log_widget.transmitDebugLog("战斗超时")
                 break
             time.sleep(1)  # 避免长时间ocr
 
@@ -598,8 +599,8 @@ class calculated:
             sleep_time = sleep_time[0]
             self.move_com(com, sleep_time)
             loc = self.get_loc(map_name=map_name)
-            log_widget.debug(loc)
-            log_widget.info(loc)
+            log_widget.transmitDebugLog(loc, level=2)
+            log_widget.transmitDebugLog(loc)
             com_num = abs(loc[1] - set_loc[1])
             if com_num > 16:
                 self.move_com(com, com_num / 16)
@@ -617,7 +618,7 @@ class calculated:
             result = self.get_pix_r(pos=(1712, 958))
             if (self.compare_lists(result, [130, 160, 180]) or self.compare_lists([200, 200, 200], result)):
                 time.sleep(0.05)
-                log_widget.info("疾跑")
+                log_widget.transmitDebugLog("疾跑")
                 self.mouse.press(mouse.Button.right)
                 self.mouse.release(mouse.Button.right)
         while time.perf_counter() - start_time < (sleep_time / move_division_excursion + move_excursion):
@@ -678,7 +679,7 @@ class calculated:
                     # self.move("s", 1, platform)
             fast_com = com
             com = ''
-        log_widget.info(com_data)
+        log_widget.transmitDebugLog(com_data)
         for com in com_data:
             move_com = list(com.keys())[0]
             self.move(move_com, com[move_com])
@@ -715,7 +716,7 @@ class calculated:
         # out = self.ocr.ocr(img_fp)
         # data = {i['text']: i['position'] for i in out}
         data = self.part_ocr_other(points)
-        log_widget.debug(data)
+        log_widget.transmitDebugLog(data)
         if not characters:
             characters = list(data.keys())[0]
         check_list = list(filter(lambda x: re.match(f'.*{characters}.*', x) != None, list(data.keys())))
@@ -743,7 +744,7 @@ class calculated:
         out = self.ocr.ocr(img_fp)
         data = {i['text']: (int(left + x + (i['position'][2][0] + i['position'][0][0]) / 2),
                             int(top + y + (i['position'][2][1] + i['position'][0][1]) / 2)) for i in out}
-        log_widget.debug(data)
+        log_widget.transmitDebugLog(data, level=2)
         return data
 
     def read_img(self, path, prefix='./picture/pc/'):
@@ -778,7 +779,7 @@ class calculated:
         else:
             data = {i['text']: (int(game_left + x + (i['position'][2][0] + i['position'][0][0]) / 2),
                                 int(game_top + y + (i['position'][2][1] + i['position'][0][1]) / 2)) for i in out}
-        log_widget.debug(data)
+        log_widget.transmitDebugLog(data, level=2)
         return data
 
     def get_pix_r(self, desktop_pos: Union[tuple, None] = None, pos: Union[tuple, None] = None,
@@ -871,7 +872,7 @@ class calculated:
 
         # 统计掩膜中的像素数目
         red_pixel_count = cv.countNonZero(mask)
-        log_widget.info(red_pixel_count)
+        log_widget.transmitDebugLog(red_pixel_count)
         return red_pixel_count > 30
 
     def wait_join(self):
@@ -909,12 +910,12 @@ class calculated:
             '''
             endtime = time.time() - start_time
             result = self.get_pix_rgb(pos=(1337, 62))
-            log_widget.debug(result)
+            log_widget.transmitDebugLog(result, level=2)
             if self.compare_lists([0, 0, 222], result):
-                log_widget.info(("已进入地图"))
+                log_widget.transmitDebugLog(("已进入地图"))
                 return endtime
             if endtime > join_time:
-                log_widget.info(("识别超时"))
+                log_widget.transmitDebugLog(("识别超时"))
                 return endtime
             time.sleep(0.1)
 
@@ -932,7 +933,7 @@ class calculated:
                     w.activate()
                     break
         else:
-            log_widget.info(('没找到窗口{title}').format(title=self.title))
+            log_widget.transmitDebugLog(('没找到窗口{title}').format(title=self.title))
         time.sleep(dt)
 
     def open_map(self, open_key):
@@ -943,7 +944,7 @@ class calculated:
             time.sleep(1)
             map_status = self.part_ocr((3, 2, 10, 10))
             if self.check_list((".*导.*"), map_status):
-                log_widget.info(("进入地图"))
+                log_widget.transmitDebugLog(("进入地图"))
                 break
 
     def teleport(self, key, value, threshold=0.95):
@@ -955,12 +956,12 @@ class calculated:
         """
         self.move(key)
         time.sleep(1)  # 等待进入入画
-        log_widget.info(("等待入画结束"))
+        log_widget.transmitDebugLog(("等待入画结束"))
         time.sleep(0.3)  # 缓冲
         while True:
             end_str = str(self.part_ocr((0, 95, 100, 100)))
             if any(substring in end_str for substring in self.end_list):
-                log_widget.info(("完成入画"))
+                log_widget.transmitDebugLog(("完成入画"))
                 break
             time.sleep(1.0)  # 缓冲
 
@@ -974,7 +975,7 @@ class calculated:
         ts = int(time.mktime(time.strptime(dt, "%Y-%m-%d %H:%M:%S")))
         ns = int(start_time)
         if -60 < ns - ts <= 60:
-            log_widget.info(("点击月卡"))
+            log_widget.transmitDebugLog(("点击月卡"))
             pos = self.ocr_click(("今日补给"))
             time.sleep(0.5)
             self.click(pos)

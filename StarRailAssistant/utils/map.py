@@ -1,13 +1,10 @@
-import time
 import threading
 
 from pynput import keyboard
 
+from StarRailAssistant.utils.calculated import *
+from StarRailAssistant.utils.config import (sra_config_obj, read_json_file, read_maps)
 from widgets import log as log_widget
-from .calculated import *
-from .config import get_file, sra_config_obj, read_json_file, read_maps, insert_key, CONFIG_FILE_NAME
-from .log import log_widget, fight_log, set_log
-from .requests import webhook_and_log
 
 
 class Map:
@@ -40,6 +37,7 @@ class Map:
                 return False
             elif str(key) == r"'\x03'":
                 return False
+
         log_widget.transmitRunLog("开启按键监听")
         with keyboard.Listener(on_press=on_press) as listener:  # 创建按键监听线程
             listener.run()  # 等待按键监听线程结束
@@ -57,7 +55,7 @@ class Map:
                 if shrink_result['max_val'] < 0.98:
                     # points = self.calculated.calculated(result, target.shape)
                     points = result["max_loc"]
-                    log_widget.debug(points)
+                    log_widget.transmitRunLog(points)
                     for i in range(6):
                         self.calculated.click(points)
                 break
@@ -68,24 +66,20 @@ class Map:
         map_data = read_json_file(f"map\\{map}.json")
         map_filename = map
         # 开始寻路
-        log_widget.info(("开始寻路"))
         log_widget.transmitAllLog("开始寻路")
         for map_index, map in enumerate(map_data["map"]):
             if self.stop is True:
+                log_widget.transmitRunLog("停止")
                 raise Exception("Stop World")
             self.calculated.monthly_pass()
-            log_widget.info(("执行{map_filename}文件:{map_index}/{map_data2} {map}").format(map_filename=map_filename,
-                                                                                            map_index=map_index + 1,
-                                                                                            map_data2=len(map_data['map']),
-                                                                                            map=map))
-            log_widget.transmitRunLog(f"执行{map_filename}文件:{map_index}/{len(map_data['map'])} {map}")
+            log_widget.transmitRunLog(f"执行{map_filename}文件:{map_index + 1}/{len(map_data['map'])} {map}")
             key = list(map.keys())[0]
             value = map[key]
             if key in ["w", "s", "a", "d"]:
                 pos = self.calculated.move(key, value, map_name)
                 if self.DEBUG:
                     map_data["map"][map_index]["pos"] = pos
-                    log_widget.debug(map_data["map"])
+                    log_widget.transmitRunLog(map_data["map"])
             elif key == "f":
                 self.calculated.teleport(key, value)
             elif key == "mouse_move":
@@ -94,7 +88,7 @@ class Map:
                 if value == 1:  # 进战斗
                     ret = self.calculated.fighting()
                     if ret == False and map:
-                        fight_log.info(f"执行{map_filename}文件时，识别敌人超时")
+                        log_widget.transmitDebugLog(f"执行{map_filename}文件时，识别敌人超时")
                         fight_data = sra_config_obj.fight_data
                         date_time = datetime.now().strftime("%m%d%H%M")
                         cv.imwrite(f"logs/image/{map_filename}-{date_time}.jpg",
@@ -126,18 +120,19 @@ class Map:
             '''
 
     def auto_map(self, start):
-        log_widget.info(f"start = {start}")
+        log_widget.transmitRunLog(f"start = {start}")
         __, __, __, __, __, width, length = self.calculated.take_screenshot()
-        log_widget.info((width, length))
+        log_widget.transmitRunLog((width, length))
         if not (1915 <= width <= 1925 and 1075 <= length <= 1085):
             raise Exception("错误的PC分辨率，请调整为1920X1080，请不要在群里问怎么调整分辨率，小心被踢！")
         roles = self.calculated.part_ocr((88, 27, 92, 57)).keys()
-        log_widget.info(roles)
+        log_widget.transmitRunLog(roles)
         if roles:
-            set_log('-'.join(roles))
+            # 角色
+            log_widget.transmitRunLog('-'.join(roles))
 
         def start_map(self: Map, start, check: bool = False):
-            log_widget.info(f"start_map = {start}")
+            log_widget.transmitRunLog(f"start_map = {start}")
             wrong_map = True
             if f'map_{start}.json' in self.map_list:
                 if self.stop:
@@ -145,7 +140,7 @@ class Map:
                 if not check:
                     map_list = self.map_list[self.map_list.index(f'map_{start}.json'):len(self.map_list)]
                 else:
-                    log_widget.info("开始捡漏")
+                    log_widget.transmitRunLog("开始捡漏")
                     map_list = sra_config_obj.fight_data.get("data", [])
                 for map in map_list:
                     while self.stop:
@@ -163,7 +158,7 @@ class Map:
                     for start in start_dict:
                         self.calculated.monthly_pass()
                         key: str = list(start.keys())[0]
-                        log_widget.debug(key)
+                        log_widget.transmitRunLog(key)
                         value = start[key]
                         if key == 'map':
                             time.sleep(1)  # 防止卡顿
@@ -205,8 +200,7 @@ class Map:
                     # map_name = name.split("-")[0]
                     self.start_map(map, name)
             else:
-                log_widget(f'地图编号 {start} 不存在，请尝试检查更新')
-                log_widget.info(('地图编号 {start} 不存在，请尝试检查更新').format(start=start))
+                log_widget.transmitRunLog(f'地图编号 {start} 不存在，请尝试检查更新')
 
         threading.Thread(target=self.set_stop).start()
         start_map(self, start)

@@ -1,15 +1,12 @@
 import os
 import sys
-sys.path.append("F:\AutoStarRail\StarRailAssistant")
-from typing import Any, get_type_hints, Union
+from typing import Any, get_type_hints
 import orjson
-import gettext
 import inspect
 
 from pathlib import Path
-from orjson import JSONDecodeError
 
-from .log import log_widget
+from widgets import log as log_widget
 from .exceptions import TypeError
 
 CONFIG_FILE_NAME = "config.json"
@@ -156,8 +153,8 @@ def read_maps():
         value[key2] = map_data["name"]
         map_list_map[key1] = value
     map_list.sort()
-    log_widget.debug(map_list)
-    log_widget.debug(map_list_map)
+    log_widget.transmitDebugLog(map_list)
+    log_widget.transmitDebugLog(map_list_map)
     return map_list, map_list_map
 
 
