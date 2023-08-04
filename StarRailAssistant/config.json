@@ -1,7 +1,7 @@
 {
   "test": false,
   "language": "zh_CN",
-  "left_border": -841.5,
+  "left_border": 11.0,
   "auto_battle_persistence": 1,
   "github_proxy": "https://ghproxy.com/",
   "borderless": false,
@@ -35,7 +35,7 @@
   "star_version": "v1.7.4",
   "webhook_url": "",
   "team_number": 1,
-  "up_border": -199.5,
+  "up_border": 45.0,
   "scaling": 1.0,
   "stop": false,
   "sprint": false,
