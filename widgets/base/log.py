@@ -13,12 +13,16 @@ class Log:
     def __init__(self):
         self._runLogWidget: Optional["LogWidget"] = None  # 程序运行日志
         self._gameLogWidget: Optional["LogWidget"] = None  # 游戏运行时的日志
+        self._debugLogWidget: Optional["LogWidget"] = None  # 调试信息
 
     def setRunLogWidget(self, widget: "LogWidget"):
         self._runLogWidget = widget
 
     def setGameLogWidget(self, widget: "LogWidget"):
         self._gameLogWidget = widget
+
+    def setDebugLogWidget(self, widget: "LogWidget"):
+        self._debugLogWidget = widget
 
     def transmitRunLog(self, content: str, debug=False):
         print(content) if debug else ...
@@ -29,6 +33,15 @@ class Log:
         print(content) if debug else ...
         if self._gameLogWidget is not None:
             self._gameLogWidget.add.emit(content)
+
+    def transmitDebugLog(self, content: str, debug=False, level=1):
+        """
+        1~5: info, debug, error, ...
+        """
+        level = {1: "INFO", 2: "DEBUG", 3: "ERROR", 4: "WARNING", 5: "CRITICAL"}.get(level, "CRITICAL")
+        print(content) if debug else ...
+        if self._debugLogWidget is not None:
+            self._debugLogWidget.add.emit(f'[{level}]   {content}')
 
     def transmitAllLog(self, content: str, debug=False):
         print(content) if debug else ...

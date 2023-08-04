@@ -1,18 +1,11 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QApplication
-from qfluentwidgets import RoundMenu, MessageDialog
+from qfluentwidgets import RoundMenu
 
-from .ui.world_widget import WorldWidgetUi
+from script.world import name_to_map
 from widgets import WidgetBase
-from utils.dialog import functions_not_open
-
-
-class Map:
-    map_number: int
-    map_point: int
-    map_name: str
-    filename: str
+from .ui.world_widget import WorldWidgetUi
 
 
 class WorldWidget(WidgetBase, WorldWidgetUi):
@@ -26,37 +19,25 @@ class WorldWidget(WidgetBase, WorldWidgetUi):
         self.updateCardLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.__init_combo_box()
         self.__init_update_button()
-        self.startButton.clicked.connect(lambda: functions_not_open(self.parent().parent()))
 
     def __init_combo_box(self):
         """
         初始化ComboBox中地图选项
         """
-        self.mapComboBox.addItems([
-            "基座舱段-1",
-            "基座舱段-2",
-            "基座舱段-3",
-            "基座舱段-4"
-        ])
+        self.mapComboBox.addItems(list(name_to_map.keys()))
         self.mapComboBox.setCurrentIndex(0)
 
     def __init_update_button(self):
         menu = RoundMenu(parent=self)
-        update_map_action = QAction("更新地图")
-        update_script_action = QAction("更新脚本")
-        update_image_action = QAction("更新图片")
-
-        # 连接信号
-        update_map_action.triggered.connect(lambda: functions_not_open(self.parent().parent()))
-        update_image_action.triggered.connect(lambda: functions_not_open(self.parent().parent()))
-        update_script_action.triggered.connect(lambda: functions_not_open(self.parent().parent()))
-        self.updateButton.clicked.connect(lambda: functions_not_open(self.parent().parent()))
+        self.update_map_action = QAction("更新地图")
+        self.update_script_action = QAction("更新脚本")
+        self.update_picture_action = QAction("更新图片")
 
         # 添加至菜单栏
         menu.addActions([
-            update_map_action,
-            update_script_action,
-            update_image_action
+            self.update_map_action,
+            self.update_script_action,
+            self.update_picture_action
         ])
 
         self.updateButton.setFlyout(menu)

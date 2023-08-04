@@ -3,8 +3,9 @@ from PySide6.QtGui import QBrush, QColor
 from PySide6.QtWidgets import QStackedWidget, QVBoxLayout
 from qfluentwidgets import Pivot
 
-from widgets import WidgetBase, SettingWidget, InfoWidget, StaminaWidget, WorldWidget, UniverseWidget,\
-    LogWidget, log
+from widgets import WidgetBase, LogWidget, log
+from widgets.widget import (SettingWidget, InfoWidget, StaminaWidget, WorldWidget, UniverseWidget,
+                            MoreWidget)
 
 
 class NavigationBar(WidgetBase):
@@ -50,6 +51,7 @@ class ScriptNavigationBar(NavigationBar):
         self.staminaInterface = StaminaWidget(self)  # 清体力
         self.worldInterface = WorldWidget(self)  # 锄大地
         self.universeInterface = UniverseWidget(self)  # 模拟宇宙
+        self.moreInterface = MoreWidget(self)  # 更多
         self.settingInterface = SettingWidget(self)  # 设置
         self.infoInterface = InfoWidget(self)  # 信息
 
@@ -57,6 +59,7 @@ class ScriptNavigationBar(NavigationBar):
         self.addSubInterface(self.staminaInterface, "staminaInterface", "体力")
         self.addSubInterface(self.worldInterface, "worldInterface", "世界")
         self.addSubInterface(self.universeInterface, "universeInterface", "模拟宇宙")
+        self.addSubInterface(self.moreInterface, "moreInterface", "更多")
         self.addSubInterface(self.settingInterface, "settingInterface", "设置")
         self.addSubInterface(self.infoInterface, "infoInterface", "信息")
 
@@ -75,12 +78,15 @@ class LogNavigationBar(NavigationBar):
     def __init_widget(self):
         self.runLogInterface = LogWidget(self)  # 运行日志
         self.gameLogInterface = LogWidget(self)  # 游戏日志
+        self.debugLogInterface = LogWidget(self)  # 调试日志
         log.setRunLogWidget(self.runLogInterface)
         log.setGameLogWidget(self.gameLogInterface)
+        log.setDebugLogWidget(self.debugLogInterface)
 
         # 添加项到pivot
         self.addSubInterface(self.runLogInterface, "runLogInterface", "运行日志")
         self.addSubInterface(self.gameLogInterface, "gameLogInterface", "游戏日志")
+        self.addSubInterface(self.debugLogInterface, "debugLogInterface", "调试日志")
 
         # 设置当前导航栏的item
         self.stackedWidget.setCurrentWidget(self.runLogInterface)

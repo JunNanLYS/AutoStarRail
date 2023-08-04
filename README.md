@@ -1,5 +1,5 @@
 # AutoStarRail
-崩坏：星穹铁道自动化 |崩坏：星穹铁道体力消耗自动化 | 自定义清理体力 | 融合`Auto_Simulated_Universe`和`StarRailAssistant`以及清理体力与一体的整合包 | 模拟按键 | 图像识别
+崩坏：星穹铁道自动化 |崩坏：星穹铁道体力消耗自动化 | 自定义清理体力 | 融合`Auto_Simulated_Universe`和`StarRailAssistant`以及清理体力于一体的整合包 | 模拟按键 | 图像识别
 
 
 
@@ -17,20 +17,6 @@ This software is open source, free of charge and for learning and exchange purpo
 "严禁使用外挂、加速器、脚本或其他破坏游戏公平性的第三方工具。"
 "一经发现，米哈游（下亦称“我们”）将视违规严重程度及违规次数，采取扣除违规收益、冻结游戏账号、永久封禁游戏账号等措施。"
 ```
-
-
-
-## 游戏配置文件
-
-**game_path**
-
-游戏路径，通过该路径打开游戏
-
-
-
-**auto-fight**
-
-游戏中的设置，名为“沿用自动战斗”，开启了就设置true，没开启就设置false
 
 
 
@@ -64,11 +50,10 @@ This software is open source, free of charge and for learning and exchange purpo
 
 ## 使用
 
-打开AutoStarRail运行main.exe就行了！不需要安装依赖！！！
+1. ~~克隆pack分支打开AutoStarRail运行main.exe就行了！不需要安装依赖！！！~~(为了配合星铁的开源作者们决定取消打包)
 
-打开main.exe需要使用管理员身份启动否则脚本无法正常运行！！！
-
-只想要纯净的exe运行脚本下载pack分支中的就行。`git clone -b <branch> <url>`
+2. ~~打开main.exe需要使用管理员身份启动否则脚本无法正常运行！！！~~
+3. 自己安装依赖运行AutoStarRail下的main.py文件即可
 
 
 
@@ -78,5 +63,17 @@ This software is open source, free of charge and for learning and exchange purpo
 2. ~~清理每日体力~~
 3. 锄大地
 4. 刷模拟宇宙
-5. 完成每日任务
+5. ~~领委托任务~~
+6. 完成每日任务
 
+
+
+## GUI展示
+
+![stamina](./doc/readme/gui/stamina.png)
+
+
+
+![world](./doc/readme/gui/world.png)
+
+![world](./doc/readme/gui/more.png)

@@ -1,7 +1,6 @@
 import os
 import time
 
-import win32con
 import win32gui
 import pyautogui
 
@@ -9,7 +8,6 @@ from utils.tool import JsonTool
 from utils.path import ImagePath
 from utils import func
 from widgets import log
-from threadpool import script_thread
 
 
 def start_game() -> bool:
@@ -50,14 +48,14 @@ def start_game() -> bool:
     # 游戏启动了，将游戏设置为活动窗口，并启动游戏
     else:
         log.transmitRunLog("检测到游戏已启动，将其设置为活动窗口", debug=True)
-        win32gui.ShowWindow(game_id, win32con.SW_RESTORE)  # 若最小化窗口则会还原大小
+        # win32gui.ShowWindow(game_id, win32con.SW_RESTORE)  # 若最小化窗口则会还原大小
         win32gui.SetForegroundWindow(game_id)
         time.sleep(1)
         # 不在游戏主界面
-        if func.find_image(ImagePath.MANDATE) is None:
-            for _ in range(5):
-                pyautogui.press('esc')
-                if func.find_image(ImagePath.MANDATE):
-                    break
+        # if func.find_image(ImagePath.MANDATE) is None:
+        #     for _ in range(5):
+        #         pyautogui.press('esc')
+        #         if func.find_image(ImagePath.MANDATE):
+        #             break
         pyautogui.click()
         return True
