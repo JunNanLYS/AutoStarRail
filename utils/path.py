@@ -9,6 +9,7 @@ class ImagePath:
     STAGNANT_SHADOW_PATH = IMAGE_ROOT_PATH + "shadow\\"  # 凝滞虚影的目录
     CAVERN_PATH = IMAGE_ROOT_PATH + "cavern\\"  # 侵蚀隧道的目录
     ECHO_OF_WAR_PATH = IMAGE_ROOT_PATH + "echoOfWar\\"  # 历战回响的目录
+    COMMISSION_PATH = IMAGE_ROOT_PATH + "commission\\"  # 委托任务的目录
 
     # 杂 more
     MANDATE = IMAGE_ROOT_PATH + r"mandate.png"  # 任务书
@@ -73,6 +74,14 @@ class ImagePath:
     START_CHALLENGE = IMAGE_ROOT_PATH + r"startChallenge.png"  # 开始挑战按钮
     ADD_CHALLENGE = IMAGE_ROOT_PATH + r"addChallenge.png"  # 添加挑战副本的次数按钮
     TRANSMISSION = IMAGE_ROOT_PATH + r"transmission.png"  # 传送按钮
+
+    # 委托
+    COMMISSION = COMMISSION_PATH + r"commission.png"  # 委托按钮
+    COMMISSION_PENDING = COMMISSION_PATH + r"commissionPending.png"  # 右上角有感叹号的委托按钮
+    IS_COMMISSION = COMMISSION_PATH + r"isCommission.png"  # 委托界面
+    PENDING = COMMISSION_PATH + r"pending.png"  # 待领取
+    RECEIVE_COMMISSIONING_REWARD = COMMISSION_PATH + r"receiveCommissioningReward.png"  # 领取委托的奖励按钮
+    RE_COMMISSION = COMMISSION_PATH + r"re-commission.png"  # 重新委托按钮
 
     START_GAME = IMAGE_ROOT_PATH + r"startGame.png"  # 启动器的开始游戏
     ENTER_GAME = IMAGE_ROOT_PATH + r"enterGame.png"  # 进入游戏
