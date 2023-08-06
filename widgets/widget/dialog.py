@@ -1,10 +1,12 @@
 import sys
+import time
+from typing import Optional
 
-from PySide6.QtCore import Qt, QTime, QEventLoop
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import QBrush, QColor, QGuiApplication
 from PySide6.QtWidgets import QApplication, QVBoxLayout
-from qframelesswindow import FramelessDialog
 from qfluentwidgets import StrongBodyLabel, SubtitleLabel
+from qframelesswindow import FramelessDialog
 
 from widgets import WidgetBase
 
@@ -16,6 +18,9 @@ class ScriptDialog(FramelessDialog):
         self.setResizeEnabled(False)
         self.title = title
         self.content = content
+        self.timer = QTimer(self)
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(self.close)
         self.__init_widget()
 
     def show(self) -> None:
@@ -30,16 +35,8 @@ class ScriptDialog(FramelessDialog):
         target_w = w - self.width() - 20
         target_h = h - self.height() - window_mandate_bar - 20
         self.move(target_w, target_h)
-        self.wait_close()
-
-    def wait_close(self):
-        """
-        3秒后关闭
-        """
-        end = QTime.currentTime().addSecs(3)
-        while QTime.currentTime() <= end:
-            QApplication.processEvents(QEventLoop.AllEvents, 100)
-        self.close()
+        self.raise_()
+        self.timer.start(3000)
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
@@ -65,9 +62,22 @@ class ScriptDialog(FramelessDialog):
         self.vBoxLayout.addWidget(self.content_label)
 
 
+dialog_instance: Optional[ScriptDialog] = None
+
+
+def new_dialog(title, content):
+    global dialog_instance
+    # 判断当前是否还有存在的对话框
+    if dialog_instance:
+        dialog_instance.close()
+        dialog_instance = None
+    dialog_instance = ScriptDialog(title, content)
+    dialog_instance.show()
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    dialog = ScriptDialog(title="测试",
-                          content="测试一下，测试一下，测试一下。")
-    dialog.show()
+    new_dialog('title', 'content')
+    time.sleep(1)
+    new_dialog('title2', 'content2')
     sys.exit(app.exec())
