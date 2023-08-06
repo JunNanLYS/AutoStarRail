@@ -1,12 +1,22 @@
-from PySide6.QtCore import QSize
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from qframelesswindow import FramelessMainWindow, FramelessWindow
+from qfluentwidgets import SplashScreen
 
+import config
 from utils import dialog
 from script import use_of_world, use_of_commission, use_of_stamina
 from script.use_of_stamina import set_stop
 from threadpool import script_thread, function_thread
 from widgets.navigation_bar import ScriptNavigationBar, LogNavigationBar
+
+
+class MySplashScreen(SplashScreen):
+    def __init__(self, icon, parent=None):
+        super().__init__(icon, parent=parent)
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.setWindowFlags(Qt.FramelessWindowHint)
 
 
 class LogWindow(FramelessWindow):
@@ -42,8 +52,7 @@ class MainWindow(FramelessMainWindow):
 
         self.setMinimumSize(QSize(300, 300))
         self.resize(700, 600)
-
-        # 模拟宇宙
+        self.raise_()
 
     def resizeEvent(self, size: QSize) -> None:
         super().resizeEvent(size)
