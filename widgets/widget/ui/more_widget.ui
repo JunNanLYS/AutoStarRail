@@ -116,6 +116,44 @@
         </widget>
        </item>
        <item>
+        <widget class="Card" name="widget" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="PlainTextEdit" name="autoPlainTextEdit">
+            <property name="plainText">
+             <string>什么情况适合使用该功能？
+1. 想要所有功能一键执行到位
+2. 不想自己傻傻的等待程序执行结束
+3. </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="PushButton" name="autoButton">
+            <property name="text">
+             <string>一键开始自动</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -145,6 +183,11 @@
    <extends>QScrollArea</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlainTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
    <class>Card</class>
