@@ -11,7 +11,7 @@ from widgets import log
 is_stop = False  # 设置True就能关闭运行中的脚本(use_of_stamina)
 
 
-def use_of_stamina(copies: dict):
+def run(copies: dict):
     """
     用于清理体力的方法
     :param copies: 保存着各个副本要进行的次数
@@ -103,4 +103,4 @@ def set_stop(stop: bool):
 
 
 if __name__ == '__main__':
-    use_of_stamina({"calyx_4": 4})
+    run({"calyx_4": 4})

@@ -44,8 +44,6 @@ This software is open source, free of charge and for learning and exchange purpo
 
 5. 运行清理体力该功能后尽量不要操作了，断点恢复能力不是很好
 
-6. ~~清理体力前记得看一下脚本设置中是否开启了自动使用燃料，自动使用星穷等功能，根据自己需求来设置。~~暂时还没完成
-
 7. 暂时不支持副本中死亡继续运行脚本，若中途死亡需要重新运行脚本
 
    ⭐**如果喜欢，点个星星~**⭐
@@ -78,7 +76,11 @@ This software is open source, free of charge and for learning and exchange purpo
 
 开启游戏，点击一键领取即可
 
-## 每日任务
+### 每日任务
+
+...
+
+### 一键运行所有功能
 
 ...
 

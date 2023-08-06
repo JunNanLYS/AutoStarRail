@@ -8,15 +8,16 @@
   "github_source": "Starry-Wind",
   "fight_data": {
     "data": [
-      "map_2-3_5",
+      "map_2-3_3",
       "map_3-3_3",
       "map_3-3_5",
       "map_3-3_6",
+      "map_3-4_6",
       "map_3-4_7",
       "map_3-5_1",
       "map_3-6_1"
     ],
-    "day_time": "2023-07-31"
+    "day_time": "2023-08-06"
   },
   "img": 0,
   "move_division_excursion": 1.0,

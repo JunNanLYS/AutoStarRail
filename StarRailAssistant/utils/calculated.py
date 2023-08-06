@@ -71,7 +71,7 @@ class calculated:
         self.finish = cv.imread("./picture/pc/finish_fighting.jpg")
         self.auto = cv.imread("./picture/pc/auto.jpg")
 
-        self.end_list = ["Tab", ("轮盘"), ("唤起鼠标"), ("手机"), ("退出")]
+        self.end_list = ["Tab", "轮盘", "唤起鼠标", "手机", "退出"]
 
     def click(self, points=None):
         """
