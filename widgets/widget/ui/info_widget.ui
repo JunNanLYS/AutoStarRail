@@ -13,9 +13,12 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="vBoxLayout" stretch="0,2,0">
+  <layout class="QVBoxLayout" name="vBoxLayout" stretch="0,0,0,0,0">
    <property name="spacing">
     <number>10</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetNoConstraint</enum>
    </property>
    <property name="leftMargin">
     <number>20</number>
@@ -40,128 +43,10 @@
     </widget>
    </item>
    <item>
-    <widget class="WidgetBase" name="payCard" native="true">
-     <layout class="QVBoxLayout" name="payCardLayout" stretch="0,0">
+    <widget class="Card" name="infoCard" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0">
       <property name="spacing">
-       <number>10</number>
-      </property>
-      <property name="leftMargin">
-       <number>10</number>
-      </property>
-      <property name="topMargin">
-       <number>10</number>
-      </property>
-      <property name="rightMargin">
-       <number>10</number>
-      </property>
-      <property name="bottomMargin">
-       <number>10</number>
-      </property>
-      <item>
-       <widget class="BodyLabel" name="payLabel">
-        <property name="text">
-         <string>赞赏一下更有动力！</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="QRCardLayout">
-        <property name="spacing">
-         <number>10</number>
-        </property>
-        <property name="leftMargin">
-         <number>10</number>
-        </property>
-        <property name="topMargin">
-         <number>10</number>
-        </property>
-        <property name="rightMargin">
-         <number>10</number>
-        </property>
-        <property name="bottomMargin">
-         <number>10</number>
-        </property>
-        <item>
-         <widget class="WidgetBase" name="wechatQRCard" native="true">
-          <layout class="QVBoxLayout" name="wechatCardLayout" stretch="0,2">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <property name="leftMargin">
-            <number>5</number>
-           </property>
-           <property name="topMargin">
-            <number>5</number>
-           </property>
-           <property name="rightMargin">
-            <number>5</number>
-           </property>
-           <property name="bottomMargin">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="BodyLabel" name="wechatLabel">
-             <property name="text">
-              <string>微信</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="PixmapLabel" name="wechatQRImage"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="WidgetBase" name="alipayQRCard" native="true">
-          <layout class="QVBoxLayout" name="alipayCardLayout" stretch="0,2">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <property name="leftMargin">
-            <number>5</number>
-           </property>
-           <property name="topMargin">
-            <number>5</number>
-           </property>
-           <property name="rightMargin">
-            <number>5</number>
-           </property>
-           <property name="bottomMargin">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="BodyLabel" name="alipayLabel">
-             <property name="text">
-              <string>支付宝</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="PixmapLabel" name="alipayQRImage"/>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="WidgetBase" name="infoCard" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="spacing">
-       <number>10</number>
+       <number>5</number>
       </property>
       <property name="leftMargin">
        <number>5</number>
@@ -185,26 +70,111 @@
       <item>
        <widget class="BodyLabel" name="label2">
         <property name="text">
-         <string>2. 如果你是从别的地方购买的，那么恭喜你被骗了</string>
+         <string>2. 如果你是从别的地方购买的，那么恭喜你被骗了，请立即退款</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="BodyLabel" name="label3">
         <property name="text">
-         <string>3. 项目致力于维护个人身心健康，不再因为没有清体力等琐事而烦恼</string>
+         <string>3. 项目致力于维护个人身心健康，让脚本代替你打工岂不是更棒？</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="BodyLabel" name="label4">
+        <property name="text">
+         <string>4. 请不要使用该项目牟取利益否则后果自负</string>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="HyperlinkButton" name="githubButton">
+       <property name="text">
+        <string>给项目点个Star⭐</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="DropDownPushButton" name="viewInfoButton">
+       <property name="text">
+        <string>查看</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="PushButton" name="viewLogButton">
+       <property name="text">
+        <string>查看日志</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="PushButton" name="saveLogButton">
+       <property name="text">
+        <string>保存日志</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="PushButton" name="QRButton">
+       <property name="text">
+        <string>请作者喝杯☕</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PixmapLabel</class>
-   <extends>QLabel</extends>
+   <class>HyperlinkButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>DropDownPushButton</class>
+   <extends>PushButton</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
@@ -218,9 +188,9 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>WidgetBase</class>
+   <class>Card</class>
    <extends>QWidget</extends>
-   <header>widgets</header>
+   <header>..card</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

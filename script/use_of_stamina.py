@@ -7,6 +7,7 @@ from script.start_game import start_game
 from utils.path import ImagePath
 from utils import func, check, tool
 from widgets import log
+from widgets.widget.dialog import new_dialog
 
 is_stop = False  # 设置True就能关闭运行中的脚本(use_of_stamina)
 
@@ -93,7 +94,9 @@ def run(copies: dict):
             log.transmitRunLog("已停止清体力")
             break
 
+    func.to_game_main()  # 若不在主界面则回到主界面
     log.transmitAllLog("体力清理完成")
+    new_dialog("温馨提示", "体力清理完成")
 
 
 def set_stop(stop: bool):

@@ -1,11 +1,15 @@
+import os
+
 from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QApplication
 from qframelesswindow import FramelessMainWindow, FramelessWindow
 
-from utils import dialog
-from script import use_of_world, use_of_commission, use_of_stamina
+import utils.tool
+from script import use_of_world, use_of_commission, use_of_stamina, auto_honkai_star_rail
 from script.use_of_stamina import set_stop
 from threadpool import script_thread, function_thread
+from utils import dialog
+from widgets.widget.dialog import new_dialog, ScriptDialog, script_interface
 from widgets.navigation_bar import ScriptNavigationBar, LogNavigationBar
 
 
@@ -20,6 +24,23 @@ class LogWindow(FramelessWindow):
 
         self.titleBar.closeBtn.clicked.disconnect(self.window().close)  # 把原来的close断开
         self.titleBar.closeBtn.clicked.connect(self.hide)
+
+    def save_log(self):
+        widget = self.logNavigationBar
+        filename = os.path.join(utils.tool.PathTool.get_root_path(), "logs")
+        run_log = os.path.join(filename, "run_log.log")
+        game_log = os.path.join(filename, "game_log.log")
+        debug_log = os.path.join(filename, "debug_log.log")
+        # key是路径，value是控件引用
+        dic = {
+            run_log: widget.runLogInterface,
+            game_log: widget.gameLogInterface,
+            debug_log: widget.debugLogInterface,
+        }
+        # 将日志保存到路径文件夹中
+        for log_filename, log_interface in dic.items():
+            with open(log_filename, "w", encoding="UTF-8") as f:
+                f.write(log_interface.toPlainText())
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
@@ -39,11 +60,11 @@ class MainWindow(FramelessMainWindow):
         self.__init_world_signal()
         self.__init_universe_signal()
         self.__init_more_signal()
+        self.__init_info_signal()
 
         self.setMinimumSize(QSize(300, 300))
         self.resize(700, 600)
-
-        # 模拟宇宙
+        self.raise_()
 
     def resizeEvent(self, size: QSize) -> None:
         super().resizeEvent(size)
@@ -55,6 +76,9 @@ class MainWindow(FramelessMainWindow):
 
         self.logWindow = LogWindow()
         self.logWindow.hide()
+
+        self.script_dialog = ScriptDialog("", "")
+        script_interface.set_dialog(self.script_dialog)
 
     def __init_stamina_signal(self):
         """
@@ -105,6 +129,8 @@ class MainWindow(FramelessMainWindow):
         widget = self.navigationBar.moreInterface
         commission_button = widget.commissionButton
         mandate_button = widget.mandateButton
+        auto_button = widget.autoButton
+
         commission_button.clicked.connect(self.logWindow.show)
         commission_button.clicked.connect(
             lambda: script_thread.submit(use_of_commission.run)
@@ -112,6 +138,23 @@ class MainWindow(FramelessMainWindow):
         mandate_button.clicked.connect(
             lambda: dialog.functions_not_open(self)
         )
+
+        stamina_interface = self.navigationBar.staminaInterface
+        world_interface = self.navigationBar.worldInterface
+        auto_button.clicked.connect(self.logWindow.show)
+        auto_button.clicked.connect(
+            lambda: script_thread.submit(auto_honkai_star_rail.run,
+                                         stamina_interface.get_copies_count(),
+                                         world_interface.mapComboBox.currentText()))
+
+    def __init_info_signal(self):
+        widget = self.navigationBar.infoInterface
+        view_log = widget.viewLogButton
+        save_log = widget.saveLogButton
+
+        view_log.clicked.connect(self.logWindow.show)
+        save_log.clicked.connect(
+            lambda: function_thread.submit(self.logWindow.save_log))
 
 
 if __name__ == "__main__":

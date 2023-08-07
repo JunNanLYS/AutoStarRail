@@ -9,10 +9,12 @@
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QMetaObject, Qt)
-from PySide6.QtWidgets import (QHBoxLayout, QVBoxLayout)
-from qfluentwidgets import (BodyLabel, PixmapLabel, TitleLabel)
+from PySide6.QtWidgets import (QHBoxLayout, QLayout, QSizePolicy,
+                               QSpacerItem, QVBoxLayout)
+from qfluentwidgets import (BodyLabel, DropDownPushButton, HyperlinkButton, PushButton,
+                            TitleLabel)
 
-from widgets import WidgetBase
+from ..card import Card
 
 
 class InfoWidgetUi(object):
@@ -23,6 +25,7 @@ class InfoWidgetUi(object):
         self.vBoxLayout = QVBoxLayout(Form)
         self.vBoxLayout.setSpacing(10)
         self.vBoxLayout.setObjectName(u"vBoxLayout")
+        self.vBoxLayout.setSizeConstraint(QLayout.SetNoConstraint)
         self.vBoxLayout.setContentsMargins(20, 10, 20, 10)
         self.titleLabel = TitleLabel(Form)
         self.titleLabel.setObjectName(u"titleLabel")
@@ -30,72 +33,10 @@ class InfoWidgetUi(object):
 
         self.vBoxLayout.addWidget(self.titleLabel)
 
-        self.payCard = WidgetBase(Form)
-        self.payCard.setObjectName(u"payCard")
-        self.payCardLayout = QVBoxLayout(self.payCard)
-        self.payCardLayout.setSpacing(10)
-        self.payCardLayout.setObjectName(u"payCardLayout")
-        self.payCardLayout.setContentsMargins(10, 10, 10, 10)
-        self.payLabel = BodyLabel(self.payCard)
-        self.payLabel.setObjectName(u"payLabel")
-        self.payLabel.setAlignment(Qt.AlignCenter)
-
-        self.payCardLayout.addWidget(self.payLabel)
-
-        self.QRCardLayout = QHBoxLayout()
-        self.QRCardLayout.setSpacing(10)
-        self.QRCardLayout.setObjectName(u"QRCardLayout")
-        self.QRCardLayout.setContentsMargins(10, 10, 10, 10)
-        self.wechatQRCard = WidgetBase(self.payCard)
-        self.wechatQRCard.setObjectName(u"wechatQRCard")
-        self.wechatCardLayout = QVBoxLayout(self.wechatQRCard)
-        self.wechatCardLayout.setSpacing(0)
-        self.wechatCardLayout.setObjectName(u"wechatCardLayout")
-        self.wechatCardLayout.setContentsMargins(5, 5, 5, 5)
-        self.wechatLabel = BodyLabel(self.wechatQRCard)
-        self.wechatLabel.setObjectName(u"wechatLabel")
-        self.wechatLabel.setAlignment(Qt.AlignCenter)
-
-        self.wechatCardLayout.addWidget(self.wechatLabel)
-
-        self.wechatQRImage = PixmapLabel(self.wechatQRCard)
-        self.wechatQRImage.setObjectName(u"wechatQRImage")
-
-        self.wechatCardLayout.addWidget(self.wechatQRImage)
-
-        self.wechatCardLayout.setStretch(1, 2)
-
-        self.QRCardLayout.addWidget(self.wechatQRCard)
-
-        self.alipayQRCard = WidgetBase(self.payCard)
-        self.alipayQRCard.setObjectName(u"alipayQRCard")
-        self.alipayCardLayout = QVBoxLayout(self.alipayQRCard)
-        self.alipayCardLayout.setSpacing(0)
-        self.alipayCardLayout.setObjectName(u"alipayCardLayout")
-        self.alipayCardLayout.setContentsMargins(5, 5, 5, 5)
-        self.alipayLabel = BodyLabel(self.alipayQRCard)
-        self.alipayLabel.setObjectName(u"alipayLabel")
-        self.alipayLabel.setAlignment(Qt.AlignCenter)
-
-        self.alipayCardLayout.addWidget(self.alipayLabel)
-
-        self.alipayQRImage = PixmapLabel(self.alipayQRCard)
-        self.alipayQRImage.setObjectName(u"alipayQRImage")
-
-        self.alipayCardLayout.addWidget(self.alipayQRImage)
-
-        self.alipayCardLayout.setStretch(1, 2)
-
-        self.QRCardLayout.addWidget(self.alipayQRCard)
-
-        self.payCardLayout.addLayout(self.QRCardLayout)
-
-        self.vBoxLayout.addWidget(self.payCard)
-
-        self.infoCard = WidgetBase(Form)
+        self.infoCard = Card(Form)
         self.infoCard.setObjectName(u"infoCard")
         self.verticalLayout = QVBoxLayout(self.infoCard)
-        self.verticalLayout.setSpacing(10)
+        self.verticalLayout.setSpacing(5)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(5, 5, 5, 5)
         self.label1 = BodyLabel(self.infoCard)
@@ -113,9 +54,56 @@ class InfoWidgetUi(object):
 
         self.verticalLayout.addWidget(self.label3)
 
+        self.label4 = BodyLabel(self.infoCard)
+        self.label4.setObjectName(u"label4")
+
+        self.verticalLayout.addWidget(self.label4)
+
         self.vBoxLayout.addWidget(self.infoCard)
 
-        self.vBoxLayout.setStretch(1, 2)
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setSpacing(10)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(-1, 0, -1, -1)
+        self.githubButton = HyperlinkButton(Form)
+        self.githubButton.setObjectName(u"githubButton")
+
+        self.horizontalLayout_2.addWidget(self.githubButton)
+
+        self.viewInfoButton = DropDownPushButton(Form)
+        self.viewInfoButton.setObjectName(u"viewInfoButton")
+
+        self.horizontalLayout_2.addWidget(self.viewInfoButton)
+
+        self.vBoxLayout.addLayout(self.horizontalLayout_2)
+
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setSpacing(10)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
+        self.viewLogButton = PushButton(Form)
+        self.viewLogButton.setObjectName(u"viewLogButton")
+
+        self.horizontalLayout.addWidget(self.viewLogButton)
+
+        self.saveLogButton = PushButton(Form)
+        self.saveLogButton.setObjectName(u"saveLogButton")
+
+        self.horizontalLayout.addWidget(self.saveLogButton)
+
+        self.QRButton = PushButton(Form)
+        self.QRButton.setObjectName(u"QRButton")
+
+        self.horizontalLayout.addWidget(self.QRButton)
+
+        self.horizontalLayout.setStretch(0, 1)
+        self.horizontalLayout.setStretch(1, 1)
+
+        self.vBoxLayout.addLayout(self.horizontalLayout)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.vBoxLayout.addItem(self.verticalSpacer)
 
         self.retranslateUi(Form)
 
@@ -127,17 +115,21 @@ class InfoWidgetUi(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.titleLabel.setText(
             QCoreApplication.translate("Form", u"Auto\u5d29\u574f\uff1a\u661f\u7a79\u94c1\u9053", None))
-        self.payLabel.setText(
-            QCoreApplication.translate("Form", u"\u8d5e\u8d4f\u4e00\u4e0b\u66f4\u6709\u52a8\u529b\uff01", None))
-        self.wechatLabel.setText(QCoreApplication.translate("Form", u"\u5fae\u4fe1", None))
-        self.alipayLabel.setText(QCoreApplication.translate("Form", u"\u652f\u4ed8\u5b9d", None))
         self.label1.setText(QCoreApplication.translate("Form",
                                                        u"1. \u6b64\u4e3a\u514d\u8d39\u5f00\u6e90\u9879\u76ee\uff0c\u8bf7\u52ff\u7528\u6b64\u9879\u76ee\u8fdd\u6cd5\u72af\u7f6a",
                                                        None))
         self.label2.setText(QCoreApplication.translate("Form",
-                                                       u"2. \u5982\u679c\u4f60\u662f\u4ece\u522b\u7684\u5730\u65b9\u8d2d\u4e70\u7684\uff0c\u90a3\u4e48\u606d\u559c\u4f60\u88ab\u9a97\u4e86",
+                                                       u"2. \u5982\u679c\u4f60\u662f\u4ece\u522b\u7684\u5730\u65b9\u8d2d\u4e70\u7684\uff0c\u90a3\u4e48\u606d\u559c\u4f60\u88ab\u9a97\u4e86\uff0c\u8bf7\u7acb\u5373\u9000\u6b3e",
                                                        None))
         self.label3.setText(QCoreApplication.translate("Form",
-                                                       u"3. \u9879\u76ee\u81f4\u529b\u4e8e\u7ef4\u62a4\u4e2a\u4eba\u8eab\u5fc3\u5065\u5eb7\uff0c\u4e0d\u518d\u56e0\u4e3a\u6ca1\u6709\u6e05\u4f53\u529b\u7b49\u7410\u4e8b\u800c\u70e6\u607c",
+                                                       u"3. \u9879\u76ee\u81f4\u529b\u4e8e\u7ef4\u62a4\u4e2a\u4eba\u8eab\u5fc3\u5065\u5eb7\uff0c\u8ba9\u811a\u672c\u4ee3\u66ff\u4f60\u6253\u5de5\u5c82\u4e0d\u662f\u66f4\u68d2\uff1f",
                                                        None))
+        self.label4.setText(QCoreApplication.translate("Form",
+                                                       u"4. \u8bf7\u4e0d\u8981\u4f7f\u7528\u8be5\u9879\u76ee\u725f\u53d6\u5229\u76ca\u5426\u5219\u540e\u679c\u81ea\u8d1f",
+                                                       None))
+        self.githubButton.setText(QCoreApplication.translate("Form", u"\u7ed9\u9879\u76ee\u70b9\u4e2aStar\u2b50", None))
+        self.viewInfoButton.setText(QCoreApplication.translate("Form", u"\u67e5\u770b", None))
+        self.viewLogButton.setText(QCoreApplication.translate("Form", u"\u67e5\u770b\u65e5\u5fd7", None))
+        self.saveLogButton.setText(QCoreApplication.translate("Form", u"\u4fdd\u5b58\u65e5\u5fd7", None))
+        self.QRButton.setText(QCoreApplication.translate("Form", u"\u8bf7\u4f5c\u8005\u559d\u676f\u2615", None))
     # retranslateUi

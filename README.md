@@ -54,7 +54,7 @@ This software is open source, free of charge and for learning and exchange purpo
 
 1. ~~克隆pack分支打开AutoStarRail运行main.exe就行了！不需要安装依赖！！！~~(为了配合星铁的开源作者们决定取消打包)
 2. ~~打开main.exe需要使用管理员身份启动否则脚本无法正常运行！！！~~
-3. 自己安装依赖运行AutoStarRail下的main.py文件即可
+3. 自己安装依赖运行AutoStarRail下的main.py文件即可(安装依赖`pip install -r requirements.txt`)
 
 ### 自定义清体力
 
@@ -82,7 +82,7 @@ This software is open source, free of charge and for learning and exchange purpo
 
 ### 一键运行所有功能
 
-...
+如果需要清理体力和锄大地，那么就在这两个功能界面设置一下自己的需求，然后到`更多`这个界面点击一键运行。（后续会出可保存版，可以直接保存这次运行的配置下次直接加载使用）
 
 
 
@@ -92,7 +92,7 @@ This software is open source, free of charge and for learning and exchange purpo
 
 1. ~~GUI~~
 2. ~~清理每日体力~~
-3. 锄大地
+3. ~~锄大地~~
 4. 刷模拟宇宙
 5. ~~领委托任务~~
 6. 完成每日任务
@@ -101,10 +101,12 @@ This software is open source, free of charge and for learning and exchange purpo
 
 ## GUI展示
 
-![stamina](./doc/readme/gui/stamina.png)
+<img src="./doc/readme/gui/stamina.png" alt="stamina" style="zoom:50%;" />
 
 
 
-![world](./doc/readme/gui/world.png)
+<img src="./doc/readme/gui/world.png" alt="world" style="zoom:50%;" />
 
-![world](./doc/readme/gui/more.png)
+
+
+<img src="./doc/readme/gui/more.png" alt="world" style="zoom:50%;" />

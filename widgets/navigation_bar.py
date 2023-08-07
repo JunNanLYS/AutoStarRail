@@ -52,16 +52,16 @@ class ScriptNavigationBar(NavigationBar):
         self.worldInterface = WorldWidget(self)  # 锄大地
         self.universeInterface = UniverseWidget(self)  # 模拟宇宙
         self.moreInterface = MoreWidget(self)  # 更多
-        self.settingInterface = SettingWidget(self)  # 设置
         self.infoInterface = InfoWidget(self)  # 信息
+        self.settingInterface = SettingWidget(self)  # 设置
 
         # 添加到项到pivot(add items to pivot)
         self.addSubInterface(self.staminaInterface, "staminaInterface", "体力")
         self.addSubInterface(self.worldInterface, "worldInterface", "世界")
         self.addSubInterface(self.universeInterface, "universeInterface", "模拟宇宙")
         self.addSubInterface(self.moreInterface, "moreInterface", "更多")
-        self.addSubInterface(self.settingInterface, "settingInterface", "设置")
         self.addSubInterface(self.infoInterface, "infoInterface", "信息")
+        self.addSubInterface(self.settingInterface, "settingInterface", "设置")
 
         # 设置当前导航栏的item(set current item)
         self.stackedWidget.setCurrentWidget(self.staminaInterface)
