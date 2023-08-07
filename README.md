@@ -44,49 +44,23 @@ This software is open source, free of charge and for learning and exchange purpo
 
 5. 运行清理体力该功能后尽量不要操作了，断点恢复能力不是很好
 
-7. 暂时不支持副本中死亡继续运行脚本，若中途死亡需要重新运行脚本
+6. 暂时不支持副本中死亡继续运行脚本，若中途死亡需要重新运行脚本
+
+7. 路径中不要有中文路径！！！
 
    ⭐**如果喜欢，点个星星~**⭐
 
+## 常见问题解答
 
+- [常见问题解答](./doc/readme/常见问题.md)
 
-## 使用
+## 使用方法
 
-1. ~~克隆pack分支打开AutoStarRail运行main.exe就行了！不需要安装依赖！！！~~(为了配合星铁的开源作者们决定取消打包)
-2. ~~打开main.exe需要使用管理员身份启动否则脚本无法正常运行！！！~~
-3. 自己安装依赖运行AutoStarRail下的main.py文件即可(安装依赖`pip install -r requirements.txt`)
+- [使用方法](./doc/readme/使用方法.md)
 
-### 自定义清体力
+## GUI展示
 
-按照自己需求来增加每个副本的场次，可以在进行过程中点击停止按钮来停止程序
-
-### 锄大地
-
-选择自己想要的开始的地图位置点击开始即可
-
-在进行途中按下f8将在下一个地点寻路开始时结束锄大地
-
-
-
-### 模拟宇宙
-
-...
-
-### 委托
-
-开启游戏，点击一键领取即可
-
-### 每日任务
-
-...
-
-### 一键运行所有功能
-
-如果需要清理体力和锄大地，那么就在这两个功能界面设置一下自己的需求，然后到`更多`这个界面点击一键运行。（后续会出可保存版，可以直接保存这次运行的配置下次直接加载使用）
-
-
-
-
+- [GUI展示](./doc/readme/gui展示.md)
 
 ## 未来目标
 
@@ -99,14 +73,3 @@ This software is open source, free of charge and for learning and exchange purpo
 
 
 
-## GUI展示
-
-<img src="./doc/readme/gui/stamina.png" alt="stamina" style="zoom:50%;" />
-
-
-
-<img src="./doc/readme/gui/world.png" alt="world" style="zoom:50%;" />
-
-
-
-<img src="./doc/readme/gui/more.png" alt="world" style="zoom:50%;" />
