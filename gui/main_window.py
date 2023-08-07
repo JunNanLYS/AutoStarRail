@@ -1,3 +1,5 @@
+import os
+
 from PySide6.QtCore import QSize, Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
@@ -5,6 +7,7 @@ from qframelesswindow import FramelessMainWindow, FramelessWindow
 from qfluentwidgets import SplashScreen
 
 import config
+import utils.tool
 from utils import dialog
 from script import use_of_world, use_of_commission, use_of_stamina
 from script.use_of_stamina import set_stop
@@ -31,6 +34,23 @@ class LogWindow(FramelessWindow):
         self.titleBar.closeBtn.clicked.disconnect(self.window().close)  # 把原来的close断开
         self.titleBar.closeBtn.clicked.connect(self.hide)
 
+    def save_log(self):
+        widget = self.logNavigationBar
+        filename = os.path.join(utils.tool.PathTool.get_root_path(), "logs")
+        run_log = os.path.join(filename, "run_log.log")
+        game_log = os.path.join(filename, "game_log.log")
+        debug_log = os.path.join(filename, "debug_log.log")
+        # key是路径，value是控件引用
+        dic = {
+            run_log: widget.runLogInterface,
+            game_log: widget.gameLogInterface,
+            debug_log: widget.debugLogInterface,
+        }
+        # 将日志保存到路径文件夹中
+        for log_filename, log_interface in dic.items():
+            with open(log_filename, "w", encoding="UTF-8") as f:
+                f.write(log_interface.toPlainText())
+
     def resizeEvent(self, e):
         super().resizeEvent(e)
         self.logNavigationBar.resize(self.width(), self.height() - self.titleBar.height())
@@ -49,6 +69,7 @@ class MainWindow(FramelessMainWindow):
         self.__init_world_signal()
         self.__init_universe_signal()
         self.__init_more_signal()
+        self.__init_info_signal()
 
         self.setMinimumSize(QSize(300, 300))
         self.resize(700, 600)
@@ -121,6 +142,14 @@ class MainWindow(FramelessMainWindow):
         mandate_button.clicked.connect(
             lambda: dialog.functions_not_open(self)
         )
+
+    def __init_info_signal(self):
+        widget = self.navigationBar.infoInterface
+        view_log = widget.viewLogButton
+        save_log = widget.saveLogButton
+
+        view_log.clicked.connect(self.logWindow.show)
+        save_log.clicked.connect(self.logWindow.save_log)
 
 
 if __name__ == "__main__":
