@@ -84,7 +84,7 @@
       <item>
        <widget class="BodyLabel" name="label4">
         <property name="text">
-         <string>4.请不要使用该项目牟取利益否则后果自负</string>
+         <string>4. 请不要使用该项目牟取利益否则后果自负</string>
         </property>
        </widget>
       </item>

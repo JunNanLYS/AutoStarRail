@@ -20,7 +20,6 @@ class QRWindow(FramelessDialog):
     def resizeEvent(self, e):
         super().resizeEvent(e)
         self.background_widget.resize(self.width(), self.height() - self.titleBar.height())
-        print(e.size())
 
     def __init_widget(self):
         # 背景
@@ -31,7 +30,7 @@ class QRWindow(FramelessDialog):
 
         # 布局
         self.hBoxLayout = QHBoxLayout(self.background_widget)
-        self.hBoxLayout.setContentsMargins(5, 0, 5, 0)
+        self.hBoxLayout.setContentsMargins(10, 10, 10, 10)
         self.hBoxLayout.setSpacing(20)
 
         # 二维码卡片
