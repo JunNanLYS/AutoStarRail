@@ -35,5 +35,10 @@
   "picture_version": "20230725120009",
   "debug": false,
   "up_border": 45.0,
-  "img": 0
+  "img": 0,
+  "auto": {
+    "stamina": {},
+    "world": {},
+    "universe": {}
+  }
 }
