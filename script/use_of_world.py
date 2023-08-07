@@ -1,6 +1,7 @@
 import os
 
 from widgets import log
+from widgets.widget.dialog import new_dialog
 from script.start_game import start_game
 from script.world import name_to_map, update_dict
 from StarRailAssistant.run import run_map
@@ -14,6 +15,7 @@ def run(map_name):
     number = name_to_map[map_name].number  # 获取地图编号
     run_map(number)
     log.transmitAllLog('运行完成')
+    new_dialog("温馨提示", "锄大地运行完毕")
 
 
 def update(target: str):

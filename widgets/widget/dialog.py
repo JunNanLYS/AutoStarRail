@@ -2,7 +2,7 @@ import sys
 import time
 from typing import Optional
 
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, QTime, Signal
 from PySide6.QtGui import QBrush, QColor, QGuiApplication
 from PySide6.QtWidgets import QApplication, QVBoxLayout
 from qfluentwidgets import StrongBodyLabel, SubtitleLabel
@@ -12,6 +12,7 @@ from widgets import WidgetBase
 
 
 class ScriptDialog(FramelessDialog):
+    newDialog = Signal(str, str)
     def __init__(self, title, content):
         super().__init__()
         self.resize(400, 200)
@@ -20,8 +21,10 @@ class ScriptDialog(FramelessDialog):
         self.content = content
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
-        self.timer.timeout.connect(self.close)
+        self.timer.timeout.connect(self.hide)
         self.__init_widget()
+
+        self.newDialog.connect(self.new_dialog)
 
     def show(self) -> None:
         """
@@ -36,7 +39,6 @@ class ScriptDialog(FramelessDialog):
         target_h = h - self.height() - window_mandate_bar - 20
         self.move(target_w, target_h)
         self.raise_()
-        self.timer.start(3000)
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
@@ -61,23 +63,46 @@ class ScriptDialog(FramelessDialog):
         self.vBoxLayout.addWidget(self.title_label)
         self.vBoxLayout.addWidget(self.content_label)
 
+    def setText(self, title, content):
+        self.title_label.setText(title)
+        self.content_label.setText(content)
 
-dialog_instance: Optional[ScriptDialog] = None
+    def new_dialog(self, title, content):
+        self.setText(title, content)
+        self.show()
+        self.timer.start(3000)
 
 
+class ScriptDialogInterface:
+    def __init__(self):
+        self.instance: Optional[ScriptDialog] = None
+
+    def set_dialog(self, instance: ScriptDialog):
+        self.instance = instance
+
+    def new_dialog(self, title, content):
+        if self.instance is None:
+            raise AttributeError("instance is None")
+        if not self.instance.isHidden():
+            self.instance.timer.stop()
+            self.instance.hide()
+        # 使用信号传递是在主线程上，所以可以显示gui，否则会导致程序错误
+        self.instance.newDialog.emit(title, content)
+
+
+script_interface = ScriptDialogInterface()
+
+
+# 给出一个外部方法方便调用
 def new_dialog(title, content):
-    global dialog_instance
-    # 判断当前是否还有存在的对话框
-    if dialog_instance:
-        dialog_instance.close()
-        dialog_instance = None
-    dialog_instance = ScriptDialog(title, content)
-    dialog_instance.show()
+    script_interface.new_dialog(title, content)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     new_dialog('title', 'content')
-    time.sleep(1)
+    end = QTime.currentTime().addSecs(1)
+    while QTime.currentTime() < end:
+        app.processEvents()
     new_dialog('title2', 'content2')
     sys.exit(app.exec())

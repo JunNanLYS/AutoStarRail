@@ -5,10 +5,11 @@ from PySide6.QtWidgets import QApplication
 from qframelesswindow import FramelessMainWindow, FramelessWindow
 
 import utils.tool
-from script import use_of_world, use_of_commission, use_of_stamina
+from script import use_of_world, use_of_commission, use_of_stamina, auto_honkai_star_rail
 from script.use_of_stamina import set_stop
 from threadpool import script_thread, function_thread
 from utils import dialog
+from widgets.widget.dialog import new_dialog, ScriptDialog, script_interface
 from widgets.navigation_bar import ScriptNavigationBar, LogNavigationBar
 
 
@@ -76,6 +77,9 @@ class MainWindow(FramelessMainWindow):
         self.logWindow = LogWindow()
         self.logWindow.hide()
 
+        self.script_dialog = ScriptDialog("", "")
+        script_interface.set_dialog(self.script_dialog)
+
     def __init_stamina_signal(self):
         """
         初始化体力界面的信号
@@ -125,6 +129,8 @@ class MainWindow(FramelessMainWindow):
         widget = self.navigationBar.moreInterface
         commission_button = widget.commissionButton
         mandate_button = widget.mandateButton
+        auto_button = widget.autoButton
+
         commission_button.clicked.connect(self.logWindow.show)
         commission_button.clicked.connect(
             lambda: script_thread.submit(use_of_commission.run)
@@ -133,13 +139,22 @@ class MainWindow(FramelessMainWindow):
             lambda: dialog.functions_not_open(self)
         )
 
+        stamina_interface = self.navigationBar.staminaInterface
+        world_interface = self.navigationBar.worldInterface
+        auto_button.clicked.connect(self.logWindow.show)
+        auto_button.clicked.connect(
+            lambda: script_thread.submit(auto_honkai_star_rail.run,
+                                         stamina_interface.get_copies_count(),
+                                         world_interface.mapComboBox.currentText()))
+
     def __init_info_signal(self):
         widget = self.navigationBar.infoInterface
         view_log = widget.viewLogButton
         save_log = widget.saveLogButton
 
         view_log.clicked.connect(self.logWindow.show)
-        save_log.clicked.connect(self.logWindow.save_log)
+        save_log.clicked.connect(
+            lambda: function_thread.submit(self.logWindow.save_log))
 
 
 if __name__ == "__main__":

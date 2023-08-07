@@ -4,6 +4,7 @@ import pyautogui
 
 from script import commission, start_game
 from widgets import log
+from widgets.widget.dialog import new_dialog
 from utils import func, cv_tool
 
 
@@ -24,12 +25,15 @@ def run():
         time.sleep(1)
     else:
         log.transmitRunLog("等待超时，退出", debug=True)
+        new_dialog("警告", "等待超时，退出")
         return
 
     pending_points = commission.get_pending_point()  # 获取所有感叹号的位置
     pending_points = cv_tool.remove_same_position(pending_points, 3)  # 去重
     if not pending_points:
+        func.to_game_main()  # 回到主界面
         log.transmitAllLog("没有待领取的委托", debug=True)
+        new_dialog("温馨提示", "您没有需要领取的委托")
         return
 
     pending_points.sort(key=lambda p: p[1])  # 按照y进行排序
@@ -70,7 +74,9 @@ def run():
                 break
             else:
                 flag = False
+    func.to_game_main()  # 回到主界面
     log.transmitAllLog("委托清理完毕")
+    new_dialog("温馨提示", "委托已经清理完毕")
 
 
 if __name__ == '__main__':
