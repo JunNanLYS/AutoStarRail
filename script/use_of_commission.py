@@ -1,15 +1,19 @@
 import time
 
 import pyautogui
+import win32gui
 
 from script import commission, start_game
 from widgets import log
-from widgets.widget.dialog import new_dialog
-from utils import func, cv_tool
+from utils import func, cv_tool, dialog
 
 
 def run():
-    start_game.start_game()
+    log.transmitAllLog("请确保使用管理员身份启动的应用，否则一切操作将无效")
+    start_game.run()
+    if win32gui.FindWindow(None, "崩坏：星穹铁道") == 0:
+        log.transmitAllLog("没有检测到游戏，请检查是否设置游戏路径，或者手动开启游戏")
+        return
     log.transmitAllLog("开始清理委托")
     if not func.in_game_main():
         log.transmitRunLog("检测到未在游戏主界面")
@@ -25,7 +29,7 @@ def run():
         time.sleep(1)
     else:
         log.transmitRunLog("等待超时，退出", debug=True)
-        new_dialog("警告", "等待超时，退出")
+        dialog.new_win_message("警告", "等待超时，退出")
         return
 
     pending_points = commission.get_pending_point()  # 获取所有感叹号的位置
@@ -33,7 +37,8 @@ def run():
     if not pending_points:
         func.to_game_main()  # 回到主界面
         log.transmitAllLog("没有待领取的委托", debug=True)
-        new_dialog("温馨提示", "您没有需要领取的委托")
+
+        dialog.new_win_message("温馨提示", "您没有需要领取的委托")
         return
 
     pending_points.sort(key=lambda p: p[1])  # 按照y进行排序
@@ -76,7 +81,7 @@ def run():
                 flag = False
     func.to_game_main()  # 回到主界面
     log.transmitAllLog("委托清理完毕")
-    new_dialog("温馨提示", "委托已经清理完毕")
+    dialog.new_win_message("温馨提示", "委托已经清理完毕")
 
 
 if __name__ == '__main__':

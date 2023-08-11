@@ -1,12 +1,3 @@
-'''
-Author: Night-stars-1 nujj1042633805@gmail.com
-Date: 2023-05-23 17:39:27
-LastEditors: Night-stars-1 nujj1042633805@gmail.com
-LastEditTime: 2023-07-14 22:44:33
-Description: 
-
-Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
-'''
 from ctypes import windll
 
 import pygetwindow as gw

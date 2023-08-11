@@ -126,28 +126,35 @@ def use_fuel(number: int):
     """
     使用燃料
     """
+    fuel_rect = cv_find_image(ImagePath.FUEL, ImagePath.SELECTED_FUEL)
+    if fuel_rect == (-1, -1):
+        return False
     # 点击燃料
-    fuel_rect = find_image(ImagePath.FUEL, confidence=0.7)
-    pyautogui.moveTo(fuel_rect)
+    pyautogui.moveTo(*fuel_rect)
     pyautogui.click()
     # 点击确定
-    confirm_rect = find_image(ImagePath.CONFIRM)
-    pyautogui.moveTo(confirm_rect)
+    confirm_rect = cv_find_image(ImagePath.CONFIRM, ImagePath.SELECTED_CONFIRM)
+    if confirm_rect == (-1, -1):
+        return False
+    pyautogui.moveTo(*confirm_rect)
     pyautogui.click()
 
     # 添加使用数量
-    add_rect = find_image(ImagePath.ADD_CHALLENGE)
-    pyautogui.moveTo(add_rect)
+    add_rect = cv_find_image(ImagePath.ADD_CHALLENGE)
+    if add_rect != (-1, -1):
+        pyautogui.moveTo(*add_rect)
     for _ in range(number):
         pyautogui.click()
         time.sleep(0.2)
 
     # 确认
-    confirm_rect = find_image(ImagePath.CONFIRM)
-    pyautogui.moveTo(confirm_rect)
+    confirm_rect = cv_find_image(ImagePath.CONFIRM, ImagePath.SELECTED_CONFIRM)
+    if confirm_rect != (-1, -1):
+        pyautogui.moveTo(*confirm_rect)
     pyautogui.click()
     time.sleep(0.2)
     pyautogui.click()
+    return True
 
 
 def use_explore():
@@ -155,21 +162,26 @@ def use_explore():
     使用开拓力
     """
     # 点击星穹
-    stellar_jade_rect = find_image(ImagePath.STELLAR_JADE)
-    pyautogui.moveTo(stellar_jade_rect)
+    stellar_jade_rect = cv_find_image(ImagePath.STELLAR_JADE, ImagePath.SELECTED_STELLAR_JADE)
+    if stellar_jade_rect == (-1, -1):
+        return False
+    pyautogui.moveTo(*stellar_jade_rect)
     pyautogui.click()
     # 点击确定
-    confirm_rect = find_image(ImagePath.CONFIRM)
-    pyautogui.moveTo(confirm_rect)
+    confirm_rect = cv_find_image(ImagePath.CONFIRM, ImagePath.SELECTED_CONFIRM)
+    if confirm_rect == (-1, -1):
+        return False
+    pyautogui.moveTo(*confirm_rect)
     pyautogui.click()
     time.sleep(0.5)
 
     # 此时会弹出是否要使用，确认使用
-    confirm_rect = find_image(ImagePath.CONFIRM)
-    pyautogui.moveTo(confirm_rect)
+    confirm_rect = cv_find_image(ImagePath.CONFIRM, ImagePath.SELECTED_CONFIRM)
+    pyautogui.moveTo(*confirm_rect)
     pyautogui.click()
     time.sleep(0.2)
     pyautogui.click()
+    return True
 
 
 def screenshot() -> str:
@@ -185,8 +197,11 @@ def screenshot() -> str:
     return filename
 
 
-def cv_find_image(filename: str) -> Tuple[int, int]:
+def cv_find_image(filename: str, filename2: str = None, target=0.95) -> Tuple[int, int]:
     """
+    param filename: 模板图
+    param filename2: 备用模板图
+    param target: 目标阈值
     相比于直接使用pyautogui，cv2更加准确精准
     返回模板图的全局坐标
     """
@@ -199,12 +214,23 @@ def cv_find_image(filename: str) -> Tuple[int, int]:
     log.transmitRunLog("进行模板匹配")
     res = cv2.matchTemplate(screen, template, cv2.TM_CCOEFF_NORMED)
     # 获取最小匹配与位置，最大匹配与位置
-    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    _, max_val, _, max_loc = cv2.minMaxLoc(res)
     # 不匹配
-    if max_val < 0.95:
+    if max_val < target and filename2 is None:
         log.transmitRunLog("匹配失败")
-        log.transmitDebugLog("匹配值低于0.95", debug=True, level=2)
+        filename_sp = filename.split('\\')[-1]
+        log.transmitDebugLog(f"{filename_sp}匹配值低于0.95", debug=True, level=2)
         return -1, -1
+    elif max_val < target and filename2 is not None:
+        template = cv2.imread(filename2)
+        log.transmitRunLog("进行备用模板匹配")
+        res = cv2.matchTemplate(screen, template, cv2.TM_CCOEFF_NORMED)
+        _, max_val, _, max_loc = cv2.minMaxLoc(res)
+        if max_val < target:
+            log.transmitRunLog("匹配失败")
+            filename_sp = filename.split('\\')[-1]
+            log.transmitDebugLog(f"{filename_sp}匹配值低于0.95", debug=True, level=2)
+            return -1, -1
     log.transmitRunLog("匹配成功")
     return max_loc
 
@@ -236,3 +262,32 @@ def to_game_main() -> bool:
         time.sleep(1)
 
     return in_game_main()
+
+
+def debug_screenshot(rationale: str):
+    """
+    :param rationale: 原因
+    调试截图，在遇到一些奇怪现象时候截图方便调试，例如寻怪撞墙，运行脚本失效等情况
+    保存图片的名称为 模块-函数-时间-原因
+    """
+    import inspect
+    import os
+
+    from PIL import ImageGrab
+
+    from utils import tool
+    from datetime import datetime
+    img = ImageGrab.grab()
+    caller = inspect.stack()[1]
+    func_name = caller.function
+    model_name = caller.filename.split('\\')[-1]
+    root = tool.PathTool.get_root_path()
+    filename = r'logs\screenshot_log'
+    current_time = datetime.strftime(datetime.now(), '%Y-%m-%d')
+
+    # func_name在模块级别调用时返回<model>,文件名不能包含<>，清理掉
+    func_name = func_name.replace('<', '').replace('>', '')
+
+    added = f"[{model_name}]-[{func_name}]-[{current_time}]-[{rationale}]"
+    img.save(os.path.join(root, filename, f'{added}.png'))
+

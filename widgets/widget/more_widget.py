@@ -1,6 +1,6 @@
 from widgets import WidgetBase
 from .ui.more_widget import MoreWidgetUi
-from utils.dialog import functions_not_open
+from qfluentwidgets import Dialog
 
 
 class MoreWidget(WidgetBase, MoreWidgetUi):

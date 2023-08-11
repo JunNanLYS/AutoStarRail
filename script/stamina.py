@@ -30,7 +30,7 @@ def search_transmission(image_path):
     for box in rects:
         points.append((box.left, box.top, box))
     point = (image_rect.left, image_rect.top, image_rect)
-    transmission_rect = func.closest_point(points, point)[2]  # 计算哪个传送离经验花萼最近
+    transmission_rect = func.closest_point(points, point)[2]
     return transmission_rect
 
 

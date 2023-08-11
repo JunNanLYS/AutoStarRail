@@ -13,14 +13,14 @@ class PathTool:
         """
         :return: 项目根目录
         """
-        cur_path: str = os.path.abspath(__file__)
-        while cur_path.split('\\')[-1] != cls.PROJECT_NAME:
-            if cur_path.split('\\')[-1] == cls.PROJECT_NAME + '-' + cls.VERSION:
-                break
-            if cls.PROJECT_NAME in cur_path.split('\\')[-1]:
-                break
-            cur_path = os.path.dirname(cur_path)
-        return cur_path
+        # cur_path: str = os.path.abspath(__file__)
+        # while cur_path.split('\\')[-1] != cls.PROJECT_NAME:
+        #     if cur_path.split('\\')[-1] == cls.PROJECT_NAME + '-' + cls.VERSION:
+        #         break
+        #     if cls.PROJECT_NAME in cur_path.split('\\')[-1]:
+        #         break
+        #     cur_path = os.path.dirname(cur_path)
+        return config.abspath
 
     @classmethod
     def get_drives(cls):
@@ -57,13 +57,13 @@ class JsonTool:
         return res
 
     @classmethod
-    def dump_config_json(cls, config: dict):
+    def dump_config_json(cls, _config: dict):
         """
-        :param config: 配置文件
+        :param _config: 配置文件
         """
         path = os.path.join(PathTool.get_root_path(), "config.json")
         with open(path, 'w', encoding='UTF-8') as f:
-            json.dump(config, f)
+            json.dump(_config, f)
 
     @classmethod
     def read_json_file(cls, path):
