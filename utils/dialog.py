@@ -1,3 +1,4 @@
+from plyer import notification
 from qfluentwidgets import MessageBox
 
 
@@ -9,3 +10,11 @@ def functions_not_open(instance):
                          content="该功能暂不开放,可以加入开发加速功能开放",
                          parent=instance)
     message.show()
+
+
+def new_win_message(title, content):
+    notification.notify(
+        title=title,
+        message=content,
+        app_name="AutoStarRail",
+    )
