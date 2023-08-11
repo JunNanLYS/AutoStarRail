@@ -1,13 +1,13 @@
 import time
 
 import pyautogui
+import win32gui
 
 from script.stamina import STRING_TO_CALLBACK
-from script.start_game import start_game
+from script import start_game
 from utils.path import ImagePath
-from utils import func, check, tool
+from utils import func, check, tool, dialog
 from widgets import log
-from widgets.widget.dialog import new_dialog
 
 is_stop = False  # 设置True就能关闭运行中的脚本(use_of_stamina)
 
@@ -20,7 +20,9 @@ def run(copies: dict):
     副本名称对应着次数
     """
     global is_stop
-    if not start_game():  # 开启游戏
+    log.transmitAllLog("请确保自己使用管理员身份启动的脚本，否则一切操作将失效")
+    start_game.run()  # 开启游戏
+    if win32gui.FindWindow(None, "崩坏：星穹铁道") == 0:
         log.transmitAllLog("没有检测到游戏，请检查是否设置游戏路径，或者手动开启游戏")
         return
     func.wait_image(ImagePath.MANDATE)  # 等待进入游戏
@@ -29,11 +31,12 @@ def run(copies: dict):
     for c, cnt in copies.items():
         method, param = STRING_TO_CALLBACK.get(c, None)
         if method is None or param is None:
-            log.transmitRunLog(f"警告：出现不存在的字符串({c}) [use_of_stamina]", debug=True)
+            log.transmitDebugLog(f"警告：出现不存在的字符串({c}) [use_of_stamina]", debug=True, level=2)
+            log.transmitRunLog(f"出现不存在的字符串，准备跳过其")
             continue
         # 打副本，直到达成目标或出现意外(体力不够等情况)
         while cnt > 0:
-            if is_stop:
+            if is_stop:  # 暂停
                 break
             res = method(*param)
             if not res:  # 没有进入副本界面
@@ -61,12 +64,19 @@ def run(copies: dict):
                 if json_['use_fuel']:
                     flag = False
                     number = json_['fuel_number']
-                    func.use_fuel(number)
+                    if not func.use_fuel(number):
+                        log.transmitRunLog("没有成功使用燃料,退出")
+                        func.to_game_main()
+                        set_stop(True)
+                        break
                 # 使用星穹
                 if flag and json_['use_explore']:
                     # 使用星穹目前还没想好怎么写
-                    number = json_['explore_number']
-                    func.use_explore()
+                    if not func.use_explore():
+                        log.transmitRunLog("没有成功使用开拓力,退出")
+                        func.to_game_main()
+                        set_stop(True)
+                        break
                 func.challenge()
 
             # 开始挑战
@@ -83,7 +93,7 @@ def run(copies: dict):
             if not json_['auto-fight']:
                 log.transmitAllLog("设置选项-自动战斗：否")
                 pass
-            # 等待挑战完成(阻塞主线程)
+            # 等待挑战完成(阻塞线程)
             log.transmitRunLog("等待挑战完成")
             check.wait_challenge_completed()
             # 退出副本界面
@@ -93,10 +103,10 @@ def run(copies: dict):
             is_stop = False
             log.transmitRunLog("已停止清体力")
             break
-
-    func.to_game_main()  # 若不在主界面则回到主界面
+    if not func.in_game_main():
+        func.to_game_main()  # 若不在主界面则回到主界面
     log.transmitAllLog("体力清理完成")
-    new_dialog("温馨提示", "体力清理完成")
+    dialog.new_win_message("温馨提示", "体力清理完成")
 
 
 def set_stop(stop: bool):

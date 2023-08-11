@@ -2,6 +2,7 @@ import os
 
 from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QApplication
+from qfluentwidgets import Dialog
 from qframelesswindow import FramelessMainWindow, FramelessWindow
 
 import utils.tool
@@ -9,7 +10,6 @@ from script import use_of_world, use_of_commission, use_of_stamina, auto_honkai_
 from script.use_of_stamina import set_stop
 from threadpool import script_thread, function_thread
 from utils import dialog
-from widgets.widget.dialog import new_dialog, ScriptDialog, script_interface
 from widgets.navigation_bar import ScriptNavigationBar, LogNavigationBar
 
 
@@ -77,9 +77,6 @@ class MainWindow(FramelessMainWindow):
         self.logWindow = LogWindow()
         self.logWindow.hide()
 
-        self.script_dialog = ScriptDialog("", "")
-        script_interface.set_dialog(self.script_dialog)
-
     def __init_stamina_signal(self):
         """
         初始化体力界面的信号
@@ -123,7 +120,20 @@ class MainWindow(FramelessMainWindow):
             lambda: dialog.functions_not_open(self))
 
     def __init_universe_signal(self):
-        pass
+        from script import use_of_universe
+        widget = self.navigationBar.universeInterface
+        check_button = widget.checkButton
+        universe_button = widget.universeButton
+
+        check_button.clicked.connect(self.logWindow.show)
+        check_button.clicked.connect(
+            lambda: script_thread.submit(use_of_universe.run_align_angle)
+        )
+
+        universe_button.clicked.connect(self.logWindow.show)
+        universe_button.clicked.connect(
+            lambda: script_thread.submit(use_of_universe.run_states)
+        )
 
     def __init_more_signal(self):
         widget = self.navigationBar.moreInterface
@@ -141,11 +151,39 @@ class MainWindow(FramelessMainWindow):
 
         stamina_interface = self.navigationBar.staminaInterface
         world_interface = self.navigationBar.worldInterface
-        auto_button.clicked.connect(self.logWindow.show)
-        auto_button.clicked.connect(
-            lambda: script_thread.submit(auto_honkai_star_rail.run,
-                                         stamina_interface.get_copies_count(),
-                                         world_interface.mapComboBox.currentText()))
+
+        # 点击一键运行按钮时先询问是否沿用上一次的运行配置
+        def auto_button_dialog():
+            """
+            对话框，询问是否需要沿用上一次的配置
+            """
+
+            def set_use_last_config(yes_or_no):
+                import config
+                config.use_last_auto_config = yes_or_no
+
+            dia = Dialog(title="一键运行",
+                         content="是否沿用上一次的运行配置",
+                         parent=None)
+            dia.yesButton.setText("确定")
+            dia.cancelButton.setText("取消")
+            dia.yesSignal.connect(lambda: set_use_last_config(True))
+            dia.yesSignal.connect(lambda: self.logWindow.show)
+            dia.cancelSignal.connect(lambda: set_use_last_config(False))
+            dia.cancelSignal.connect(lambda: self.logWindow.show)
+            # 移动至主界面中央，由于fluent的bug所以只能以这种方式移动
+            parent_global_pos = self.mapToGlobal(widget.pos())
+            x = parent_global_pos.x() + (self.width() // 2) - (dia.width() // 2)
+            y = parent_global_pos.y() + (self.height() // 2) - (dia.height() // 2)
+            dia.move(x, y)
+            res = dia.exec()
+            # 点下确定或者取消都运行脚本
+            if res == 0 or res == 1:
+                script_thread.submit(auto_honkai_star_rail.run,
+                                     stamina_interface.get_copies_count(),
+                                     world_interface.mapComboBox.currentText())
+
+        auto_button.clicked.connect(auto_button_dialog)  # 启动对话框
 
     def __init_info_signal(self):
         widget = self.navigationBar.infoInterface
