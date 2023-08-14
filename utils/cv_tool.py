@@ -1,7 +1,9 @@
 def is_same_position(position1: tuple, position2: tuple, error_value: int):
     """
     传入两个坐标位置，判断这两个位置是否是同一个位置
-    parm error_value: 误差值
+    :param position1: 点1
+    :param position2: 点2
+    :param error_value: 误差值
     """
     for add_x in range(-error_value, error_value + 1):
         for add_y in range(-error_value, error_value + 1):
@@ -31,7 +33,5 @@ def remove_same_position(positions: list, error_value: int):
     return [position for i, position in enumerate(positions) if i not in flag]
 
 
-
-
 if __name__ == '__main__':
-    print(is_same_position((1181, 533), (1181, 534), 3))
+    pass

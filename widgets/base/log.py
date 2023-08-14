@@ -2,6 +2,7 @@ from PySide6.QtCore import Signal, Qt
 from PySide6.QtGui import QTextCharFormat
 from qfluentwidgets import PlainTextEdit
 from typing import Optional
+import logging
 
 
 class Log:
@@ -38,10 +39,12 @@ class Log:
         """
         1~5: info, debug, error, ...
         """
-        level = {1: "INFO", 2: "DEBUG", 3: "ERROR", 4: "WARNING", 5: "CRITICAL"}.get(level, "CRITICAL")
+        level_str = {1: "INFO", 2: "DEBUG", 3: "ERROR", 4: "WARNING", 5: "CRITICAL"}.get(level, "INFO")
+        int_to_level = {1: logging.info, 2: logging.debug, 3: logging.error, 4: logging.warning, 5: logging.critical}
+        int_to_level[level](content)
         print(content) if debug else ...
         if self._debugLogWidget is not None:
-            self._debugLogWidget.add.emit(f'[{level}]   {content}')
+            self._debugLogWidget.add.emit(f'[{level_str}]   {content}')
 
     def transmitAllLog(self, content: str, debug=False):
         print(content) if debug else ...
