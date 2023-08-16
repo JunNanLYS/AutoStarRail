@@ -10,8 +10,10 @@ class ImagePath:
     CAVERN_PATH = IMAGE_ROOT_PATH + "cavern\\"  # 侵蚀隧道的目录
     ECHO_OF_WAR_PATH = IMAGE_ROOT_PATH + "echoOfWar\\"  # 历战回响的目录
     COMMISSION_PATH = IMAGE_ROOT_PATH + "commission\\"  # 委托任务的目录
+    CHARACTER_PATH = IMAGE_ROOT_PATH + "character\\"  # 角色的目录
 
     # 杂 more
+    PHONE = IMAGE_ROOT_PATH + r"phone.png"                          # 手机
     MANDATE = IMAGE_ROOT_PATH + r"mandate.png"                      # 任务书
     BOOK = IMAGE_ROOT_PATH + r"book.png"                            # 星际和平书
     INDEX = IMAGE_ROOT_PATH + r"index.png"                          # 生存索引
@@ -89,4 +91,8 @@ class ImagePath:
     START_GAME = IMAGE_ROOT_PATH + r"startGame.png"     # 启动器的开始游戏
     ENTER_GAME = IMAGE_ROOT_PATH + r"enterGame.png"     # 进入游戏
     EXIT_COPIES = IMAGE_ROOT_PATH + r"exitCopies.png"   # 退出挑战
+
+    # 角色
+    ARROW = CHARACTER_PATH + r"arrow.png"               # 角色向上箭头
+    ARROW_DOWN = CHARACTER_PATH + r"arrowDown.png"      # 向下箭头
 
