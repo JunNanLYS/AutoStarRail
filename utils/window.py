@@ -35,8 +35,11 @@ def get_game_window():
     return pygetwindow.getWindowsWithTitle("崩坏：星穹铁道")[0]
 
 
-def save_game_screenshot():
-    """截取游戏截图并保存"""
+def save_game_screenshot() -> str:
+    """
+    截取游戏截图并保存
+    :return: 路径
+    """
     root = PathTool.get_root_path()
     target_path = os.path.join(root, r"temp\game_screenshot.png")
     game = get_game_window()
@@ -45,4 +48,5 @@ def save_game_screenshot():
     width, height = game.width * scaling, game.height * scaling
     img = ImageGrab.grab(bbox=(left, top, left + width, top + height))
     img.save(target_path)
+    return target_path
 
