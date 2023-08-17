@@ -14,6 +14,7 @@ def is_admin():
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()
     except:
+        new_win_message("AutoStarRail", "请使用管理员身份运行脚本谢谢")
         return False
 
 

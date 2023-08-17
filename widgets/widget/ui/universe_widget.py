@@ -65,6 +65,11 @@ class UniverseWidgetUi(object):
 
         self.verticalLayout_2.addWidget(self.universeButton)
 
+        self.stopButton = PushButton(self.widget)
+        self.stopButton.setObjectName(u"stopButton")
+
+        self.verticalLayout_2.addWidget(self.stopButton)
+
         self.verticalLayout.addWidget(self.widget)
 
         self.retranslateUi(Form)
@@ -87,4 +92,5 @@ class UniverseWidgetUi(object):
                                                        None))
         self.checkButton.setText(QCoreApplication.translate("Form", u"\u6821\u51c6", None))
         self.universeButton.setText(QCoreApplication.translate("Form", u"\u5f00\u59cb\u81ea\u52a8\u5316", None))
+        self.stopButton.setText(QCoreApplication.translate("Form", u"\u505c\u6b62", None))
     # retranslateUi
