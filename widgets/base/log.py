@@ -3,6 +3,7 @@ from PySide6.QtGui import QTextCharFormat
 from qfluentwidgets import PlainTextEdit
 from typing import Optional
 import logging
+logging.basicConfig(level=logging.DEBUG)
 
 
 class Log:
@@ -39,8 +40,8 @@ class Log:
         """
         1~5: info, debug, error, ...
         """
-        level_str = {1: "INFO", 2: "DEBUG", 3: "ERROR", 4: "WARNING", 5: "CRITICAL"}.get(level, "INFO")
-        int_to_level = {1: logging.info, 2: logging.debug, 3: logging.error, 4: logging.warning, 5: logging.critical}
+        level_str = {1: "DEBUG", 2: "INFO", 3: "WARNING", 4: "ERROR", 5: "CRITICAL"}.get(level, "INFO")
+        int_to_level = {1: logging.debug, 2: logging.info, 3: logging.warning, 4: logging.error, 5: logging.critical}
         int_to_level[level](content)
         print(content) if debug else ...
         if self._debugLogWidget is not None:

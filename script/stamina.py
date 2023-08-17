@@ -182,6 +182,10 @@ class Calyx:
 
         log.transmitRunLog(f"找图片")
         transmission_rect = search_transmission(cls.filename[calyx_name])
+
+        if transmission_rect is None:
+            transmission_rect = mouse_scroll_search(cls.filename[4], cls.filename[calyx_name])
+
         pyautogui.moveTo(transmission_rect)
         pyautogui.click()
         time.sleep(2)

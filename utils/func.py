@@ -5,6 +5,7 @@ from typing import Tuple
 
 from widgets import log
 from utils.path import ImagePath
+from utils.window import save_game_screenshot
 
 
 def fight() -> bool:
@@ -235,12 +236,38 @@ def cv_find_image(filename: str, filename2: str = None, target=0.95) -> Tuple[in
     return max_loc
 
 
+def gray_find_image(filename: str, target: float = 0.9) -> Tuple[int, int]:
+    """
+    灰度图搜索图像
+    :param filename: 路径
+    :param target: 阈值
+    """
+    log.transmitRunLog("截图全屏中")
+    game_filename = save_game_screenshot()
+    # 读取截取和模板
+    screen = cv2.imread(game_filename)
+    template = cv2.imread(filename)
+
+    # 转化成灰度图
+    screen_gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+    template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+
+    res = cv2.matchTemplate(screen_gray, template_gray, cv2.TM_CCOEFF_NORMED)
+    _, max_val, _, max_loc = cv2.minMaxLoc(res)
+
+    if max_val < target:
+        log.transmitDebugLog(f"匹配值低于{target}", level=3)
+        return -1, -1
+    log.transmitRunLog("匹配成功")
+    return max_loc
+
+
 def in_game_main() -> bool:
     """
     检测是否在游戏主界面
     """
     log.transmitDebugLog("in_game_main运行")
-    return cv_find_image(ImagePath.MANDATE) != (-1, -1)
+    return gray_find_image(ImagePath.MANDATE) != (-1, -1)
 
 
 def to_game_main() -> bool:
@@ -248,11 +275,10 @@ def to_game_main() -> bool:
     尝试将游戏切换至主界面
     """
     log.transmitDebugLog("to_game_main运行")
-    mandate = ImagePath.MANDATE
     cnt = 0
     max_cnt = 6
     press = 1
-    while cv_find_image(mandate) == (-1, -1) and cnt <= max_cnt:
+    while (not in_game_main()) and cnt <= max_cnt:
         log.transmitDebugLog(f"检测到不在主界面，尝试切回主界面，这是第{cnt}次尝试")
         for _ in range(press):
             pyautogui.press('esc')
@@ -291,3 +317,6 @@ def debug_screenshot(rationale: str):
     added = f"[{model_name}]-[{func_name}]-[{current_time}]-[{rationale}]"
     img.save(os.path.join(root, filename, f'{added}.png'))
 
+
+if __name__ == "__main__":
+    loc = gray_find_image(ImagePath.MANDATE)
