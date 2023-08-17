@@ -90,6 +90,7 @@ def closest_point(points, new_point):
 
 
 def find_image(filename, max_count=3, confidence=0.85):
+    """准备弃用,未来用cv_find_image"""
     image_name = filename.split('\\')[-1]
     log.transmitRunLog(f"查找图片{image_name}", debug=True)
     for _ in range(max_count):
