@@ -60,9 +60,8 @@ class Point(object):
 
     def get_all_directions(self):
         return (
-            self.up_left, self.up, self.up_right,
-            self.left, self.right,
-            self.down_left, self.down, self.down_right
+            self.up, self.left, self.down, self.right,
+            self.up_left, self.down_left, self.down_right, self.up_right
         )
 
 
@@ -74,23 +73,33 @@ def a_star(graph, start, goal, heuristic):
     pass
 
 
-def get_road(filename: str):
+def is_road(img, x, y) -> bool:
+    """
+    :param img: 图像
+    :param x: 坐标x
+    :param y: 坐标y
+    :return: 是否红色
+    """
+    return np.all(img[y][x] == [0, 0, 255])
+
+
+def get_road(img):
     """
     返回路径
-    :param filename: 地图路径
+    :param img: cv2
     """
-    img = cv2.imread(filename)
-    start_point = get_start_position(filename)  # 起点坐标
+    start_point = get_start_position(img)  # 起点坐标
     move_set = {start_point}  # 访问过的像素
     road = [start_point]
     h, w = img.shape[:2]
     stack: List[Point] = [*Point(start_point).get_all_directions()]  # 模拟递归防止爆栈
     while stack:
-        top = stack.pop()
+        top = stack.pop()  # 顶部弹出
         x, y = top.x, top.y
-        if np.all(img[y][x] == [0, 0, 255]):
-            road.append(top.tuple)
-            move_set.add(top.tuple)
+        if is_road(img, x, y):  # x,y是红色像素
+            if top.tuple not in move_set:
+                road.append(top.tuple)
+                move_set.add(top.tuple)
             # 获取四周没访问过的像素
             for nex in top.get_all_directions():
                 if nex.x < 0 or nex.y < 0 or nex.x >= w or nex.y >= h:
@@ -101,37 +110,30 @@ def get_road(filename: str):
     return road
 
 
-def get_start_position(filename: str) -> Tuple[int, int]:
+def get_start_position(img) -> Tuple[int, int]:
     """
     起点颜色必须是[0, 255, 0] BGR格式
-    :param filename: 地图
+    :param img: 地图
     :return: 返回地图中路线的起点(x, y)
     """
-    img = cv2.imread(filename)
     # 查找所有绿色像素
     target = np.all(img == [0, 255, 0], axis=-1)
     matches = np.where(target)
     if matches[0].size == 0:
-        log.transmitDebugLog(f"地图中没有起点[{filename}]", level=3)
+        log.transmitDebugLog(f"地图中没有起点]", level=3)
         return -1, -1
-    log.transmitDebugLog(f"查询到起点[{filename}],{matches[0][0]} {matches[1][0]}", level=2)
+    log.transmitDebugLog(f"查询到起点,{matches[1][0]} {matches[0][0]}", level=2)
     return matches[1][0], matches[0][0]
 
 
 if __name__ == '__main__':
-    # import sys
-    #
-    # sys.setrecursionlimit(3000)
-    root = config.abspath
-    have_green = os.path.join(root, r'world\map\2', 'test.png')
-    r = get_road(have_green)
-    print(r)
-    # print(len(r))
-    # print(len(set(r)))
-    # image = cv2.imread(have_green)
-    # h, w = image.shape[:2]
+    from world.script import Map
+    from collections import Counter
 
-    # print(image[10][10])
-    # cv2.circle(image, (x, y), 0, (255, 0, 0))
-    # cv2.imshow('image', image)
-    # cv2.waitKey(0)
+    m = Map()
+    m.set_world_number(2)
+    m.set_map_name('1-1')
+    before = get_road(m.get_road_map_img())
+    after = list(set(before))
+    print(before)
+    print(len(before), len(after))

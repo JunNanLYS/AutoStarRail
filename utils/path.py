@@ -93,6 +93,8 @@ class ImagePath:
     EXIT_COPIES = IMAGE_ROOT_PATH + r"exitCopies.png"   # 退出挑战
 
     # 角色
-    ARROW = CHARACTER_PATH + r"arrow.png"               # 角色向上箭头
+    ARROW = CHARACTER_PATH + r"arrow.png"               # 向上箭头
     ARROW_DOWN = CHARACTER_PATH + r"arrowDown.png"      # 向下箭头
+    ARROW_LEFT = CHARACTER_PATH + r"arrowLeft.png"      # 向左箭头
+    ARROW_RIGHT = CHARACTER_PATH + r"arrowRight.png"    # 后右箭头
 

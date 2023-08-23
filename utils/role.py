@@ -39,15 +39,16 @@ def _mouse_move(x, y):
 
 
 class Role:
-    def __init__(self):
-        self.angle = 0
+    angle = 0
 
     @classmethod
-    def move_view(cls, direction: Direction):
+    def move_view(cls, direction: Direction, angle: int):
         """
         :param direction: 方向
+        :param angle: 角度
         """
-        point = 2400  # 90度转角
+
+        point = int(28 * angle)
         dic = {
             Direction.UP: (0, -point),
             Direction.DOWN: (0, point),
@@ -109,12 +110,40 @@ class Role:
             if max_val > val:
                 val = max_val
                 angle = i
+        cls.angle = angle
         return angle
 
     @classmethod
-    def set_angle(cls, angle: int):
-        pass
+    def set_angle(cls, current: int, target: int):
+        """
+        :param current:
+        :param target:
+        """
+        angle = target - current
+        if angle < 0:
+            # angle = abs(angle)
+            # if angle > 90:
+            #     cnt = angle // 90
+            #     angle = angle % 90
+            #     for _ in range(cnt):
+            #         cls.move_view(Direction.RIGHT, 90)
+            cls.move_view(Direction.RIGHT, -angle)
+        else:
+            # if angle > 90:
+            #     cnt = angle // 90
+            #     angle = angle % 90
+            #     for _ in range(cnt):
+            #         cls.move_view(Direction.LEFT, 90)
+            cls.move_view(Direction.LEFT, angle)
+        time.sleep(0.5)
+        pyautogui.press('ctrl')
+        time.sleep(0.1)
+        pyautogui.press('w')
+        pyautogui.press('ctrl')
+        time.sleep(0.1)
+        cls.angle = target
+
 
 
 if __name__ == '__main__':
-    pass
+    Role.set_angle(90, 180)
