@@ -1,13 +1,11 @@
-import os
-from queue import Queue
-from typing import Tuple, Optional, List
+"""
+路线图方法
+"""
+from typing import Tuple, List
 
 import numpy as np
 
-import config
 from widgets import log
-
-import cv2
 
 
 class Point(object):
@@ -102,10 +100,12 @@ def get_road(img):
                 move_set.add(top.tuple)
             # 获取四周没访问过的像素
             for nex in top.get_all_directions():
+                # 坐标不能越界
                 if nex.x < 0 or nex.y < 0 or nex.x >= w or nex.y >= h:
                     continue
-                if nex.tuple not in move_set:
+                if (nex.tuple not in move_set) and is_road(img, nex.x, nex.y):
                     stack.append(nex)
+                    break
 
     return road
 
@@ -128,7 +128,6 @@ def get_start_position(img) -> Tuple[int, int]:
 
 if __name__ == '__main__':
     from world.script import Map
-    from collections import Counter
 
     m = Map()
     m.set_world_number(2)

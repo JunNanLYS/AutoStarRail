@@ -257,6 +257,23 @@ class Map:
         self.map_name = map_name
 
 
+class World:
+    def __init__(self):
+        pass
+
+    def is_fight(self):
+        """
+        判断是否正在战斗
+        """
+        pass
+
+    def fight(self):
+        """
+        战斗攻击..
+        """
+        pass
+
+
 # 初始化星球以及地区
 WORLD = 3  # 星球
 WORLD_TO_MAP_NAME = {
@@ -312,7 +329,6 @@ def main():
             # 若直到循环结束角度依旧一样则需要在这添加
             if not added:
                 roads.append((start, end, pre_angle))
-            print(roads)
             for pos1, pos2, angle in roads:
                 Role.set_angle(Role.angle, angle)
                 length = m.calculate_length(pos1, pos2)
