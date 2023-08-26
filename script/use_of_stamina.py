@@ -3,6 +3,7 @@ import time
 import pyautogui
 import win32gui
 
+from config import config
 from script.stamina import STRING_TO_CALLBACK
 from script import start_game
 from utils.path import ImagePath
@@ -26,7 +27,6 @@ def run(copies: dict):
         log.transmitAllLog("没有检测到游戏，请检查是否设置游戏路径，或者手动开启游戏")
         return
     func.wait_image(ImagePath.MANDATE)  # 等待进入游戏
-    json_ = tool.JsonTool.get_config_json()
 
     for c, cnt in copies.items():
         method, param = STRING_TO_CALLBACK.get(c, None)
@@ -61,16 +61,16 @@ def run(copies: dict):
             if check.is_no_stamina():
                 flag = True
                 # 使用燃料
-                if json_['use_fuel']:
+                if config.use_fuel:
                     flag = False
-                    number = json_['fuel_number']
+                    number = config.fuel_number
                     if not func.use_fuel(number):
                         log.transmitRunLog("没有成功使用燃料,退出")
                         func.to_game_main()
                         set_stop(True)
                         break
                 # 使用星穹
-                if flag and json_['use_explore']:
+                if flag and config.use_explore:
                     # 使用星穹目前还没想好怎么写
                     if not func.use_explore():
                         log.transmitRunLog("没有成功使用开拓力,退出")
@@ -90,7 +90,7 @@ def run(copies: dict):
                 time.sleep(0.5)
                 pyautogui.keyUp('w')
                 pyautogui.click()
-            if not json_['auto-fight']:
+            if not config.auto_fight:
                 log.transmitAllLog("设置选项-自动战斗：否")
                 pass
             # 等待挑战完成(阻塞线程)
