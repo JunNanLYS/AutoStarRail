@@ -1,3 +1,5 @@
+import ctypes
+
 import pyautogui
 import cv2 as cv
 import numpy as np
@@ -104,6 +106,7 @@ class UniverseUtils:
                 win32gui.ReleaseDC(hwnd, dc)
                 scale_x = dpi_x / 96
                 scale_y = dpi_y / 96
+                self.scale = ctypes.windll.user32.GetDpiForWindow(hwnd) / 96.0
                 # 计算出真实分辨率
                 self.real_width = int(self.xx * scale_x)
                 # x01y01:窗口左上右下坐标
@@ -969,7 +972,7 @@ class UniverseUtils:
             y = -30
         else:
             y = x
-        dx = int(9800 * y * 1295 / self.real_width / 180 * self.multi)
+        dx = int(16.5 * y * self.multi * self.scale)
         if self._stop == 0 and self.stop_move == 0:
             win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, dx, 0)  # 进行视角移动
         time.sleep(0.05)

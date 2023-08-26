@@ -267,8 +267,8 @@ def in_game_main() -> bool:
     """
     检测是否在游戏主界面
     """
-    log.transmitDebugLog("in_game_main运行")
-    return gray_find_image(ImagePath.MANDATE) != (-1, -1)
+    # log.transmitDebugLog("in_game_main运行")
+    return gray_find_image(ImagePath.MANDATE, 0.8) != (-1, -1)
 
 
 def to_game_main() -> bool:
@@ -283,7 +283,7 @@ def to_game_main() -> bool:
         log.transmitDebugLog(f"检测到不在主界面，尝试切回主界面，这是第{cnt}次尝试")
         for _ in range(press):
             pyautogui.press('esc')
-            time.sleep(0.3)
+            time.sleep(1)
         press = 2 if press == 1 else 1
         cnt += 1
         time.sleep(1)
@@ -320,4 +320,4 @@ def debug_screenshot(rationale: str):
 
 
 if __name__ == "__main__":
-    loc = gray_find_image(ImagePath.MANDATE)
+    print(in_game_main())
