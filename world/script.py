@@ -7,12 +7,14 @@ from copy import deepcopy
 import pyautogui
 import numpy as np
 import cv2
+import win32api
+import win32con
 
 import config
 from widgets import log
-from utils.role import Role, MoveDirection, Direction
+from utils.role import Role, MoveDirection
 from utils import window, path, func
-from world import road, map
+from world import road
 
 stop = False
 
@@ -95,6 +97,54 @@ def calculate_angle(pos1: Tuple[int, int], pos2: Tuple[int, int]) -> int:
         else:
             angle += 90
     return angle
+
+
+def align_angle():
+    """
+    校准鼠标误差，在不同DPI，分辨率，缩放下误差不相同。
+    移动角色60度，根据实际移动了几度计算出误差比。
+    参考自Github项目Auto_Simulated_Universe。
+    """
+    from config import config as cfg
+    def f():
+        time.sleep(0.5)
+        pyautogui.press('ctrl')
+        time.sleep(0.1)
+        pyautogui.press('w')
+        pyautogui.press('ctrl')
+        time.sleep(0.5)
+
+    m = Map()
+    m.capture_minimap()
+    cfg.angle = 1.0  # 调整为默认值
+    # 初始化角色当前角度
+    init_angle = Role.get_angle(m.minimap)
+    log.transmitDebugLog(f"初始角度={init_angle}", level=2)
+    last_angle = init_angle
+    win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, 0, 3000)  # 将视角向下拉
+    for i in [1, 1, 3]:
+        angle_list = []
+        for j in range(i):
+            Role.move_view(60)
+            f()
+            m.capture_minimap()
+            now_angle = Role.get_angle(m.minimap)
+            sub = last_angle - now_angle  # 计算实际移动角度与应该移动角度误差
+            while sub < 0:
+                sub += 360
+            angle_list.append(sub)
+            last_angle = now_angle
+        angle_list = np.array(angle_list)
+        log.transmitDebugLog(f"angle_list={angle_list}", level=2)
+        ax, ay = 0, 0
+        for j in angle_list:
+            if abs(j - np.median(angle_list)) <= 5:
+                ax += 60
+                ay += j
+        cfg.angle *= ax / ay
+        log.transmitDebugLog(f"ax={ax}, ay={ay}")
+    log.transmitDebugLog(f"计算得出误差={cfg.angle}")
+    cfg.dump()
 
 
 class Map:
