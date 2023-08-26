@@ -38,7 +38,7 @@ class Log:
 
     def transmitDebugLog(self, content: str, debug=False, level=1):
         """
-        1~5: info, debug, error, ...
+        1~5: DEBUG,INFO,WARNING,ERROR,CRITICAL
         """
         level_str = {1: "DEBUG", 2: "INFO", 3: "WARNING", 4: "ERROR", 5: "CRITICAL"}.get(level, "INFO")
         int_to_level = {1: logging.debug, 2: logging.info, 3: logging.warning, 4: logging.error, 5: logging.critical}

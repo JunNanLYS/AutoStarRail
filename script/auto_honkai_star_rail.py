@@ -14,11 +14,11 @@ def dump_config_json(stamina, world):
     """
     将参数保存至配置文件
     """
+    from config import config
     log.transmitRunLog("保存此次运行配置")
-    config_json = tool.JsonTool.get_config_json()
-    config_json['auto']['stamina'] = stamina
-    config_json['auto']['world'] = world
-    tool.JsonTool.dump_config_json(config_json)
+    config.auto['stamina'] = stamina
+    config.auto['world'] = world
+    config.dump()
 
 
 def get_scripts(stamina, world):
@@ -26,6 +26,7 @@ def get_scripts(stamina, world):
     :return: 获取每种脚本的方法以及参数
     """
     import config
+    from config import config as config_instance
     scripts = {
         use_of_commission.run: (),
         use_of_stamina.run: (stamina,),
@@ -38,9 +39,8 @@ def get_scripts(stamina, world):
         """
         nonlocal scripts
         log.transmitRunLog("沿用上一次运行配置")
-        auto_config = tool.JsonTool.get_config_json()['auto']
-        stamina_param = auto_config['stamina']
-        world_param = auto_config['world']
+        stamina_param = config_instance.auto['stamina']
+        world_param = config_instance.auto['world']
         scripts = {
             use_of_commission.run: (),
             use_of_stamina.run: (stamina_param,),

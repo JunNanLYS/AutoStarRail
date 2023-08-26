@@ -26,8 +26,10 @@ class ImagePath:
     SELECTED_FUEL = IMAGE_ROOT_PATH + r"selectedFuel.png"           # 被选中的燃料
     STELLAR_JADE = IMAGE_ROOT_PATH + r"stellarJade.png"             # 星穹
     SELECTED_STELLAR_JADE = IMAGE_ROOT_PATH + r"selectedStellarJade.png"  # 被选中的星穹
-    AUTO_FIGHT = IMAGE_ROOT_PATH + r"autoFight.png"                 # 自动战斗
-    AUTO_FIGHT_2 = IMAGE_ROOT_PATH + r"autoFight2.png"              # 自动战斗(未开启)
+    AUTO_FIGHT = IMAGE_ROOT_PATH + r"autoFight.png"                 # 自动战斗(未开启)
+    AUTO_FIGHT_2 = IMAGE_ROOT_PATH + r"autoFight2.png"              # 自动战斗(开启)
+    AUTO_FIGHT_3 = IMAGE_ROOT_PATH + r"autoFight3.png"              # 自动战斗(开启)
+    AUTO_FIGHT_4 = IMAGE_ROOT_PATH + r"autoFight4.png"              # 自动战斗(开启)
 
     # 拟造花萼 calyx
     CALYX_GOLD = CALYX_PATH + r"calyxGold.png"                      # 花萼(金)
@@ -93,6 +95,8 @@ class ImagePath:
     EXIT_COPIES = IMAGE_ROOT_PATH + r"exitCopies.png"   # 退出挑战
 
     # 角色
-    ARROW = CHARACTER_PATH + r"arrow.png"               # 角色向上箭头
+    ARROW = CHARACTER_PATH + r"arrow.png"               # 向上箭头
     ARROW_DOWN = CHARACTER_PATH + r"arrowDown.png"      # 向下箭头
+    ARROW_LEFT = CHARACTER_PATH + r"arrowLeft.png"      # 向左箭头
+    ARROW_RIGHT = CHARACTER_PATH + r"arrowRight.png"    # 后右箭头
 

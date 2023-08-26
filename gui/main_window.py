@@ -124,6 +124,7 @@ class MainWindow(FramelessMainWindow):
         widget = self.navigationBar.universeInterface
         check_button = widget.checkButton
         universe_button = widget.universeButton
+        stop_button = widget.stopButton
 
         check_button.clicked.connect(self.logWindow.show)
         check_button.clicked.connect(
@@ -133,6 +134,10 @@ class MainWindow(FramelessMainWindow):
         universe_button.clicked.connect(self.logWindow.show)
         universe_button.clicked.connect(
             lambda: script_thread.submit(use_of_universe.run_states)
+        )
+
+        stop_button.clicked.connect(
+            lambda: use_of_universe.stop_states()
         )
 
     def __init_more_signal(self):

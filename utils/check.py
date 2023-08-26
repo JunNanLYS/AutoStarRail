@@ -28,3 +28,9 @@ def is_no_stamina() -> bool:
     if func.find_image(ImagePath.NO_STAMINA, max_count=2):
         return True
     return False
+
+
+def is_auto_fight() -> bool:
+    """
+    """
+    pass
