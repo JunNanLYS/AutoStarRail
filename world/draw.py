@@ -10,7 +10,7 @@ from world.script import Map
 # 初始化
 root = config.abspath
 pen_size = 1  # 画笔大小
-world_number = 2  # 世界编号
+world_number = 1  # 世界编号
 map_name = "1-1"  # 地区-传送点编号
 m = Map()
 m.set_world_number(world_number)
