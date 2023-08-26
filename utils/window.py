@@ -7,9 +7,6 @@ import pygetwindow
 import win32print
 from PIL import ImageGrab
 
-from utils.tool import PathTool
-
-
 def get_read_size():
     """获取真实分辨率"""
     hDC = win32gui.GetDC(0)
@@ -40,7 +37,8 @@ def save_game_screenshot() -> str:
     截取游戏截图并保存
     :return: 路径
     """
-    root = PathTool.get_root_path()
+    import config
+    root = config.abspath
     target_path = os.path.join(root, r"temp\game_screenshot.png")
     game = get_game_window()
     scaling = get_scaling()

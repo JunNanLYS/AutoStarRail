@@ -12,15 +12,10 @@ import win32con
 import pyautogui
 
 from utils import path, cv_tool
+from config import config
+import game
 
 filename = path.ImagePath
-
-
-class Direction(Enum):
-    UP = 'up'
-    DOWN = 'down'
-    LEFT = 'left'
-    RIGHT = 'right'
 
 
 class MoveDirection(Enum):
@@ -35,29 +30,32 @@ class MoveDirection(Enum):
 
 
 def _mouse_move(x, y):
-    win32api.mouse_event(win32con.MOUSE_MOVED, x, y)
+    win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, x, y)
 
 
 class Role:
     angle = 0
 
     @classmethod
-    def move_view(cls, direction: Direction, angle: int):
+    def move_view(cls, angle):
         """
-        :param direction: 方向
+        移动角色视角，正angle右转，负angle左转。
+        本代码参考自github项目Auto_Simulated_Universe
         :param angle: 角度
         """
 
-        point = int(28 * angle)
-        dic = {
-            Direction.UP: (0, -point),
-            Direction.DOWN: (0, point),
-            Direction.LEFT: (-point, 0),
-            Direction.RIGHT: (point, 0)
-        }
-        if direction not in dic:
-            raise ValueError(f"direction {direction} not in {dic}")
-        _mouse_move(*dic[direction])
+        if angle > 30:
+            y = 30
+        elif angle < -30:
+            y = -30
+        else:
+            y = angle
+        # 分多次移动，防止鼠标移动离开游戏窗口
+        dx = int(16.5 * y * config.angle * game.scale)
+        win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, dx, 0)  # 进行视角移动
+        time.sleep(0.05)
+        if angle != y:
+            Role.move_view(angle - y)
 
     @classmethod
     def move_position(cls, direction: MoveDirection, point: int):
@@ -120,21 +118,19 @@ class Role:
         :param target:
         """
         angle = target - current
-        if angle < 0:
-            # angle = abs(angle)
-            # if angle > 90:
-            #     cnt = angle // 90
-            #     angle = angle % 90
-            #     for _ in range(cnt):
-            #         cls.move_view(Direction.RIGHT, 90)
-            cls.move_view(Direction.RIGHT, -angle)
+
+        if angle > 0:
+            if angle <= 180:
+                cls.move_view(-angle)
+            else:
+                cls.move_view(360 - angle)
         else:
-            # if angle > 90:
-            #     cnt = angle // 90
-            #     angle = angle % 90
-            #     for _ in range(cnt):
-            #         cls.move_view(Direction.LEFT, 90)
-            cls.move_view(Direction.LEFT, angle)
+            angle = abs(angle)
+            if angle <= 180:
+                cls.move_view(angle)
+            else:
+                cls.move_view(-(360 - angle))
+
         time.sleep(0.5)
         pyautogui.press('ctrl')
         time.sleep(0.1)
@@ -144,6 +140,6 @@ class Role:
         cls.angle = target
 
 
-
 if __name__ == '__main__':
-    Role.set_angle(90, 180)
+    time.sleep(0.5)
+    Role.set_angle(0, 90)
