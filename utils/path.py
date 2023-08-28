@@ -11,6 +11,7 @@ class ImagePath:
     ECHO_OF_WAR_PATH = IMAGE_ROOT_PATH + "echoOfWar\\"  # 历战回响的目录
     COMMISSION_PATH = IMAGE_ROOT_PATH + "commission\\"  # 委托任务的目录
     CHARACTER_PATH = IMAGE_ROOT_PATH + "character\\"  # 角色的目录
+    WORLD_PATH = IMAGE_ROOT_PATH + "world\\"  # 世界的目录
 
     # 杂 more
     PHONE = IMAGE_ROOT_PATH + r"phone.png"                          # 手机
@@ -99,4 +100,9 @@ class ImagePath:
     ARROW_DOWN = CHARACTER_PATH + r"arrowDown.png"      # 向下箭头
     ARROW_LEFT = CHARACTER_PATH + r"arrowLeft.png"      # 向左箭头
     ARROW_RIGHT = CHARACTER_PATH + r"arrowRight.png"    # 后右箭头
+
+    # 世界
+    QUESTION_MASK = WORLD_PATH + r"questionMask.png"    # 问号
+    WARNING = WORLD_PATH + r"warning.png"               # 感叹号
+    SELECT_MONSTER = WORLD_PATH + r"selectMonster.png"  # 选中敌人
 
