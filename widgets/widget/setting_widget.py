@@ -69,13 +69,14 @@ class SettingWidget(WidgetBase, SettingWidgetUi):
         """
         加载配置文件
         """
+        from config import config as cfg
         json_ = JsonTool.get_config_json()
-        self.gamePathEdit.setText(json_["game_path"])
-        if json_['auto-fight']:
+        self.gamePathEdit.setText(cfg.game_path)
+        if cfg.auto_fight:
             self.autofightButton.toggleChecked()  # 自动战斗
-        if json_["use_fuel"]:
+        if cfg.use_fuel:
             self.fuelButton.toggleChecked()  # 燃料
-        if json_["use_explore"]:
+        if cfg.use_explore:
             self.exploreButton.toggleChecked()  # 开拓力
 
         self.fuelSpinBox.setValue(json_["fuel_number"])
