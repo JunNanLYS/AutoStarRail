@@ -1,7 +1,7 @@
 import time
 from logging import getLogger, FileHandler, Formatter, INFO
 
-from .log import logs_path
+from utils.universe_utils.log import logs_path
 
 map_log = getLogger("map_logger")
 map_log.setLevel(INFO)
