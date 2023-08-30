@@ -1,38 +1,64 @@
-import threading
-import traceback
-import keyboard
-import pyautogui
-import cv2 as cv
-import numpy as np
-import time
-import win32gui
+import datetime
+import os
 import random
 import sys
+import threading
+import time
+import traceback
 from copy import deepcopy
+
+import cv2 as cv
+import keyboard
+import numpy as np
+import pyautogui
+import pytz
+import pyuac
+import requests
+import win32gui
+
+from Auto_Simulated_Universe.align_angle import main as align_angle
+from utils.universe_utils.config import config
 from utils.universe_utils.log import log, set_debug
 from utils.universe_utils.map_log import map_log
 from utils.universe_utils.update_map import update_map
 from utils.universe_utils.utils import UniverseUtils, set_forground, notif
-import os
-from Auto_Simulated_Universe.align_angle import main as align_angle
-from utils.universe_utils.config import config
-from utils import tool
-import datetime
-import pytz
 
 pyautogui.FAILSAFE = False
 
 # 版本号
-version = "v5.10 stable"
-
-# 优先事件
-events = len(os.listdir(tool.PathTool.get_root_path() + r"\Auto_Simulated_Universe\imgs\events"))
+version = "v5.30 beta"
 
 
 class SimulatedUniverse(UniverseUtils):
-    def __init__(self, find, debug, show_map, speed, unlock=False, bonus=False, update=0):
+    def __init__(self, find, debug, show_map, speed, unlock=False, bonus=False, update=0, gui=0):
         super().__init__()
-        log.info("当前版本：" + version)
+        # t1 = threading.Thread(target=os.system,kwargs={'command':'notif.exe > NUL 2>&1'})
+        # t2 = threading.Thread(target=os.system,kwargs={'command':'python notif.py > NUL 2>&1'})
+        log.info("当前版本：" + version + "  当前命途：" + self.fate)
+        if gui:
+            try:
+                lowest = \
+                requests.get("https://api.github.com/repos/CHNZYX/Auto_Simulated_Universe/releases/latest").json()[
+                    "name"].split('lowest')[1].strip().strip('v')
+                log.info("版本下限：v" + lowest)
+            except:
+                log.info("网络异常，尝试备用网址")
+                try:
+                    lowest = requests.get("https://chnzyx.github.io/asu_version_check/").text.strip()
+                    log.info("版本下限：v" + lowest)
+                except:
+                    log.info("网络异常，强制退出")
+            ves = version[1:].split(' ')[0]
+            try:
+                if float(lowest) > float(ves):
+                    log.info("当前版本过低，强制退出")
+                    self.validation = 0
+                else:
+                    self.validation = 1
+            except:
+                self.validation = 0
+        else:
+            self.validation = 1
         self.now_map = None
         self.now_map_sim = None
         self.real_loc = [0, 0]
@@ -47,6 +73,8 @@ class SimulatedUniverse(UniverseUtils):
         self.count = 0
         self.count_tm = time.time()
         self.floor_tm = time.time()
+        self.init_tm = time.time()
+        self.my_cnt = 0
         self.re_align = 0
         self.unlock = unlock
         self.check_bonus = bonus
@@ -63,13 +91,13 @@ class SimulatedUniverse(UniverseUtils):
             update_map()
         self.lst_changed = time.time()
         log.info("加载地图")
-        for file in os.listdir(tool.PathTool.get_root_path() + r"\Auto_Simulated_Universe\imgs\maps"):
-            pth = tool.PathTool.get_root_path() + r"\Auto_Simulated_Universe\imgs\maps/" + file + "/init.jpg"
+        for file in os.listdir("imgs/maps"):
+            pth = "imgs/maps/" + file + "/init.jpg"
             if os.path.exists(pth):
                 image = cv.imread(pth)
                 self.img_set.append((file, self.extract_features(image)))
         log.info("加载地图完成，共 %d 张" % len(self.img_set))
-        if os.stat(tool.PathTool.get_root_path() + r"\Auto_Simulated_Universe\imgs\mon" + self.tss).st_size != 141882:
+        if os.stat('imgs/mon' + self.tss).st_size != 141882:
             self._stop = 1
 
     # 初始化地图，刚进图时调用
@@ -84,7 +112,7 @@ class SimulatedUniverse(UniverseUtils):
         self.mini_state = 1
         self.ang_off = 0
         self.ang_neg = 0
-        self.map_file = tool.PathTool.get_root_path() + r"\Auto_Simulated_Universe\imgs\maps\my_" + str(random.randint(0, 99999)) + "/"
+        self.map_file = "imgs/maps/my_" + str(random.randint(0, 99999)) + "/"
         if self.find == 0 and not os.path.exists(self.map_file):
             os.mkdir(self.map_file)
 
@@ -95,6 +123,7 @@ class SimulatedUniverse(UniverseUtils):
         self.floor_init = 0
         self.init_map()
         fail_cnt = 0
+        begin = 1
         while True:
             if self._stop:
                 break
@@ -117,8 +146,15 @@ class SimulatedUniverse(UniverseUtils):
                 Text = win32gui.GetWindowText(hwnd)
             if self._stop:
                 break
-            self.get_screen()  # 0.9734,0.3009   0.3750,0.9398   0.1562,0.2250
-            # self.click_target('imgs/setting2.jpg',0.9,True) # 如果需要输出某张图片在游戏窗口中的坐标，可以用这个
+            self.get_screen()
+            # self.click_target('imgs/auto_2.jpg',0.9,True) # 如果需要输出某张图片在游戏窗口中的坐标，可以用这个
+            '''
+            if begin and not self.check("f", 0.4437,0.4231) and not self.check("abyss/1",0.8568,0.6769):
+                begin = 0
+                self.press("F4")
+                time.sleep(0.6)
+                self.get_screen()
+            '''
             res = self.normal()
             # 未匹配到图片，降低匹配阈值，若一直无法匹配则乱点
             if res == 0:
@@ -143,8 +179,17 @@ class SimulatedUniverse(UniverseUtils):
 
     def end_of_uni(self):
         self.update_count(0)
-        if notif("已完成", f"计数:{self.count}", cnt=str(self.count)) >= 34 and self.debug != 2:
-            self._stop = 0
+        self.my_cnt += 1
+        tm = int((time.time() - self.init_tm) / 60)
+        remain = 34 - self.count
+        if remain > 0:
+            remain = int(remain * (time.time() - self.init_tm) / self.my_cnt / 60)
+        else:
+            remain = 0
+        if notif("已完成",
+                 f"计数:{self.count} 已使用：{tm // 60}小时{tm % 60}分钟  平均{tm // self.my_cnt}分钟一次  预计剩余{remain // 60}小时{remain % 60}分钟",
+                 cnt=str(self.count)) >= 34 and self.debug == 0:
+            self._stop = 1
         self.floor = 0
 
     def normal(self):
@@ -152,11 +197,16 @@ class SimulatedUniverse(UniverseUtils):
         bk_lst_changed = self.lst_changed
         self.lst_changed = time.time()
         # 战斗界面
-        if self.check("auto_2", 0.3755, 0.0333):
+        if self.check("c", 0.9464, 0.1287, threshold=0.985) or self.check("auto_2", 0.0583, 0.0769):
             # 需要打开自动战斗
             if self.check("c", 0.9464, 0.1287, threshold=0.985):
                 self.press('v')
             # self.battle：最后一次处于战斗状态的时间，0表示处于非战斗状态
+            if self.fate == '丰饶':
+                if random.randint(0, 5) == 3:
+                    self.press('3')
+                if random.randint(0, 6) == 3:
+                    self.press('r')
             self.battle = time.time()
             return 1
         # 祝福界面/回响界面 （放在一起处理了）
@@ -203,17 +253,17 @@ class SimulatedUniverse(UniverseUtils):
             time.sleep(1)
             return 1
         # F交互界面
-        elif self.check("f", 0.4240, 0.4407):
+        elif self.check("f", 0.4437, 0.4231) or self.check("f", 0.4448, 0.4231):
             # is_killed：是否是禁用交互（沉浸奖励、复活装置、下载装置）
             is_killed = 0
             time.sleep(0.4)
             self.get_screen()
-            if self.check("f", 0.4240, 0.4407):
+            if self.check("f", 0.4437, 0.4231) or self.check("f", 0.4448, 0.4231):
                 for _ in range(4):
-                    img = self.check('z', 0.3182, 0.4333, mask="mask_f", large=False)
+                    img = self.check('z', 0.3344, 0.4241, mask="mask_f", large=False)
                     text = self.ts.sim_list(self.tk.interacts, img)
-                    if not text:
-                        img = self.check('z', 0.3302, 0.4503, mask="mask_f", large=False)
+                    if text is None:
+                        img = self.check('z', 0.3365, 0.4231, mask="mask_f", large=False)
                         text = self.ts.sim_list(self.tk.interacts, img)
                     if text is not None:
                         break
@@ -246,8 +296,8 @@ class SimulatedUniverse(UniverseUtils):
                             )
                             return 1
                     elif self.re_align == 1 and self.debug == 0:
-                        align_angle(10, 1)
-                        self.multi = config.multi
+                        # align_angle(10, 1)
+                        # self.multi = config.multi
                         self.re_align += 1
                     is_killed = text in ['沉浸', '紧锁', '复活', '下载']
                     if is_killed == 0:
@@ -322,7 +372,7 @@ class SimulatedUniverse(UniverseUtils):
                                     fh.write(str(s))
                             except:
                                 pass
-                        self.now_pth = tool.PathTool.get_root_path() + "\\Auto_Simulated_Universe\\imgs\\maps\\" + self.now_map + "/"
+                        self.now_pth = "imgs/maps/" + self.now_map + "/"
                         files = self.find_latest_modified_file(self.now_pth)
                         print("地图文件：", files)
                         self.big_map = cv.imread(files, cv.IMREAD_GRAYSCALE)
@@ -351,10 +401,11 @@ class SimulatedUniverse(UniverseUtils):
             # 长时间未交互/战斗，暂离或重开
             if ((time.time() - self.lst_changed >= 45 - 7 * self.debug) and self.find == 1) or (
                 self.floor == 12 and self.mini_state > 4) or self.kl:
-                time.sleep(1.5)
+                time.sleep(2.5)
                 self.press("esc")
                 time.sleep(2)
                 self.init_map()
+                self.floor_init = 0
                 if self.floor == 12 or self.kl:
                     self.end_of_uni()
                     self.click((0.2708, 0.1324))
@@ -373,6 +424,7 @@ class SimulatedUniverse(UniverseUtils):
                     self.re_align += 1
                     self.fail_count += 1
                 else:
+                    self.multi = 1
                     if self.debug == 0:
                         notif("中途结算", f"地图{self.now_map}，当前层数:{self.floor + 1}")
                         self.floor = 0
@@ -388,6 +440,8 @@ class SimulatedUniverse(UniverseUtils):
                         )
                 self.lst_changed = time.time()
                 return 1
+            if self.multi == 1:
+                align_angle(0, 1, [1], self)
             # 寻路
             if self.mini_state:
                 self.get_direc_only_minimap()
@@ -409,6 +463,8 @@ class SimulatedUniverse(UniverseUtils):
             self.click((0.1083, 0.1009))
             if con:
                 self.get_level()
+            else:
+                self.floor = 0
             self.floor_init = 1
         elif self.check("start", 0.6594, 0.8389):
             self.fail_count = 0
@@ -439,19 +495,23 @@ class SimulatedUniverse(UniverseUtils):
             # 事件选择界面
             elif self.check("star", 0.1828, 0.5000, mask="mask_event", threshold=0.965):
                 tx, ty = self.tx, self.ty
-                for i in range(events):
-                    if self.check(
-                        "events/" + str(i),
-                        0.1828,
-                        0.5000,
-                        mask="mask_event",
-                        threshold=0.965,
-                    ):
-                        tx, ty = self.tx, self.ty
-                        break
-                self.click((tx, ty))
-                self.click((0.1167, ty - 0.4685 + 0.3546))
-                time.sleep(1.5)
+                try:
+                    import yaml
+                    with open('info.yml', "r", encoding="utf-8", errors='ignore') as f:
+                        event_prior = yaml.safe_load(f)['prior']['事件']
+                except:
+                    event_prior = ["购买1个星祝福", "购买一个", "跳上右边的砖块", "丢下雕像", "和序列扑满玩",
+                                   "信仰星神", "克里珀的恩赐", "哈克的藏品", "动作片", "感恩克里珀星神"]
+                self.click_text(event_prior)
+                time.sleep(0.3)
+                self.get_screen()
+                if self.check("confirm", 0.1828, 0.5000, mask="mask_event"):
+                    self.click((self.tx, self.ty))
+                else:
+                    self.click((tx, ty))
+                    time.sleep(0.3)
+                    self.click((0.1167, ty - 0.4685 + 0.3546))
+                time.sleep(1)
             else:
                 self.click((0.9479, 0.9565))
         # 选取奇物
@@ -470,10 +530,34 @@ class SimulatedUniverse(UniverseUtils):
             self.click((0.1203, 0.1093))
         elif self.check("setting", 0.9734, 0.3009, threshold=0.98):
             self.click((0.9734, 0.3009))
-            time.sleep(1.5)
+            time.sleep(2)
             self.click((0.3750, 0.9398))
+            time.sleep(2)
+            self.click((0.3750, 0.8398))
+            pyautogui.scroll(-1)
+            time.sleep(0.1)
+            pyautogui.scroll(-1)
+            time.sleep(0.3)
+            self.click((0.1562, 0.1250))
+        elif self.check("enhance", 0.9208, 0.9380):
             time.sleep(1.5)
-            self.click((0.1562, 0.2250))
+            for i in [None, (0.7984, 0.6824), (0.6859, 0.6824)]:
+                if self.check("enhance_fail", 0.1068, 0.0907):
+                    self.press('esc')
+                    return 1
+                if i is not None:
+                    self.click(i)
+                    time.sleep(0.3)
+                self.click((0.1089, 0.0926))
+                while not self.check("enhance", 0.9208, 0.9380):
+                    self.click((0.2062, 0.2054))
+                    time.sleep(0.3)
+                    self.get_screen()
+            self.press('esc')
+        elif self.check("abyss/2", 0.4297, 0.8213):
+            self.click((0.2313, 0.5324))
+        elif self.check("abyss/1", 0.8568, 0.6769):
+            self.click((0.6260, 0.8167))
         else:
             img1 = self.check('z', 0.5047, 0.1324, mask='mask_close', large=False)
             img2 = self.check('z', 0.4990, 0.0731, mask='mask_close1', large=False)
@@ -675,6 +759,8 @@ class SimulatedUniverse(UniverseUtils):
 
     def start(self):
         self._stop = False
+        if self.validation == 0:
+            return
         keyboard.on_press(self.on_key_press)
         if self._show_map:
             t_map = threading.Thread(target=self.show_map)
@@ -688,7 +774,7 @@ class SimulatedUniverse(UniverseUtils):
                 self.stop()
 
 
-def main(find=1, debug=0, show_map=0, update=0, speed=0, bonus=0):
+def main():
     log.info(f"find: {find}, debug: {debug}, show_map: {show_map}")
     su = SimulatedUniverse(find, debug, show_map, speed, bonus=bonus, update=update)
     try:
@@ -700,6 +786,15 @@ def main(find=1, debug=0, show_map=0, update=0, speed=0, bonus=0):
 
 
 if __name__ == "__main__":
-    for i in sys.argv[1:]:
-        exec(i.split("-")[-1])
-    main()
+    if not pyuac.isUserAdmin():
+        pyuac.runAsAdmin()
+    else:
+        find = 1
+        debug = 0
+        show_map = 0
+        update = 0
+        speed = 0
+        bonus = 0
+        for i in sys.argv[1:]:
+            exec(i.split("-")[-1])
+        main()

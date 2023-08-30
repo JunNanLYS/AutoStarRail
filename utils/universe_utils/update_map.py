@@ -2,7 +2,8 @@ import os
 import shutil
 import zipfile
 from base64 import b64decode
-from .config import config
+from utils.universe_utils.config import config
+import requests
 
 root_path = os.getcwd()
 gat = (

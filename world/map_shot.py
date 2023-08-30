@@ -50,4 +50,4 @@ def main(world_number: int, map_name: str):
 
 
 if __name__ == '__main__':
-    main(1, '1-1')
+    main(2, '1-2')

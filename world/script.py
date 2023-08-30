@@ -1,7 +1,8 @@
 import os
 import time
 from math import atan, sqrt
-from typing import Tuple, Optional
+from threading import Thread
+from typing import Tuple
 from copy import deepcopy
 
 import pyautogui
@@ -11,12 +12,13 @@ import win32api
 import win32con
 
 import config
+import threadpool
+from config import config as cfg
 from widgets import log
 from utils.role import Role, MoveDirection
-from utils import window, path, func
-from world import road
-
-stop = False
+from utils import window, path, func, ocr
+from world import road, fight
+from world.data import BALL_NAME, AREA_NAME, AREA_POINT, AREA_SCROLL
 
 img_filename = path.ImagePath
 
@@ -25,9 +27,18 @@ def to_map():
     """进入地图"""
     if not func.to_game_main():
         return False
-    pyautogui.press('m')
+    pyautogui.press(cfg.open_map)
     time.sleep(1.5)
     return True
+
+
+def mouse_scroll(count: int):
+    """
+    鼠标滚轮
+    """
+    for _ in range(count):
+        for _ in range(6):
+            pyautogui.scroll(-10)
 
 
 def rotate_search_img(img, template, add_angle: int, thresholds: float):
@@ -250,10 +261,10 @@ class Map:
         """
         x1, y1 = pos1
         x2, y2 = pos2
-        return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2))
 
     def update_road(self):
-        pass
+        self.road = road.get_road(self.get_road_map_img())
 
     def shot_map(self):
         """获取当前地图截图更新cur_map"""
@@ -300,6 +311,20 @@ class Map:
         img = cv2.imread(os.path.join(filename, 'road.png'))
         return img
 
+    def get_send_point_img(self):
+        """
+        获取地区传送点图像
+        """
+        root = config.abspath
+        filename = os.path.join(
+            root,
+            r"world\map",
+            str(self.world_number),
+            self.map_name
+        )
+        img = cv2.imread(os.path.join(filename, 'point.png'))
+        return img
+
     def set_world_number(self, world_number: int):
         self.world_number = world_number
 
@@ -309,83 +334,253 @@ class Map:
 
 class World:
     def __init__(self):
-        pass
+        self.is_stop = False
+        self.is_close = False
+        self.map = Map()
+        self.cur_ball: int = 1  # 当前星球
+        self.cur_area: int = 1  # 当前区域
+        self.cur_point: int = 1  # 传送点
 
-    def is_fight(self):
-        """
-        判断是否正在战斗
-        """
-        pass
+        self.pre_ball_name = ""
+        self.pre_area_name = ""
+        self.flag = False
 
-    def fight(self):
-        """
-        战斗攻击..
-        """
-        pass
+    def auto(self, ball_name, area_name):
+        # 不是同一个星球需要更换星球和区域
+        if ball_name != self.pre_ball_name:
+            self.change_ball(ball_name)
+            self.change_area(area_name)
+            self.into_send_point()
+        # 只有区域不同只需要更换当前区域
+        elif area_name != self.pre_area_name:
+            to_map()
+            self.change_area(area_name)
+            self.into_send_point()
+        self.pre_ball_name = ball_name
+        self.pre_area_name = area_name
+        if self.is_close:
+            return
 
+        # 开始初始化
+        self.map.update_road()  # 更新路线图
+        self.map.shot_map()  # 截取游戏大地图
+        role_pos = self.map.locate_role(self.map.cur_map)  # 定位角色坐标
+        role_angle = Role.get_angle(self.map.big_map)  # 获取角色当前角度
+        target_angle = calculate_angle(role_pos, self.map.road[0])
+        func.to_game_main()  # 回到游戏主界面
+        Role.set_angle(role_angle, target_angle)  # 设置角色角度
+        start_pos = self.map.road[0]
+        length = self.map.calculate_length(role_pos, start_pos)  # 两点距离
+        length = int(round(length, 0))  # 转int
+        Role.move_position(MoveDirection.ONWARD, length)
+        # 到此为止初始化结束，开始添加路线
 
-# 初始化星球以及地区
-WORLD = 3  # 星球
-WORLD_TO_MAP_NAME = {
-    1: [],
-    2: ['1-1'],
-    3: [],
-}
-
-
-def main():
-    for world_number in range(1, WORLD + 1):
-        for map_name in WORLD_TO_MAP_NAME[world_number]:
-            # 初始化
-            m = Map()
-            m.set_world_number(world_number)
-            m.set_map_name(map_name)
-            m.road = road.get_road(m.get_road_map_img())
-            m.shot_map()  # 更新大地图截图
-            role_pos = m.locate_role(m.cur_map)  # 定位角色坐标并更新big_map
-            log.transmitDebugLog(f"角色坐标:{role_pos}", level=2)
-            role_angle = Role.get_angle(m.big_map)  # 获取角色当前角度
-            target_angle = calculate_angle(role_pos, m.road[0])
-            log.transmitDebugLog(f"需要设置角色角度为:{target_angle}", level=2)
-            func.to_game_main()
-            Role.set_angle(role_angle, target_angle)  # 设置角度
-
-            # 将角色移动到起点
-            start_pos = m.road[0]
-            length = m.calculate_length(role_pos, start_pos)  # 两点距离
-            length = int(round(length, 0))  # 转int
-            Role.move_position(MoveDirection.ONWARD, length)
-            # 到此为止初始化结束，开始正常路线模式
-
-            i = 1  # 下标0是起点，正常情况下是已经移动到起点了
-            roads: list[tuple] = []  # tuple有3元素,存储点1,点2,点1到点2的角度
-            start = m.road[0]  # 起点
-            end = m.road[1]  # 终点
-            pre_angle = calculate_angle(start, end)  # 上一个角度
+        i = 1  # 下标0是起点，正常情况下已经移动到起点了
+        roads: list[tuple] = []  # (p1, p2, angle) 存储路线
+        start = self.map.road[0]
+        end = self.map.road[1]
+        pre_angle = calculate_angle(start, end)
+        added = False
+        while i < len(self.map.road):
             added = False
-            while i < len(m.road):
-                added = False
-                angle = calculate_angle(start, m.road[i])
-                if pre_angle == angle:
-                    end = m.road[i]
-                    i += 1
-                else:
-                    added = True
-                    roads.append((start, end, pre_angle))  # 同一角度路线
-                    start = end
-                    end = m.road[i]
-                    pre_angle = calculate_angle(start, end)
-                    i += 1
-            # 若直到循环结束角度依旧一样则需要在这添加
-            if not added:
+            angle = calculate_angle(start, self.map.road[i])
+            if pre_angle == angle:
+                end = self.map.road[i]
+                i += 1
+            else:
+                added = True
                 roads.append((start, end, pre_angle))
-            for pos1, pos2, angle in roads:
+                start = end
+                end = self.map.road[i]
+                pre_angle = calculate_angle(start, end)
+                i += 1
+        # 直到循环结束角度依旧一样则需要在这添加一次
+        if not added:
+            roads.append((start, end, pre_angle))
+
+        i = 0
+        while i < len(roads):
+            if self.is_close:
+                return
+            pos1, pos2, angle = roads[i]
+            if self.flag:
+                self.flag = False
+                self.map.shot_map()  # 截取大地图
+                self.map.locate_role(self.map.cur_map)  # 更新big_map
+                img = self.map.get_big_map_img()
+                template = self.map.big_map
+                res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+                _, max_val, _, max_loc = cv2.minMaxLoc(res)
+                role_pos = max_loc[0] + template.shape[1] // 2, max_loc[1] + template.shape[0] // 2
+                role_angle = Role.get_angle(self.map.big_map)
+                target_angle = calculate_angle(role_pos, pos2)
+                func.to_game_main()  # 回到主界面
+                Role.set_angle(role_angle, target_angle)
+                thread = threadpool.function_thread.submit(Role.move_position, MoveDirection.ONWARD, length)
+                # thread = Thread(target=Role.move_position, args=(MoveDirection.ONWARD, length))
+                # thread.start()
+            else:
+                length = self.map.calculate_length(pos1, pos2)
                 Role.set_angle(Role.angle, angle)
-                length = m.calculate_length(pos1, pos2)
-                length = int(round(length, 0))
-                Role.move_position(MoveDirection.ONWARD, length)
-                time.sleep(0.5)
+                thread = threadpool.function_thread.submit(Role.move_position, MoveDirection.ONWARD, length)
+                # thread = Thread(target=Role.move_position, args=(MoveDirection.ONWARD, length))
+                # thread.start()  # 移动角色将阻塞线程，所以使用子线程
+
+            # 等待线程结束
+            while not thread.done():
+                time.sleep(1)
+            # 若is_stop被设置为True则等待被设置为False
+            while self.is_stop:
+                time.sleep(1)
+            if not self.flag:
+                i += 1
+
+    def change_ball(self, ball_name):
+        """
+        打开星球
+        """
+        self.to_star_rail_map()
+        screenshot_path = func.screenshot()
+        pos = ocr.get_text_position(screenshot_path, ball_name)
+        add = np.array([-50, -80])
+        pos = pos + add  # 由于星球在字体上方，所以需要坐标需要微调
+        self.click_pos(pos)
+        self.wait_img(img_filename.AREA_NAVIGATION)
+
+    def change_area(self, area_name):
+        cnt = AREA_SCROLL.get(area_name, 0)
+        if cnt:
+            # 将鼠标移动至观景车厢
+            log.transmitDebugLog(f"{area_name}需要滚动后查找", level=2)
+            pos = ocr.get_text_position(func.screenshot(), "观景车厢")
+            pyautogui.moveTo(pos[0][0], pos[0][1])
+            mouse_scroll(cnt)  # 滚动
+        positions = ocr.get_text_position(func.screenshot(), area_name)
+        self.click_pos(positions)
+        time.sleep(0.5)
+
+    def click_pos(self, positions):
+        """
+        传入单个值则点击该值，多个值则取索引为 元素个数/2 的坐标
+        :param positions: numpy.array,二维数组[[], []]
+        """
+        length = len(positions)
+        mid = length // 2 - 1
+        if mid < 0:
+            mid = 0
+        pos = positions[mid]
+        x, y = int(pos[0]), int(pos[1])
+        win32api.SetCursorPos((x, y))
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, x, y, 0, 0)
+        time.sleep(0.1)  # 过快的点击将导致游戏反应不过来最终导致点击失效
+        win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, x, y, 0, 0)
+
+    def close(self):
+        """
+        关闭自动寻路
+        """
+        self.is_close = True
+        fight.close()  # 关闭战斗模块
+
+    def into_send_point(self):
+        template = self.map.get_send_point_img()
+        max_val = 0
+        top_left = (0, 0)
+        for i in range(5):
+            img = cv2.imread(func.screenshot())
+            res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+            _, max_val, _, max_loc = cv2.minMaxLoc(res)
+            top_left = max_loc
+            if max_val >= 0.8:
+                break
+        if max_val < 0.8:
+            log.transmitDebugLog(f"匹配值低于0.8,当前匹配值:{max_val},脚本退出.", level=3)
+            raise Exception("匹配不到传送点")
+        center = (top_left[0] + template.shape[1] // 2, top_left[1] + template.shape[0] // 2)
+        pyautogui.click(*center)  # 点击传送点
+
+        positions = ocr.get_text_position(func.screenshot(), "传送")
+        self.click_pos(positions)
+
+    @property
+    def map_name(self):
+        return f"{self.cur_area}-{self.cur_point}"
+
+    def re_back(self):
+        """
+        当前地图重走一遍
+        """
+        self.auto(self.pre_ball_name, self.pre_area_name)
+
+    def start(self):
+        """
+        开始运行自动寻路
+        """
+        self.is_stop = False
+        self.is_close = False
+        fight.start()
+        fight.set_callable(self.set_stop)
+        for ball_number, ball_name in BALL_NAME.items():
+            area_names = AREA_NAME[ball_number]  # 地区名
+            for i, area_name in enumerate(area_names):
+                points = AREA_POINT.get(area_name, 0)
+                for point in (1, points + 1):
+                    if self.is_close:
+                        return
+                    # 初始化
+                    self.cur_ball = ball_number
+                    self.cur_area = i + 1
+                    self.cur_point = point
+                    self.map.set_world_number(self.cur_ball)
+                    self.map.set_map_name(self.map_name)
+
+                    self.auto(ball_name, area_name)
+        fight.close()  # 自动寻路结束关闭战斗模块
+
+    def set_stop(self, stop: bool):
+        if stop:
+            self.is_stop = stop
+            self.flag = True  # 标记一下
+            Role.stop_move()
+        else:
+            self.is_stop = stop
+
+    def to_star_rail_map(self):
+        """
+        进入星轨航图
+        """
+        if not to_map():
+            log.transmitDebugLog("进入地图失败", level=4)
+            raise Exception("进入地图失败")
+        screenshot_path = func.screenshot()
+        pos = ocr.get_text_position(screenshot_path, "星轨航图")
+        self.click_pos(pos)
+        self.wait_img(img_filename.BALL_NAVIGATION)
+
+    def wait_img(self, template: str):
+        log.transmitDebugLog(f"等待图片{template}")
+        template = cv2.imread(template)
+        star = time.time()
+        end = 20
+        while time.time() - star <= end:
+            screenshot = cv2.imread(window.save_game_screenshot())
+            res = cv2.matchTemplate(screenshot, template, cv2.TM_CCOEFF_NORMED)
+            _, max_val, _, max_loc = cv2.minMaxLoc(res)
+            if max_val > 0.8:
+                return max_loc
+        log.transmitRunLog("等待超时，开启兜底")
+        screenshot = cv2.imread(window.save_game_screenshot())
+        res = cv2.matchTemplate(screenshot, template, cv2.TM_CCOEFF_NORMED)
+        _, max_val, _, max_loc = cv2.minMaxLoc(res)
+        if max_val > 0.8:
+            return max_loc
+        log.transmitDebugLog("等待不到图片，程序退出", level=3)
+        raise Exception("等待不到图片")
 
 
 if __name__ == "__main__":
-    main()
+    w = World()
+    w.map.set_world_number(2)
+    w.map.set_map_name("1-1")
+    fight.start()
+    w.auto("雅利洛", "城郊雪原")

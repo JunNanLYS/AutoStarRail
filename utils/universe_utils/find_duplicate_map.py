@@ -43,5 +43,5 @@ def filter_similar_images(img_set, threshold):
     return similar_images
 
 
-path = "../../Auto_Simulated_Universe/imgs/maps"
+path = "../imgs/maps"
 print(filter_similar_images(load_images(path), 0.5))
