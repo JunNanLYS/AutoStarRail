@@ -15,14 +15,16 @@ class Config(object):
 
     def __init__(self):
         if not Config.__is_init:
-            self.game_path = "D:/星穹铁道/Star Rail/launcher.exe"  # 游戏路径
             self.auto_fight = True  # 自动战斗
-            self.use_fuel = False  # 使用燃料
-            self.fuel_number = 1
-            self.use_explore = False  # 使用星穹
-            self.explore_number = 1
             self.auto = {}  # 一键自动，这里储存的是上一次配置
             self.angle = 1.0  # 角度误差
+            self.fuel_number = 1
+            self.game_path = "D:/星穹铁道/Star Rail/launcher.exe"  # 游戏路径
+            self.open_map = 'm'  # 打开地图的按键
+            self.use_fuel = False  # 使用燃料
+            self.use_explore = False  # 使用星穹
+            self.explore_number = 1
+
             self.load()
             Config.__is_init = True
 
@@ -42,6 +44,7 @@ class Config(object):
             self.explore_number = game_config["explore_number"]
             self.auto = game_config["auto"]
             self.angle = game_config["angle"]
+            self.open_map = game_config["open_map"]
             log.transmitDebugLog("config载入成功", level=2)
         except KeyError as e:
             log.transmitDebugLog(f"config载入失败，config.json缺少{e}", level=2)
@@ -64,7 +67,8 @@ class Config(object):
                 "use_explore": self.use_explore,
                 "explore_number": self.explore_number,
                 "auto": self.auto,
-                "angle": self.angle
+                "angle": self.angle,
+                "open_map": self.open_map
             }
             json.dump(game_config, f)
 

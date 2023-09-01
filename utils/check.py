@@ -1,7 +1,7 @@
 import time
 
-from utils import func
-from utils.path import ImagePath
+from util import func
+from util.path import ImagePath
 from widgets import log
 
 

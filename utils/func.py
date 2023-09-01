@@ -118,7 +118,7 @@ def wait_image(filename: str, confidence=0.8, max_time=60):
 
         # 超时了退出循环
         if count >= max_time:
-            log.transmitRunLog("等待超过100秒", debug=True)
+            log.transmitRunLog(f"等待超过{max_time}秒", debug=True)
             break
     log.transmitRunLog("未查找到图片", debug=True)
     return None
@@ -201,9 +201,9 @@ def screenshot() -> str:
 
 def cv_find_image(filename: str, filename2: str = None, target=0.95) -> Tuple[int, int]:
     """
-    param filename: 模板图
-    param filename2: 备用模板图
-    param target: 目标阈值
+    :param filename: 模板图
+    :param filename2: 备用模板图
+    :param target: 目标阈值
     相比于直接使用pyautogui，cv2更加准确精准
     返回模板图的全局坐标
     """
@@ -317,6 +317,34 @@ def debug_screenshot(rationale: str):
 
     added = f"[{model_name}]-[{func_name}]-[{current_time}]-[{rationale}]"
     img.save(os.path.join(root, filename, f'{added}.png'))
+
+
+def find_auto_fight_true():
+    """
+    查找开启的自动战斗按钮
+    """
+    template1 = ImagePath.AUTO_FIGHT_2
+    template2 = ImagePath.AUTO_FIGHT_3
+    template3 = ImagePath.AUTO_FIGHT_4
+    res1 = cv_find_image(template1)
+    res2 = cv_find_image(template2)
+    res3 = cv_find_image(template3)
+    if res1 != (-1, -1):
+        return res1
+    elif res2 != (-1, -1):
+        return res2
+    elif res3 != (-1, -1):
+        return res3
+    return -1, -1
+
+
+def find_auto_fight_false():
+    template = ImagePath.AUTO_FIGHT
+    res = cv_find_image(template)
+    if res != (-1, -1):
+        return res
+    return -1, -1
+
 
 
 if __name__ == "__main__":

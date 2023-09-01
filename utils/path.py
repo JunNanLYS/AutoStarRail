@@ -31,6 +31,8 @@ class ImagePath:
     AUTO_FIGHT_2 = IMAGE_ROOT_PATH + r"autoFight2.png"              # 自动战斗(开启)
     AUTO_FIGHT_3 = IMAGE_ROOT_PATH + r"autoFight3.png"              # 自动战斗(开启)
     AUTO_FIGHT_4 = IMAGE_ROOT_PATH + r"autoFight4.png"              # 自动战斗(开启)
+    AREA_NAVIGATION = IMAGE_ROOT_PATH + r"areaNavigation.png"       # 区域导航
+    BALL_NAVIGATION = IMAGE_ROOT_PATH + r"ballNavigation.png"       # 星球导航
 
     # 拟造花萼 calyx
     CALYX_GOLD = CALYX_PATH + r"calyxGold.png"                      # 花萼(金)
@@ -100,9 +102,11 @@ class ImagePath:
     ARROW_DOWN = CHARACTER_PATH + r"arrowDown.png"      # 向下箭头
     ARROW_LEFT = CHARACTER_PATH + r"arrowLeft.png"      # 向左箭头
     ARROW_RIGHT = CHARACTER_PATH + r"arrowRight.png"    # 后右箭头
+    LOCAL_ARROW = CHARACTER_PATH + r"localArrow.png"    # 本地箭够
 
     # 世界
     QUESTION_MASK = WORLD_PATH + r"questionMask.png"    # 问号
     WARNING = WORLD_PATH + r"warning.png"               # 感叹号
     SELECT_MONSTER = WORLD_PATH + r"selectMonster.png"  # 选中敌人
+    SELECT_JAR = WORLD_PATH + r"selectJar.png"          # 选中罐子
 

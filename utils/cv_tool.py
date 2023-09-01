@@ -1,4 +1,9 @@
+from copy import deepcopy
+from typing import Union, List
+
 import cv2
+import numpy as np
+from numpy import ndarray
 
 
 def is_same_position(position1: tuple, position2: tuple, error_value: int):
@@ -46,6 +51,70 @@ def rotate_image(image, angle):
     matrix = cv2.getRotationMatrix2D((w // 2, h // 2), angle, 1.0)  # 获取旋转矩阵
     rotated_image = cv2.warpAffine(image, matrix, (w, h))  # 获取旋转后的图像
     return rotated_image
+
+
+def in_range_color(image, lower_color: list, upper_color: list):
+    """
+    保留图像中颜色范围内的颜色，方法内自带深拷贝，不会污染原图像
+    :param image: 图像
+    :param lower_color: 下限
+    :param upper_color: 上限
+    :return: image
+    """
+    img = deepcopy(image)
+    lower_color = np.array(lower_color)
+    upper_color = np.array(upper_color)
+    img[np.sum(img - lower_color, axis=-1) < 0] = [0, 0, 0]
+    img[np.sum(img - upper_color, axis=-1) > 0] = [0, 0, 0]
+    return img
+
+
+def to_ndarray(img: Union[str, ndarray]) -> ndarray:
+    """
+    将图片装换为numpy.ndarray
+    """
+    if isinstance(img, str):
+        img = cv2.imread(img)
+    return img
+
+
+def template_in_img(img: Union[str, ndarray], template: Union[str, ndarray], threshold=0.8) -> bool:
+    """
+    判断模板图是否在img中
+    """
+    img = to_ndarray(img)
+    template = to_ndarray(template)
+    res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+    _, max_val, _, _ = cv2.minMaxLoc(res)
+    return max_val >= threshold
+
+
+def match_template(img: Union[str, ndarray], template: Union[str, ndarray], threshold=0.8) -> tuple:
+    """
+    模板匹配，匹配成功返回模板图左上角坐标，失败返回(-1, -1)
+    """
+    img = to_ndarray(img)
+    template = to_ndarray(template)
+    res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+    _, max_val, _, max_loc = cv2.minMaxLoc(res)
+    if max_val >= threshold:
+        return max_loc
+    return -1, -1
+
+
+def match_template_gray(img: Union[str, ndarray], template: Union[str, ndarray], threshold=0.8):
+    """
+    模板匹配(灰),匹配成功返回模板左上角坐标，失败返回(-1, -1)
+    """
+    img = to_ndarray(img)
+    template = to_ndarray(template)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+    res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+    _, max_val, _, max_loc = cv2.minMaxLoc(res)
+    if max_val >= threshold:
+        return max_loc
+    return -1, -1
 
 
 if __name__ == '__main__':
