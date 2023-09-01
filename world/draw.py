@@ -5,19 +5,28 @@ from math import atan
 import cv2
 
 import config
-from world.script import Map
+
+
+def get_big_map(world, name):
+    filename = os.path.join(
+        root,
+        r"world\map",
+        str(world),
+        name
+    )
+    image = cv2.imread(os.path.join(filename, 'default.png'))
+    return image
+
 
 # 初始化
 root = config.abspath
 pen_size = 1  # 画笔大小
-world_number = 1  # 世界编号
+world_number = 2  # 世界编号
 map_name = "1-1"  # 地区-传送点编号
-m = Map()
-m.set_world_number(world_number)
-m.set_map_name(map_name)
 
 # 读取原图
-img = m.get_big_map_img()
+img = get_big_map(world_number, map_name)
+
 cv2.namedWindow("image")
 
 # 定义鼠标回调函数

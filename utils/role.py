@@ -11,9 +11,8 @@ import win32api
 import win32con
 import pyautogui
 
-from utils import path, cv_tool
+from util import path, cv_tool
 from config import config
-import game
 
 filename = path.ImagePath
 
@@ -23,10 +22,6 @@ class MoveDirection(Enum):
     BACKWARD = 'backward'  # 后
     LEFT = 'left'  # 左
     RIGHT = 'right'  # 右
-    FORWARD_LEFT = 'forward_left'  # 左前
-    FORWARD_RIGHT = 'forward_right'  # 右前
-    BACKWARD_LEFT = 'backward_left'  # 左后
-    BACKWARD_RIGHT = 'backward_right'  # 右后
 
 
 def _mouse_move(x, y):
@@ -35,6 +30,7 @@ def _mouse_move(x, y):
 
 class Role:
     angle = 0
+    direct = 'w'
 
     @classmethod
     def move_view(cls, angle):
@@ -43,6 +39,7 @@ class Role:
         本代码参考自github项目Auto_Simulated_Universe
         :param angle: 角度
         """
+        import game
 
         if angle > 30:
             y = 30
@@ -51,7 +48,8 @@ class Role:
         else:
             y = angle
         # 分多次移动，防止鼠标移动离开游戏窗口
-        dx = int(16.5 * y * config.angle * game.scale)
+        _, _, s = game.get_somthing()
+        dx = int(16.5 * y * config.angle * s)
         win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, dx, 0)  # 进行视角移动
         time.sleep(0.05)
         if angle != y:
@@ -64,25 +62,30 @@ class Role:
         1s = [17, 17, 17, 18, 18, 18, 18, 17, 17, 17, 17, 18, 18, 17, 17, 17, 17, 17, 17, 17]
         1.5s = [26, 27, 27, 27, 27, 27, 27, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 26, 26, 27]
         0.5s走9格像素点
+        移动时会阻塞线程
         :param direction: 移动方向枚举类
         :param point:  要移动的像素点数量
         """
         dic = {
-            MoveDirection.ONWARD: ('w',),
-            MoveDirection.BACKWARD: ('s',),
-            MoveDirection.LEFT: ('a',),
-            MoveDirection.RIGHT: ('d',),
-            MoveDirection.FORWARD_LEFT: ('w', 'a'),
-            MoveDirection.FORWARD_RIGHT: ('w', 'd'),
-            MoveDirection.BACKWARD_LEFT: ('s', 'a'),
-            MoveDirection.BACKWARD_RIGHT: ('s', 'd')
+            MoveDirection.ONWARD: 'w',
+            MoveDirection.BACKWARD: 's',
+            MoveDirection.LEFT: 'a',
+            MoveDirection.RIGHT: 'd',
         }
         if direction not in dic:
             raise ValueError(f"direction {direction} not in {dic}")
+        cls.direct = dic[direction]
         second = round(point / 9, 2) * 0.5
-        pyautogui.keyDown(*dic[direction])
+        pyautogui.keyDown(dic[direction])
         time.sleep(second)
-        pyautogui.keyUp(*dic[direction])
+        pyautogui.keyUp(dic[direction])
+
+    @classmethod
+    def stop_move(cls):
+        """
+        停止角色移动
+        """
+        pyautogui.keyUp(cls.direct)
 
     @classmethod
     def get_angle(cls, map_screen) -> int:

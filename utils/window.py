@@ -5,7 +5,9 @@ import win32api
 import win32gui
 import pygetwindow
 import win32print
+from numpy import ndarray
 from PIL import ImageGrab
+
 
 def get_read_size():
     """获取真实分辨率"""
@@ -32,14 +34,24 @@ def get_game_window():
     return pygetwindow.getWindowsWithTitle("崩坏：星穹铁道")[0]
 
 
-def save_game_screenshot() -> str:
+def get_screenshot() -> ndarray:
+    """获取屏幕截图"""
+    import cv2
+    import numpy as np
+    img = ImageGrab.grab()
+    img = np.array(img)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+    return img
+
+
+def save_game_screenshot(name="game_screenshot") -> str:
     """
-    截取游戏截图并保存
+    截取游戏截图并保存,保存格式为.png
     :return: 路径
     """
     import config
     root = config.abspath
-    target_path = os.path.join(root, r"temp\game_screenshot.png")
+    target_path = os.path.join(root, "temp", name + '.png')
     game = get_game_window()
     scaling = get_scaling()
     left, top = game.left * scaling, game.top * scaling
@@ -47,4 +59,3 @@ def save_game_screenshot() -> str:
     img = ImageGrab.grab(bbox=(left, top, left + width, top + height))
     img.save(target_path)
     return target_path
-

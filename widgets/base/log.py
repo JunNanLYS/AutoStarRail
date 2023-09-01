@@ -3,6 +3,7 @@ from PySide6.QtGui import QTextCharFormat
 from qfluentwidgets import PlainTextEdit
 from typing import Optional
 import logging
+
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -46,6 +47,8 @@ class Log:
         print(content) if debug else ...
         if self._debugLogWidget is not None:
             self._debugLogWidget.add.emit(f'[{level_str}]   {content}')
+        if self._runLogWidget is not None:
+            self._runLogWidget.add.emit(content)
 
     def transmitAllLog(self, content: str, debug=False):
         print(content) if debug else ...

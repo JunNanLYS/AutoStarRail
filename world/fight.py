@@ -93,10 +93,12 @@ def update_img():
     global fight_img
     from PIL import ImageGrab
     import win32gui
+    import ctypes
     left, top, right, bottom = 0, 0, 0, 0
     while True:
         hwnd = win32gui.GetForegroundWindow()
         text = win32gui.GetWindowText(hwnd)
+        s = ctypes.windll.user32.GetDpiForWindow(hwnd) / 96.0
         try:
             left, top, right, bottom = win32gui.GetWindowRect(hwnd)
         except Exception as e:
@@ -105,7 +107,7 @@ def update_img():
         if text != "崩坏：星穹铁道":
             continue
         break
-    img = ImageGrab.grab(bbox=(left, top, right, bottom))
+    img = ImageGrab.grab(bbox=(left * s, top * s, right * s, bottom * s))
     img = np.array(img)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     fight_img = img
