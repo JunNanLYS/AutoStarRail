@@ -1,5 +1,11 @@
 简体中文 | [繁体中文](./README_TC.md)
 
+
+
+！！！目前精力放在重构项目和自动寻路上！！！
+
+
+
 # AutoStarRail
 
 崩坏：星穹铁道自动化 |崩坏：星穹铁道体力消耗自动化 | 自定义清理体力 | 融合`Auto_Simulated_Universe`和`StarRailAssistant`以及清理体力于一体的整合包 | 模拟按键 | 图像识别
