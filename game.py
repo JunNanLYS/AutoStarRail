@@ -1,7 +1,6 @@
 import ctypes
 import time
 
-import cv2
 import win32gui
 
 
@@ -26,8 +25,7 @@ def get_rect():
     """
     :return: (left, top, right, bottom)
     """
-    from widgets import log
-    from utils import window
+    from script.utils import window
     while True:
         hwnd = win32gui.GetForegroundWindow()
         text = win32gui.GetWindowText(hwnd)
@@ -37,16 +35,17 @@ def get_rect():
         x2, y2 = x2 * s, y2 * s
         if text != "崩坏：星穹铁道":
             time.sleep(0.3)
-            log.transmitDebugLog(f"等待游戏界面")
+            print("等待游戏界面")
         else:
             return x1, y1, x2, y2
 
 
-def screenshot():
+def get_screenshot():
     """
     :return: np.ndarray
     """
     from PIL import ImageGrab
+    import cv2
     import numpy as np
     img = ImageGrab.grab(bbox=get_rect())
     img = np.array(img)
@@ -54,7 +53,33 @@ def screenshot():
     return img
 
 
+def set_foreground():
+    """将游戏设置为前台"""
+    from PIL import ImageGrab
+    from script.utils import get_text_position, mouse
+    hwnd = win32gui.FindWindow(None, "崩坏：星穹铁道")
+    win32gui.SetForegroundWindow(hwnd)
+    time.sleep(0.3)
+    screenshot = ImageGrab.grab()
+    positions = get_text_position(screenshot, "崩坏：星穹铁道")
+    mouse.click_positions(positions)
+
+
+def to_game_main():
+    """返回游戏主界面"""
+    import cv2
+    import pyautogui
+    from script.utils import template_path, match_template_gray
+    cnt = 1
+    template = cv2.imread(template_path.PHONE)
+    while True:
+        img = get_screenshot()  # 获取游戏内截图
+        if match_template_gray(img, template) != (-1, -1):
+            break
+        print(f"尝试回到主界面，这是第{cnt}次尝试")
+        pyautogui.press('esc')
+        time.sleep(0.8)
+
+
 if __name__ == '__main__':
-    i = screenshot()
-    cv2.imshow("img", i)
-    cv2.waitKey(0)
+    set_foreground()
