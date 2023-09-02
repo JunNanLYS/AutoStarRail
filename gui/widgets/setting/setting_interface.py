@@ -14,6 +14,8 @@ class SettingInterface(QFrame, Ui_Frame):
         self.setStyleSheet(
             """
             background: rgb(250, 250, 250);
+            border: none;
+            border-radius:10px;
             """
         )
         self.expand_layout = ExpandLayout(self.scrollWidget)
