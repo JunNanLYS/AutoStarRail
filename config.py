@@ -1,8 +1,6 @@
 import os
-from enum import Enum
-import json
 
-from qfluentwidgets import QConfig, ConfigItem, RangeConfigItem, OptionsConfigItem, OptionsValidator, EnumSerializer
+from qfluentwidgets import QConfig, ConfigItem, qconfig
 
 import log
 
@@ -12,32 +10,37 @@ abspath = os.path.dirname(os.path.abspath(__file__))  # 项目绝对路径
 use_last_auto_config = False  # 是否使用上一次运行配置
 
 
-class GameConfig(Enum):
-    path = "path"
-
-
-class MvQuality(Enum):
-    FULL_HD = "Full HD"
-    HD = "HD"
-    SD = "SD"
-    LD = "LD"
-
-    @staticmethod
-    def values():
-        return [q.value for q in MvQuality]
-
-
 class Config(QConfig):
-    def __init__(self):
-        super().__init__()
-        self.onlineMvQuality = OptionsConfigItem("Online", "MvQuality", MvQuality.FULL_HD,
-                                                 OptionsValidator(MvQuality), EnumSerializer(MvQuality))
+    """ Config of application """
+    # game
+    game_path = ConfigItem("game", "game_path", "D:/星穹铁道/Star Rail/launcher.exe")
+    auto_fight = ConfigItem("game", "auto_fight", False)
+    open_map = ConfigItem("game", "open_map", 'm')
 
-    def load(self, file=None, config=None):
-        super().load(file, config)
-        log.info("已加载config")
+    # stamina
+    use_fuel = ConfigItem("stamina", "use_fuel", False)
+    use_explore = ConfigItem("stamina", "use_explore", False)
+    last_stamina = ConfigItem("stamina", "last", {})
+
+    # universe
+    universe_angle = ConfigItem("universe", "angle", 1.0)
+    auto_angle = ConfigItem("universe", "auto_angle", False)
+    last_universe = ConfigItem("universe", "last", {})
+
+    # world
+    world_angle = ConfigItem("world", "angle", 1.0)
+    last_world = ConfigItem("world", "last", {})
+
+    def save(self):
+        log.info("保存成功")
+        super().save()
+
+    def set(self, item, value, save=True):
+        log.info(f"设置{item}value为{value}")
+        super().set(item, value, save)
 
 
+# 创建配置实例并使用配置文件来初始化它
 cfg = Config()
-cfg.load(os.path.join(abspath, "config.json"), cfg)
-print(cfg.get(cfg.onlineMvQuality))
+qconfig.load(os.path.join(abspath, "config.json"), cfg)
+log.info("Config载入成功")

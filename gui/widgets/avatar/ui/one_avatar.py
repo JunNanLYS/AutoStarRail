@@ -8,11 +8,10 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, Qt)
+from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
 from PySide6.QtWidgets import (QVBoxLayout)
 
 from qfluentwidgets import (AvatarWidget, StrongBodyLabel)
-
 
 class Ui_Frame(object):
     def setupUi(self, Frame):
@@ -25,22 +24,27 @@ class Ui_Frame(object):
         self.verticalLayout.setContentsMargins(5, 5, 5, 5)
         self.avatar = AvatarWidget(Frame)
         self.avatar.setObjectName(u"avatar")
+        self.avatar.setMinimumSize(QSize(96, 96))
+        self.avatar.setMaximumSize(QSize(96, 96))
 
         self.verticalLayout.addWidget(self.avatar)
 
         self.name = StrongBodyLabel(Frame)
         self.name.setObjectName(u"name")
+        self.name.setMinimumSize(QSize(96, 19))
+        self.name.setMaximumSize(QSize(96, 19))
         self.name.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout.addWidget(self.name)
 
+
         self.retranslateUi(Frame)
 
         QMetaObject.connectSlotsByName(Frame)
-
     # setupUi
 
     def retranslateUi(self, Frame):
         Frame.setWindowTitle(QCoreApplication.translate("Frame", u"Frame", None))
         self.name.setText(QCoreApplication.translate("Frame", u"name", None))
     # retranslateUi
+

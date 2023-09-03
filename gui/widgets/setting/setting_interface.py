@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QFrame
 from qfluentwidgets import (ExpandLayout, SettingCardGroup, PushSettingCard, FluentIcon,
                             SwitchSettingCard, HyperlinkCard, StrongBodyLabel)
 from .ui.settingWidget import Ui_Frame
+from config import cfg
 
 
 class SettingInterface(QFrame, Ui_Frame):
@@ -23,19 +24,27 @@ class SettingInterface(QFrame, Ui_Frame):
         # game group
         self.game_group = SettingCardGroup("游戏", self.scrollWidget)
         self.game_path = PushSettingCard("选择游戏路径", FluentIcon.FOLDER,
-                                         title="游戏路径", content="", parent=self.game_group)
+                                         title="游戏路径",
+                                         content=cfg.game_path.value,
+                                         parent=self.game_group)
         self.open_map = PushSettingCard("设置按键", icon=QIcon(),
-                                        title="地图按键", content="当前为m", parent=self.game_group)
-        self.auto_fight = SwitchSettingCard(QIcon(), title="自动战斗", content="游戏内沿用上次一自动战斗是否开启")
+                                        title="地图按键",
+                                        content=f"当前为: {cfg.open_map.value}",
+                                        parent=self.game_group)
+        self.auto_fight = SwitchSettingCard(QIcon(), title="自动战斗", content="游戏内沿用上次一自动战斗是否开启",
+                                            configItem=cfg.auto_fight)
 
         # stamina
         self.stamina_group = SettingCardGroup("体力", self.scrollWidget)
-        self.use_fuel = SwitchSettingCard(QIcon(), title="燃料", content="开启后将使用体力")
-        self.use_explore = SwitchSettingCard(QIcon(), title="星穹", content="开启后将使用星穹")
+        self.use_fuel = SwitchSettingCard(QIcon(), title="燃料", content="开启后将使用体力",
+                                          configItem=cfg.use_fuel)
+        self.use_explore = SwitchSettingCard(QIcon(), title="星穹", content="开启后将使用星穹",
+                                             configItem=cfg.use_explore)
 
         # universe
         self.universe_group = SettingCardGroup("模拟宇宙", self.scrollWidget)
-        self.get_angle = SwitchSettingCard(QIcon(), title="校准角度", content="每次启动模拟宇宙校准角度")
+        self.get_angle = SwitchSettingCard(QIcon(), title="校准角度", content="每次启动模拟宇宙校准角度",
+                                           configItem=cfg.auto_angle)
 
         # more
         self.more_group = SettingCardGroup("更多", self.scrollWidget)
@@ -49,6 +58,11 @@ class SettingInterface(QFrame, Ui_Frame):
                                            FluentIcon.GITHUB,
                                            "模拟宇宙作者主页",
                                            "点个⭐给予动力源泉")
+        self.fluent_link = HyperlinkCard(r"https://github.com/zhiyiYo/PyQt-Fluent-Widgets",
+                                         "前往Github",
+                                         FluentIcon.GITHUB,
+                                         "Fluent-Widgets作者主页",
+                                         "点个⭐给予动力源泉")
         self.warning_label = StrongBodyLabel(self.more_group)
         self.warning_label.setText("该项目仅用于学习交流，造成的一切后果由使用者自己承担")
         self.info_label = StrongBodyLabel(self.more_group)
@@ -72,6 +86,7 @@ class SettingInterface(QFrame, Ui_Frame):
         # add setting card to more group
         self.more_group.addSettingCard(self.github_link)
         self.more_group.addSettingCard(self.universe_link)
+        self.more_group.addSettingCard(self.fluent_link)
         self.more_group.addSettingCard(self.warning_label)
         self.more_group.addSettingCard(self.info_label)
 
@@ -91,20 +106,43 @@ class SettingInterface(QFrame, Ui_Frame):
             return
         filename = dialog.__str__().split(',')[0]
         filename = filename.replace("(", "")
+        filename = filename.replace("'", "")
+        if not filename:
+            return
         self.game_path.setContent(filename)
+        cfg.set(cfg.game_path, filename)
+
+    def __on_open_map_clicked(self):
+        """open map clicked slot"""
+        from qfluentwidgets import MessageBox
+
+        class SetKeyBoardDialog(MessageBox):
+            def __init__(self, title, content, parent, key):
+                super().__init__(title, content, parent)
+                self.key = key
+
+            def keyPressEvent(self, event):
+                key = event.text()
+                self.key = key
+                self.contentLabel.setText(f"当前为: {key}")
+
+        dialog = SetKeyBoardDialog("设置打开地图的按键", f"当前为: {cfg.open_map.value}", self.window(),
+                                   cfg.open_map.value)
+        dialog.show()
+        dialog.yesSignal.connect(lambda: cfg.set(cfg.open_map, dialog.key))
+        dialog.exec()
+        self.open_map.setContent(f"当前为: {cfg.open_map.value}")
 
     def __connect_signal_to_slot(self):
         # game group
         self.game_path.clicked.connect(self.__on_game_path_clicked)
-        # self.open_map.clicked.connect(...)
-        # self.auto_fight.checkedChanged.connect(...)
+        self.open_map.clicked.connect(self.__on_open_map_clicked)
 
         # stamina
 
         # universe
 
         # more
-
 
     def __init_widget(self):
         self.__init_layout()

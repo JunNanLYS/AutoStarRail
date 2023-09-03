@@ -1,13 +1,8 @@
-import os
 import sys
-import ctypes
 
-from PySide6.QtGui import QIcon, QPixmap
-from PySide6.QtWidgets import QApplication, QSplashScreen
+from PySide6.QtWidgets import QApplication
 
-import config
 from gui.main_window import MainWindow
-from script.utils import win_message
 
 
 class AutoStarRail(MainWindow):
@@ -17,6 +12,6 @@ class AutoStarRail(MainWindow):
 
 # 设置应用程序图标
 app = QApplication(sys.argv)
-
-win_message("", "AutoStarRail启动成功")
+auto_star_rail = AutoStarRail()
+auto_star_rail.show()
 sys.exit(app.exec())

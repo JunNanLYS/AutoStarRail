@@ -9,11 +9,10 @@
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QRect)
-from PySide6.QtWidgets import (QVBoxLayout,
-                               QWidget)
+from PySide6.QtWidgets import (QSizePolicy, QSpacerItem,
+                               QVBoxLayout, QWidget)
 
 from qfluentwidgets import (SmoothScrollArea, SubtitleLabel)
-
 
 class Ui_Frame(object):
     def setupUi(self, Frame):
@@ -43,6 +42,7 @@ class Ui_Frame(object):
 
         self.dev_members_layout.addWidget(self.dev_members_label)
 
+
         self.verticalLayout_2.addLayout(self.dev_members_layout)
 
         self.acknowledgements_layout = QVBoxLayout()
@@ -54,16 +54,21 @@ class Ui_Frame(object):
 
         self.acknowledgements_layout.addWidget(self.acknowledgements_label)
 
+
         self.verticalLayout_2.addLayout(self.acknowledgements_layout)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_2.addItem(self.verticalSpacer)
 
         self.SmoothScrollArea.setWidget(self.scroll_widget)
 
         self.verticalLayout.addWidget(self.SmoothScrollArea)
 
+
         self.retranslateUi(Frame)
 
         QMetaObject.connectSlotsByName(Frame)
-
     # setupUi
 
     def retranslateUi(self, Frame):
@@ -71,3 +76,4 @@ class Ui_Frame(object):
         self.dev_members_label.setText(QCoreApplication.translate("Frame", u"\u5f00\u53d1\u6210\u5458", None))
         self.acknowledgements_label.setText(QCoreApplication.translate("Frame", u"\u81f4\u8c22", None))
     # retranslateUi
+

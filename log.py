@@ -33,31 +33,31 @@ def get_time():
 def info(mes):
     filename, function = get_stack()
     logging.info(f"{get_time()} [{filename}({function})]: {mes}")
-    Logger.transmit(mes, filename, function)
+    Logger.transmit(mes, filename, function, level=logging.INFO)
 
 
 def debug(mes):
     filename, function = get_stack()
     logging.debug(f"{get_time()} [{filename}({function})]: {mes}")
-    Logger.transmit(mes, filename, function)
+    Logger.transmit(mes, filename, function, level=logging.DEBUG)
 
 
 def warning(mes):
     filename, function = get_stack()
     logging.warning(f"{get_time()} [{filename}({function})]: {mes}")
-    Logger.transmit(mes, filename, function)
+    Logger.transmit(mes, filename, function, level=logging.WARNING)
 
 
 def error(mes):
     filename, function = get_stack()
     logging.error(f"{get_time()} [{filename}({function})]: {mes}")
-    Logger.transmit(mes, filename, function)
+    Logger.transmit(mes, filename, function, level=logging.ERROR)
 
 
 def critical(mes):
     filename, function = get_stack()
     logging.critical(f"{get_time()} [{filename}({function})]: {mes}")
-    Logger.transmit(mes, filename, function)
+    Logger.transmit(mes, filename, function, level=logging.CRITICAL)
 
 
 def set_log_widget(widget):

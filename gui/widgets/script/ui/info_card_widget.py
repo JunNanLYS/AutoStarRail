@@ -8,17 +8,11 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtCore import (QCoreApplication, QMetaObject)
+from PySide6.QtWidgets import (QGridLayout, QSizePolicy, QSpacerItem,
+                               QVBoxLayout)
 
-from qfluentwidgets import (CardWidget, ElevatedCardWidget, SimpleCardWidget, SubtitleLabel)
+from qfluentwidgets import (SubtitleLabel)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -36,9 +30,9 @@ class Ui_Form(object):
 
         self.grid_layout = QGridLayout()
         self.grid_layout.setObjectName(u"grid_layout")
-        self.grid_layout.setHorizontalSpacing(10)
-        self.grid_layout.setVerticalSpacing(10)
-        self.grid_layout.setContentsMargins(20, 0, 0, 0)
+        self.grid_layout.setHorizontalSpacing(5)
+        self.grid_layout.setVerticalSpacing(15)
+        self.grid_layout.setContentsMargins(20, -1, -1, -1)
 
         self.verticalLayout.addLayout(self.grid_layout)
 
@@ -46,7 +40,6 @@ class Ui_Form(object):
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
-        self.verticalLayout.setStretch(1, 1)
 
         self.retranslateUi(Form)
 

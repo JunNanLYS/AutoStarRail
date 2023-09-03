@@ -6,7 +6,7 @@ from PySide6.QtGui import QIcon
 
 import config
 import log
-from gui.widgets import SettingInterface, ScriptInterface, LogInterface, AvatarInterface
+from gui.widgets import (SettingInterface, ScriptInterface, LogInterface, AvatarInterface)
 
 
 def get_icon_path(icon_name: str):
