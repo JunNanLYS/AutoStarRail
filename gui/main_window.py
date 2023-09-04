@@ -6,7 +6,7 @@ from PySide6.QtGui import QIcon
 
 import config
 import log
-from gui.widgets import (SettingInterface, ScriptInterface, LogInterface, AvatarInterface)
+from gui.widgets import (SettingInterface, ScriptInterface, LogInterface, AvatarInterface, RunInterface)
 
 
 def get_icon_path(icon_name: str):
@@ -20,16 +20,17 @@ class MainWindow(MSFluentWindow):
         self.script_interface = ScriptInterface(self)
         self.log_interface = LogInterface(self)
         self.avatar_interface = AvatarInterface(self)
+        self.run_interface = RunInterface(self)
 
         self.__init_widget()
 
     def __init_navigation(self):
         self.addSubInterface(
             self.script_interface,
-            QIcon(get_icon_path("run_d.png")),
+            QIcon(get_icon_path("script_d.png")),
             "脚本",
             position=NavigationItemPosition.TOP,
-            selectedIcon=QIcon(get_icon_path("run_s.png"))
+            selectedIcon=QIcon(get_icon_path("script_s.png"))
         )
 
         self.addSubInterface(
@@ -38,6 +39,14 @@ class MainWindow(MSFluentWindow):
             "日志",
             position=NavigationItemPosition.TOP,
             selectedIcon=QIcon(get_icon_path("log_s.png"))
+        )
+
+        self.addSubInterface(
+            self.run_interface,
+            QIcon(get_icon_path("run_d.png")),
+            "运行",
+            position=NavigationItemPosition.SCROLL,
+            selectedIcon=QIcon(get_icon_path("run_s.png"))
         )
 
         self.addSubInterface(
@@ -54,20 +63,10 @@ class MainWindow(MSFluentWindow):
             position=NavigationItemPosition.BOTTOM
         )
 
-        self.navigationInterface.setCurrentItem("脚本")
-
     def __init_widget(self):
-        import ctypes
-        icon = os.path.join(config.abspath, "doc", "help.ico")
-        self.setWindowIcon(QIcon(icon))
-        self.setWindowTitle("AutoStarRail")
         self.resize(900, 600)
         self.__init_navigation()
         log.set_log_widget(self.log_interface)
-
-        # 设置应用程序
-        appid = 'AutoStarRail'  # 应用程序名称
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)  # 注册应用使系统能识别
 
 
 if __name__ == "__main__":
