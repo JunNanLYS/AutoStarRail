@@ -1,3 +1,5 @@
+from typing import Dict
+
 from .ui.info_card_widget import Ui_Form
 from qfluentwidgets import StrongBodyLabel, CaptionLabel, ElevatedCardWidget
 
@@ -20,6 +22,7 @@ class InfoCard(ElevatedCardWidget, Ui_Form):
         )
         self.setFixedSize(400, 270)
         self.verticalLayout.setSpacing(20)
+        self.title_to_content_obj: Dict[str, CaptionLabel] = dict()
 
     def _get_title_label(self, text: str):
         from PySide6.QtCore import Qt
@@ -47,5 +50,13 @@ class InfoCard(ElevatedCardWidget, Ui_Form):
 
     def add_info(self, title: str, content: str):
         self.grid_layout.addWidget(self._get_title_label(title), self._row, 0)
-        self.grid_layout.addWidget(self._get_content_label(content), self._row, 1)
+        content_label = self._get_content_label(content)
+        self.title_to_content_obj[title] = content_label
+        self.grid_layout.addWidget(content_label, self._row, 1)
         self._row += 1
+
+    def set_info(self, title, content):
+        if title not in self.title_to_content_obj:
+            raise AttributeError(f"title not in title_to_content_obj")
+        content_label = self.title_to_content_obj[title]
+        content_label.setText(content)

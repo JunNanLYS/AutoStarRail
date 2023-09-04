@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Frame</class>
+ <widget class="QFrame" name="Frame">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>581</width>
+    <height>398</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="PlainTextEdit" name="PlainTextEdit">
+     <property name="plainText">
+      <string>倒卖可耻！倒卖可耻！倒卖可耻！
+本项目AutoStarRail为开源免费公益项目
+如果你从Github之外渠道付费得到该项目请立即差评并举报商家！
+项目用于学习交流
+</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="ComboBox" name="combobox"/>
+   </item>
+   <item>
+    <widget class="PushButton" name="button_run">
+     <property name="text">
+      <string>运行脚本</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>PushButton</class>
+   <extends>QPushButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>PlainTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
