@@ -24,6 +24,7 @@ class Config(QConfig):
 
     # universe
     universe_angle = ConfigItem("universe", "angle", 1.0)
+    universe_number = ConfigItem("universe", "number", 6)
     auto_angle = ConfigItem("universe", "auto_angle", False)
     last_universe = ConfigItem("universe", "last", {})
 
@@ -38,6 +39,18 @@ class Config(QConfig):
     def set(self, item, value, save=True):
         log.info(f"设置{item}value为{value}")
         super().set(item, value, save)
+
+    @property
+    def sum_stamina(self):
+        """计算上一次设置的体力总值"""
+        res = 0
+        d = {"calyx": 10, "shadow": 30, "cavern": 40, "echo": 30}
+        for name, cnt in self.last_stamina.value.items():
+            for prefix, v in d.items():
+                if prefix in name:
+                    res += v * cnt
+                    break
+        return res
 
 
 # 创建配置实例并使用配置文件来初始化它
