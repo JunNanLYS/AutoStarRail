@@ -60,9 +60,13 @@ def set_foreground():
     hwnd = win32gui.FindWindow(None, "崩坏：星穹铁道")
     win32gui.SetForegroundWindow(hwnd)
     time.sleep(0.3)
-    screenshot = ImageGrab.grab()
-    positions = get_text_position(screenshot, "崩坏：星穹铁道")
-    mouse.click_positions(positions)
+    while True:
+        screenshot = ImageGrab.grab()
+        positions = get_text_position(screenshot, "崩坏：星穹铁道")
+        if positions is None:
+            continue
+        mouse.click_positions(positions)
+        break
 
 
 def to_game_main():

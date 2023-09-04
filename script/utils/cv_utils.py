@@ -5,6 +5,8 @@ import cv2
 import numpy as np
 from numpy import ndarray
 
+import log
+
 
 def is_same_position(position1: tuple, position2: tuple, error_value: int):
     """
@@ -121,6 +123,7 @@ def wait_img(template, threshold=0.8):
     """等待模板图"""
     import time
     import game
+    log.info("等待模板图")
     screenshot = game.get_screenshot()
     while not template_in_img(screenshot, template, threshold=threshold):
         time.sleep(0.1)

@@ -4,10 +4,11 @@ import os
 import config
 
 IMAGE_ROOT_PATH = os.path.join(config.abspath, "images\\")  # 图片根目录
-CALYX_PATH = IMAGE_ROOT_PATH + "calyx\\"  # 拟造花萼的目录
-STAGNANT_SHADOW_PATH = IMAGE_ROOT_PATH + "shadow\\"  # 凝滞虚影的目录
+CALYX_GOLD_PATH = IMAGE_ROOT_PATH + "calyx_gold\\"  # 拟造花萼的目录
+CALYX_RED_PATH = IMAGE_ROOT_PATH + "calyx_red\\"  # 拟造花萼(赤)目录
+SHADOW_PATH = IMAGE_ROOT_PATH + "shadow\\"  # 凝滞虚影的目录
 CAVERN_PATH = IMAGE_ROOT_PATH + "cavern\\"  # 侵蚀隧道的目录
-ECHO_OF_WAR_PATH = IMAGE_ROOT_PATH + "echoOfWar\\"  # 历战回响的目录
+ECHO_OF_WAR_PATH = IMAGE_ROOT_PATH + "echo\\"  # 历战回响的目录
 COMMISSION_PATH = IMAGE_ROOT_PATH + "commission\\"  # 委托任务的目录
 CHARACTER_PATH = IMAGE_ROOT_PATH + "character\\"  # 角色的目录
 WORLD_PATH = IMAGE_ROOT_PATH + "world\\"  # 世界的目录
@@ -16,9 +17,10 @@ WORLD_PATH = IMAGE_ROOT_PATH + "world\\"  # 世界的目录
 PHONE = IMAGE_ROOT_PATH + r"phone.png"  # 手机
 MANDATE = IMAGE_ROOT_PATH + r"mandate.png"  # 任务书
 BOOK = IMAGE_ROOT_PATH + r"book.png"  # 星际和平书
+BOOK2 = IMAGE_ROOT_PATH + r"book2.png"  # 星际和平书界面
 INDEX = IMAGE_ROOT_PATH + r"index.png"  # 生存索引
 INDEX_SELECTED = IMAGE_ROOT_PATH + r"indexSelected.png"  # 选中状态下的"生存索引"
-NO_STAMINA = IMAGE_ROOT_PATH + r"noStamina.png"  # 暂无行劽数量
+NO_STAMINA = IMAGE_ROOT_PATH + r"noStamina.png"  # 没有体力
 CANCEL = IMAGE_ROOT_PATH + r"cancel.png"  # 取消按钮
 CONFIRM = IMAGE_ROOT_PATH + r"confirm.png"  # 确认按钮
 SELECTED_CONFIRM = IMAGE_ROOT_PATH + r"selectedConfirm.png"  # 被选中的确认按钮
@@ -34,35 +36,32 @@ AREA_NAVIGATION = IMAGE_ROOT_PATH + r"areaNavigation.png"  # 区域导航
 BALL_NAVIGATION = IMAGE_ROOT_PATH + r"ballNavigation.png"  # 星球导航
 
 # 拟造花萼 calyx
-CALYX_GOLD = CALYX_PATH + r"calyxGold.png"  # 花萼(金)
-CALYX_GOLD_SELECTED = CALYX_PATH + r"calyxGoldSelected.png"  # 选中的花萼(金)
-CALYX_RED = CALYX_PATH + r"calyxRed.png"  # 花萼(赤)
-CALYX_1 = CALYX_PATH + r"1.png"  # 花萼(角色经验)
-CALYX_2 = CALYX_PATH + r"2.png"  # 花萼(光锥经验)
-CALYX_3 = CALYX_PATH + r"3.png"  # 花萼(信用点)
-CALYX_4 = CALYX_PATH + r"4.png"  # 毁灭行迹
-CALYX_5 = CALYX_PATH + r'5.png'  # 存护行迹
-CALYX_6 = CALYX_PATH + r"6.png"  # 巡猎行迹
-CALYX_7 = CALYX_PATH + r"7.png"  # 丰饶行迹
-CALYX_8 = CALYX_PATH + r"8.png"  # 智识行迹
-CALYX_9 = CALYX_PATH + r"9.png"  # 和谐行迹
-CALYX_10 = CALYX_PATH + r"10.png"  # 虚无行迹
+CALYX_GOLD_1 = CALYX_GOLD_PATH + "1.png"
+CALYX_GOLD_2 = CALYX_GOLD_PATH + r"2.png"
+CALYX_GOLD_3 = CALYX_GOLD_PATH + r"3.png"
+CALYX_RED_1 = CALYX_RED_PATH + r"1.png"
+CALYX_RED_2 = CALYX_RED_PATH + r"2.png"
+CALYX_RED_3 = CALYX_RED_PATH + r"3.png"
+CALYX_RED_4 = CALYX_RED_PATH + r"4.png"
+CALYX_RED_5 = CALYX_RED_PATH + r'5.png'
+CALYX_RED_6 = CALYX_RED_PATH + r"6.png"
+CALYX_RED_7 = CALYX_RED_PATH + r"7.png"
 
 # 凝滞虚影 Stagnant shadow
-STAGNANT_SHADOW = STAGNANT_SHADOW_PATH + r"stagnantShadow.png"  # 凝滞虚影
-SHAPE_1 = STAGNANT_SHADOW_PATH + r"1.png"  # 空海之形
-SHAPE_2 = STAGNANT_SHADOW_PATH + r"2.png"  # 巽风之形
-SHAPE_3 = STAGNANT_SHADOW_PATH + r"3.png"  # 鸣雷之形
-SHAPE_4 = STAGNANT_SHADOW_PATH + r"4.png"  # 炎华之形
-SHAPE_5 = STAGNANT_SHADOW_PATH + r"5.png"  # 锋芒之形
-SHAPE_6 = STAGNANT_SHADOW_PATH + r"6.png"  # 霜晶之形
-SHAPE_7 = STAGNANT_SHADOW_PATH + r"7.png"  # 幻光之形
-SHAPE_8 = STAGNANT_SHADOW_PATH + r"8.png"  # 冰凌之形
-SHAPE_9 = STAGNANT_SHADOW_PATH + r"9.png"  # 震厄之形
-SHAPE_10 = STAGNANT_SHADOW_PATH + r"10.png"  # 天人之形
+SHADOW_1 = SHADOW_PATH + r"1.png"  # 空海之形
+SHADOW_2 = SHADOW_PATH + r"2.png"  # 巽风之形
+SHADOW_3 = SHADOW_PATH + r"3.png"  # 鸣雷之形
+SHADOW_4 = SHADOW_PATH + r"4.png"  # 炎华之形
+SHADOW_5 = SHADOW_PATH + r"5.png"  # 锋芒之形
+SHADOW_6 = SHADOW_PATH + r"6.png"  # 霜晶之形
+SHADOW_7 = SHADOW_PATH + r"7.png"  # 幻光之形
+SHADOW_8 = SHADOW_PATH + r"8.png"  # 冰凌之形
+SHADOW_9 = SHADOW_PATH + r"9.png"  # 震厄之形
+SHADOW_10 = SHADOW_PATH + r"10.png"  # 天人之形
+SHADOW_11 = SHADOW_PATH + r"11.png"
+SHADOW_12 = SHADOW_PATH + r"12.png"
 
 # 侵蚀隧道 cavern
-CAVERN_OF_CORROSION = CAVERN_PATH + r"cavernOfCorrosion.png"  # 侵蚀隧道按钮
 CAVERN_1 = CAVERN_PATH + r"1.png"
 CAVERN_2 = CAVERN_PATH + r"2.png"
 CAVERN_3 = CAVERN_PATH + r"3.png"
@@ -72,7 +71,6 @@ CAVERN_6 = CAVERN_PATH + r"6.png"
 CAVERN_7 = CAVERN_PATH + r"7.png"
 
 # 历战余响 Echo Of War
-ECHO_OF_WAR = ECHO_OF_WAR_PATH + r"echoOfWar.png"  # 历战回响按钮
 ECHO_1 = ECHO_OF_WAR_PATH + r"1.png"  # 毁灭回响
 ECHO_2 = ECHO_OF_WAR_PATH + r"2.png"  # 存护回响
 ECHO_3 = ECHO_OF_WAR_PATH + r"3.png"  # 丰饶回响
