@@ -3,6 +3,8 @@ import time
 
 import win32gui
 
+import log
+
 
 def get_somthing():
     """获取游戏窗口宽度以及高度，这是缩放后的"""
@@ -80,9 +82,10 @@ def to_game_main():
         img = get_screenshot()  # 获取游戏内截图
         if match_template_gray(img, template) != (-1, -1):
             break
-        print(f"尝试回到主界面，这是第{cnt}次尝试")
+        log.info(f"尝试回到主界面，这是第{cnt}次尝试")
         pyautogui.press('esc')
         time.sleep(0.8)
+        cnt += 1
 
 
 if __name__ == '__main__':

@@ -10,5 +10,5 @@ CN_NAME = {
 def name_to_template(name: str):
     from script.utils import template_path
     name = name.upper()
-    template = "template_path" + "." + name
+    template = "template_path." + name
     return eval(template)

@@ -119,15 +119,29 @@ def match_template_gray(img: Union[str, ndarray], template: Union[str, ndarray],
     return -1, -1
 
 
-def wait_img(template, threshold=0.8):
+def wait_img(template, threshold=0.8, mode="default"):
     """等待模板图"""
     import time
     import game
     log.info("等待模板图")
+    if mode == "default":
+        method = match_template
+    elif mode == 'gray':
+        method = match_template_gray
+    else:
+        raise ValueError(f"mode={mode} is not supported")
     screenshot = game.get_screenshot()
-    while not template_in_img(screenshot, template, threshold=threshold):
+    while not method(screenshot, template, threshold=threshold):
         time.sleep(0.1)
         screenshot = game.get_screenshot()
+
+
+def where_img(img: Union[str, ndarray], template: Union[str, ndarray], threshold=0.8) -> ndarray:
+    img = to_ndarray(img)
+    template = to_ndarray(template)
+    res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+    positions = np.where(res >= threshold)
+    return positions
 
 
 if __name__ == '__main__':

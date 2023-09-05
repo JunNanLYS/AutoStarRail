@@ -1,3 +1,6 @@
+import log
+
+
 def click_position(position):
     """鼠标移动至position并点击"""
     import win32api
@@ -5,6 +8,7 @@ def click_position(position):
     import time
     x, y = int(position[0]), int(position[1])
     win32api.SetCursorPos((x, y))
+    log.info(f"点击({x},{y})")
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, x, y, 0, 0)
     time.sleep(0.1)  # 过快的点击将导致游戏反应不过来最终导致点击失效
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, x, y, 0, 0)
@@ -28,6 +32,7 @@ def mouse_scroll(count: int):
     鼠标滚轮
     """
     import pyautogui
+    log.info("鼠标滚轮滚动")
     for _ in range(count):
         for _ in range(6):
             pyautogui.scroll(-10)

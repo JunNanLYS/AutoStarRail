@@ -14,6 +14,9 @@ class AutoStarRail(MainWindow):
 
         self.__init_widget()
 
+    def connect_signal_to_slot(self):
+        pass
+
     def __init_widget(self):
         import ctypes
         icon = os.path.join(config.abspath, "doc", "help.ico")

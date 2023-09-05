@@ -8,9 +8,9 @@ import win32api
 import win32con
 import pyautogui
 
-from script.utils import template_path
-from config import config as cfg
 import threadpool
+from script.utils import template_path
+from config import cfg
 
 
 class MoveDirection(Enum):
@@ -45,22 +45,22 @@ class Role:
             y = angle
         # 分多次移动，防止鼠标移动离开游戏窗口
         _, _, s = game.get_somthing()
-        dx = int(16.5 * y * cfg.angle * s)
+        dx = int(16.5 * y * cfg.world_angle * s)
         win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, dx, 0)  # 进行视角移动
         time.sleep(0.05)
         if angle != y:
             Role.move_view(angle - y)
 
     @classmethod
-    def move_position(cls, direction: MoveDirection, point: int):
+    def move_position(cls, point: int, direction: MoveDirection = MoveDirection.ONWARD):
         """
         0.5s = [7, 7, 7, 7, 8, 8, 8, 8, 8, 7, 7, 8, 8, 8, 8, 7, 7, 7, 7, 8]
         1s = [17, 17, 17, 18, 18, 18, 18, 17, 17, 17, 17, 18, 18, 17, 17, 17, 17, 17, 17, 17]
         1.5s = [26, 27, 27, 27, 27, 27, 27, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 26, 26, 27]
         0.5s走9格像素点
-        移动时会阻塞线程
         :param direction: 移动方向枚举类
         :param point:  要移动的像素点数量
+        :return: 线程future
         """
         dic = {
             MoveDirection.ONWARD: 'w',
@@ -72,9 +72,14 @@ class Role:
             raise ValueError(f"direction {direction} not in {dic}")
         cls.direct = dic[direction]
         second = round(point / 9, 2) * 0.5
-        pyautogui.keyDown(dic[direction])
-        time.sleep(second)
-        pyautogui.keyUp(dic[direction])
+
+        def move():
+            pyautogui.keyDown(dic[direction])
+            time.sleep(second)
+            pyautogui.keyUp(dic[direction])
+
+        future = threadpool.function_thread.submit(move)
+        return future
 
     @classmethod
     def stop_move(cls):
