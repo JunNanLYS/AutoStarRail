@@ -24,6 +24,9 @@ class MainWindow(MSFluentWindow):
 
         self.__init_widget()
 
+    def update_info_card(self, *args):
+        self.script_interface.update_info_card()
+
     def __init_navigation(self):
         self.addSubInterface(
             self.script_interface,

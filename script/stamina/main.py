@@ -5,10 +5,9 @@ import cv2
 import pyautogui
 
 import game
-from script.utils import (match_template, match_template_gray, template_path, window, mouse, wait_img,
-                          get_text_position, where_img, wait_text, Role)
-
 import log
+from script.utils import (match_template, match_template_gray, template_path, window, mouse, wait_img,
+                          get_text_position, where_img, wait_text, Role, win_message)
 from script.stamina.data import CN_NAME, name_to_template
 
 
@@ -33,6 +32,7 @@ class Stamina:
     @classmethod
     def run(cls):
         from config import cfg
+        game.set_foreground()  # 将游戏设置到前台
         for name, count in cfg.last_stamina.value.items():
             log.info(f"副本{name}，次数{count}")
             if count == 0:
@@ -93,18 +93,20 @@ class Stamina:
 
                 # 根据需求增加挑战次数，若超出6次则只增加6次
                 log.info("添加挑战次数")
+                wait_text(window.get_screenshot, "挑战")
                 pos = match_template(window.get_screenshot(), template_path.ADD_CHALLENGE)
                 if count >= 6:
                     for _ in range(5):
                         mouse.click_position(pos)
+                        time.sleep(0.1)
                     count -= 6
                 else:
                     for _ in range(count - 1):
                         mouse.click_position(pos)
+                        time.sleep(0.1)
                     count = 0
 
                 # 点击挑战
-                wait_text(window.get_screenshot, "挑战")
                 challenge_pos = match_template(window.get_screenshot(), template_path.CHALLENGE)
                 mouse.click_position((challenge_pos[0] + 5, challenge_pos[1] + 5))
 
@@ -123,6 +125,7 @@ class Stamina:
                 exit_pos = wait_text(window.get_screenshot, "退出关卡", timeout=3600)
                 mouse.click_positions(exit_pos)
         log.info("运行结束")
+        win_message("AutoStarRail", "体力脚本运行结束")
 
 
 if __name__ == "__main__":

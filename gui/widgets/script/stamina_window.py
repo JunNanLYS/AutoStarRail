@@ -76,8 +76,15 @@ class StaminaWindow(FramelessDialog, Ui_Frame):
             card.spin_box.setValue(cfg.last_stamina.value.get(object_name, 0))
             layout.addWidget(card)
 
+    def __on_yes_button_clicked(self):
+        """yes button clicked slot"""
+        from config import cfg
+        stamina = self.get_stamina()
+        cfg.set(cfg.last_stamina, stamina)
+
     def __connect_signal_to_slot(self):
         self.button_yes.clicked.connect(self.hide)
+        self.button_yes.clicked.connect(self.__on_yes_button_clicked)
         self.button_no.clicked.connect(self.hide)
 
     def __get_img_root_path(self, name):

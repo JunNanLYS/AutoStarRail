@@ -1,10 +1,4 @@
 {
-    "universe": {
-        "auto_angle": false,
-        "last": {},
-        "angle": 1.0,
-        "number": 6
-    },
     "game": {
         "auto_fight": false,
         "game_path": "D:/星穹铁道/Star Rail/launcher.exe",
@@ -45,6 +39,7 @@
             "shadow_11": 0,
             "shadow_12": 1
         },
+        "time": "2023年09月08日 11:04:10",
         "use_explore": false,
         "use_fuel": false
     },
@@ -55,5 +50,19 @@
     "QFluentWidgets": {
         "ThemeColor": "#ff009faa",
         "ThemeMode": "Auto"
+    },
+    "universe": {
+        "angle": 1.0146103906103896,
+        "auto_angle": false,
+        "bonus": 0,
+        "count": 1,
+        "debug": 0,
+        "difficulty": 3,
+        "fate": "存护",
+        "find": 1,
+        "number": 5,
+        "show_map": 0,
+        "speed": 0,
+        "update": 0
     }
 }

@@ -18,22 +18,61 @@
     <widget class="PlainTextEdit" name="PlainTextEdit">
      <property name="plainText">
       <string>倒卖可耻！倒卖可耻！倒卖可耻！
-本项目AutoStarRail为开源免费公益项目
+本项目AutoStarRail为开源免费公益项目。
 如果你从Github之外渠道付费得到该项目请立即差评并举报商家！
-项目用于学习交流
-</string>
+项目用于学习交流！！！
+
+悄咪咪的告诉你，不要乱删文件，否则可能无法运行脚本且被项目封禁，这是为了防止倒卖。</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="ComboBox" name="combobox"/>
+    <layout class="QHBoxLayout" name="combobox_layout">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="ComboBox" name="combobox"/>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="PushButton" name="button_run">
-     <property name="text">
-      <string>运行脚本</string>
+    <layout class="QHBoxLayout" name="button_layout">
+     <property name="spacing">
+      <number>10</number>
      </property>
-    </widget>
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="PushButton" name="button_run">
+       <property name="text">
+        <string>运行脚本</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

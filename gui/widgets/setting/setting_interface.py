@@ -44,7 +44,7 @@ class SettingInterface(QFrame, Ui_Frame):
         # universe
         self.universe_group = SettingCardGroup("模拟宇宙", self.scrollWidget)
         self.get_angle = SwitchSettingCard(QIcon(), title="校准角度", content="每次启动模拟宇宙校准角度",
-                                           configItem=cfg.auto_angle)
+                                           configItem=cfg.universe_auto_angle)
 
         # more
         self.more_group = SettingCardGroup("更多", self.scrollWidget)
