@@ -1,0 +1,7 @@
+INFO [2023-09-09 23:59:49,162] [align_angle.py:29] 开始校准
+WARNING [2023-09-09 23:59:49,391] [utils.py:93] 等待游戏窗口
+INFO [2023-09-09 23:59:49,391] [utils.py:125] DPI: 1.5 A:1.01
+INFO [2023-09-09 23:59:49,392] [utils.py:128] TEXT: 崩坏：星穹铁道
+INFO [2023-09-10 00:00:04,463] [align_angle.py:70] 校准完成
+INFO [2023-09-10 00:00:04,474] [log.py:42] 2023-09-10 00:00:04 [F:\AutoStarRail\config.py(set)]: 设置angle为1.0094280590623015
+INFO [2023-09-10 00:00:04,477] [log.py:42] 2023-09-10 00:00:04 [F:\AutoStarRail\config.py(save)]: 保存成功

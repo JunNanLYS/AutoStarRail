@@ -4,6 +4,10 @@
         "game_path": "D:/星穹铁道/Star Rail/launcher.exe",
         "open_map": "m"
     },
+    "commission": {
+        "state": "已领取",
+        "time": "2023年9月3日 21:03:46"
+    },
     "stamina": {
         "last": {
             "cavern_1": 0,
@@ -13,7 +17,7 @@
             "cavern_5": 0,
             "cavern_6": 0,
             "cavern_7": 0,
-            "calyx_gold_1": 0,
+            "calyx_gold_1": 1,
             "calyx_gold_2": 0,
             "calyx_gold_3": 0,
             "calyx_red_1": 0,
@@ -37,7 +41,7 @@
             "shadow_9": 0,
             "shadow_10": 0,
             "shadow_11": 0,
-            "shadow_12": 1
+            "shadow_12": 0
         },
         "time": "2023年09月08日 11:04:10",
         "use_explore": false,
@@ -52,13 +56,13 @@
         "ThemeMode": "Auto"
     },
     "universe": {
-        "angle": 1.0146103906103896,
+        "angle": 1.0094280590623015,
         "auto_angle": false,
-        "bonus": 0,
+        "bonus": true,
         "count": 1,
         "debug": 0,
         "difficulty": 3,
-        "fate": "存护",
+        "fate": "丰饶",
         "find": 1,
         "number": 5,
         "show_map": 0,

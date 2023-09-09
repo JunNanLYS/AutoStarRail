@@ -45,6 +45,8 @@ class SettingInterface(QFrame, Ui_Frame):
         self.universe_group = SettingCardGroup("模拟宇宙", self.scrollWidget)
         self.get_angle = SwitchSettingCard(QIcon(), title="校准角度", content="每次启动模拟宇宙校准角度",
                                            configItem=cfg.universe_auto_angle)
+        self.bonus = SwitchSettingCard(QIcon(), title="沉浸奖励", content="开启后将开启模拟宇宙沉浸奖励",
+                                       configItem=cfg.universe_bonus)
 
         # more
         self.more_group = SettingCardGroup("更多", self.scrollWidget)
@@ -82,6 +84,7 @@ class SettingInterface(QFrame, Ui_Frame):
 
         # add setting card to universe group
         self.universe_group.addSettingCard(self.get_angle)
+        self.universe_group.addSettingCard(self.bonus)
 
         # add setting card to more group
         self.more_group.addSettingCard(self.github_link)

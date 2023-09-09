@@ -57,18 +57,14 @@ def get_screenshot():
 
 def set_foreground():
     """将游戏设置为前台"""
-    from PIL import ImageGrab
-    from script.utils import get_text_position, mouse
+    import pythoncom
+    import win32com.client
+    pythoncom.CoInitialize()
+    shell = win32com.client.Dispatch("WScript.Shell")
+    shell.SendKeys("")  # Undocks my focus from Python IDLE
     hwnd = win32gui.FindWindow("UnityWndClass", "崩坏：星穹铁道")
     win32gui.SetForegroundWindow(hwnd)
     time.sleep(0.3)
-    # while True:
-    #     screenshot = ImageGrab.grab()
-    #     positions = get_text_position(screenshot, "崩坏")
-    #     if positions is None:
-    #         continue
-    #     mouse.click_positions(positions)
-    #     break
 
 
 def to_game_main():

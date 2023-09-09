@@ -1,7 +1,14 @@
 import logging
 from datetime import datetime
 
-logging.basicConfig(level=logging.DEBUG)
+auto_sr = logging.getLogger("")
+auto_sr.setLevel(logging.DEBUG)
+
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter("%(levelname)s - %(message)s")
+stream_handler.setFormatter(formatter)
+auto_sr.addHandler(stream_handler)
 
 
 class Logger:
@@ -32,31 +39,31 @@ def get_time():
 
 def info(mes):
     filename, function = get_stack()
-    logging.info(f"{get_time()} [{filename}({function})]: {mes}")
+    auto_sr.info(f"{get_time()} [{filename}({function})]: {mes}")
     Logger.transmit(mes, filename, function, level=logging.INFO)
 
 
 def debug(mes):
     filename, function = get_stack()
-    logging.debug(f"{get_time()} [{filename}({function})]: {mes}")
+    auto_sr.debug(f"{get_time()} [{filename}({function})]: {mes}")
     Logger.transmit(mes, filename, function, level=logging.DEBUG)
 
 
 def warning(mes):
     filename, function = get_stack()
-    logging.warning(f"{get_time()} [{filename}({function})]: {mes}")
+    auto_sr.warning(f"{get_time()} [{filename}({function})]: {mes}")
     Logger.transmit(mes, filename, function, level=logging.WARNING)
 
 
 def error(mes):
     filename, function = get_stack()
-    logging.error(f"{get_time()} [{filename}({function})]: {mes}")
+    auto_sr.error(f"{get_time()} [{filename}({function})]: {mes}")
     Logger.transmit(mes, filename, function, level=logging.ERROR)
 
 
 def critical(mes):
     filename, function = get_stack()
-    logging.critical(f"{get_time()} [{filename}({function})]: {mes}")
+    auto_sr.critical(f"{get_time()} [{filename}({function})]: {mes}")
     Logger.transmit(mes, filename, function, level=logging.CRITICAL)
 
 
@@ -66,3 +73,8 @@ def set_log_widget(widget):
 
 if __name__ == '__main__':
     info("test")
+    debug("test")
+    warning("test")
+    error("test")
+    critical("test")
+    pass

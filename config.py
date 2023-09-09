@@ -1,4 +1,5 @@
 import os
+import sys
 
 from qfluentwidgets import QConfig, ConfigItem, qconfig
 
@@ -7,7 +8,6 @@ import log
 version = "0.6.0"
 github_url = "https://github.com/JunNanLYS/AutoStarRail"
 abspath = os.path.dirname(os.path.abspath(__file__))  # 项目绝对路径
-use_last_auto_config = False  # 是否使用上一次运行配置
 
 
 class Config(QConfig):
@@ -22,6 +22,10 @@ class Config(QConfig):
     use_explore = ConfigItem("stamina", "use_explore", False)
     last_stamina = ConfigItem("stamina", "last", {})
     last_stamina_time = ConfigItem("stamina", "time", "2023年9月3日 21:03:46")
+
+    # commission
+    commission_time = ConfigItem("commission", "time", "2023年9月3日 21:03:46")
+    commission_state = ConfigItem("commission", "state", "已领取")
 
     # universe
     universe_angle = ConfigItem("universe", "angle", 1.0)

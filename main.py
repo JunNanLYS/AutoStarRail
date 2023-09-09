@@ -11,21 +11,11 @@ import log
 import threadpool
 from config import cfg
 from gui.main_window import MainWindow
-from script.stamina.main import Stamina
 
 
 def get_time():
     from datetime import datetime
     return datetime.now().strftime("%Y年%m月%d日 %H:%M:%S")
-
-
-cnt = 0
-
-
-def test_func(*args):
-    global cnt
-    print("测试", cnt)
-    cnt += 1
 
 
 class AutoStarRail(MainWindow):
@@ -48,12 +38,15 @@ class AutoStarRail(MainWindow):
 
     def __on_run_interface_button_clicked_slot(self):
         from qfluentwidgets import MessageBox
+        from script.stamina.main import Stamina
         from script.universe.main import Universe
+        from script.commission.main import Commission
         combobox = self.run_interface.combobox
         current_text = combobox.currentText()
         text_to_method = {
             "体力": Stamina.run,
-            "模拟宇宙": Universe.run_universe
+            "模拟宇宙": Universe.run_universe,
+            "委托": Commission.run
         }
         # 使用不开放的脚本
         if current_text not in text_to_method:

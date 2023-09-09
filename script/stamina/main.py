@@ -24,7 +24,6 @@ class Stamina:
     def click_index(cls):
         log.info("点击生存索引")
         pos = match_template(window.get_screenshot(), template_path.INDEX)
-        time.sleep(1)
         if pos == (-1, -1):
             pos = match_template(window.get_screenshot(), template_path.INDEX_SELECTED)
         mouse.click_position(pos)
@@ -107,8 +106,8 @@ class Stamina:
                     count = 0
 
                 # 点击挑战
-                challenge_pos = match_template(window.get_screenshot(), template_path.CHALLENGE)
-                mouse.click_position((challenge_pos[0] + 5, challenge_pos[1] + 5))
+                challenge_pos = wait_text(window.get_screenshot, "挑战")
+                mouse.click_positions(challenge_pos)
 
                 # 点击开始挑战
                 start_challenge_pos = wait_text(window.get_screenshot, "开始挑战")
@@ -120,6 +119,11 @@ class Stamina:
                     time.sleep(1)
                     Role.move_position(20).result()  # 等待移动结束后再攻击
                     pyautogui.click()
+
+                wait_text(game.get_screenshot, "战斗开始")  # 等待进入战斗界面
+                auto_fight_pos = match_template_gray(window.get_screenshot(), template_path.AUTO_FIGHT)
+                if auto_fight_pos != (-1, -1):
+                    mouse.click_position(auto_fight_pos)
 
                 # 不会有人一个小时连个副本都打不完吧。。。
                 exit_pos = wait_text(window.get_screenshot, "退出关卡", timeout=3600)
