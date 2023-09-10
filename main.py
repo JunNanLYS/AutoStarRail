@@ -1,6 +1,7 @@
 import sys
 import os
 from concurrent.futures import Future
+from typing import Tuple, Callable
 
 from PySide6.QtCore import Signal
 from PySide6.QtGui import QIcon
@@ -20,6 +21,7 @@ def get_time():
 
 class AutoStarRail(MainWindow):
     exception_message_signal = Signal(Future)
+    not_func_message_signal = Signal()
 
     def __init__(self):
         super().__init__()
@@ -36,29 +38,38 @@ class AutoStarRail(MainWindow):
             dialog = MessageBox(type(e).__name__, str(e), self.window())
             dialog.exec()
 
-    def __on_run_interface_button_clicked_slot(self):
+    def not_function_message(self):
         from qfluentwidgets import MessageBox
+        dialog = MessageBox("温馨提示", "该功能暂不开放", self.window())
+        dialog.exec()
+
+    def text_to_method(self, text) -> Tuple[Callable, bool]:
+        from gui.widgets import WarningDialog
         from script.stamina.main import Stamina
         from script.universe.main import Universe
         from script.commission.main import Commission
-        combobox = self.run_interface.combobox
-        current_text = combobox.currentText()
-        text_to_method = {
+        from script.abyss.main import Abyss
+        d = {
             "体力": Stamina.run,
             "模拟宇宙": Universe.run_universe,
-            "委托": Commission.run
+            "委托": Commission.run,
+            "深渊": Abyss.run,
         }
-        # 使用不开放的脚本
-        if current_text not in text_to_method:
-            dialog = MessageBox("温馨提示", "该功能暂不开放", self.window())
-            dialog.exec()
-        # 运行脚本
-        else:
-            future = threadpool.script_thread.submit(text_to_method[current_text])
-            future.add_done_callback(self.exception_message_signal.emit)
-            future.add_done_callback(self.update_info_card)
+        WarningDialog(self.window())
+        if text not in d:
+            return self.not_func_message_signal.emit, True
+        return d[text], False
 
-        if current_text == "体力":
+    def __on_run_interface_button_clicked_slot(self):
+        combobox = self.run_interface.combobox
+        text = combobox.currentText()
+        method, err = self.text_to_method(text)
+        # 运行脚本
+        future = threadpool.script_thread.submit(method)
+        future.add_done_callback(self.exception_message_signal.emit)
+        future.add_done_callback(self.update_info_card)
+
+        if text == "体力":
             now = get_time()
             cfg.set(cfg.last_stamina_time, now)
 
@@ -71,6 +82,7 @@ class AutoStarRail(MainWindow):
     def __connect_signal_to_slot(self):
         # AutoStarRail
         self.exception_message_signal.connect(self.exception_message)
+        self.not_func_message_signal.connect(self.not_function_message)
         # run interface
         self.run_interface.button_run.clicked.connect(self.__on_run_interface_button_clicked_slot)
         self.run_interface.button_angle.clicked.connect(self.__on_angle_button_slot)
