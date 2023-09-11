@@ -41,6 +41,9 @@ class Config(QConfig):
     universe_difficult = ConfigItem("universe", "difficulty", 3)
     universe_fate = ConfigItem("universe", "fate", "巡猎")
 
+    # abyss
+    abyss_list = ConfigItem("abyss", "order_text", [1, 2, 3, 4, 10, 9, 8, 7])
+
     # world
     world_angle = ConfigItem("world", "angle", 1.0)
     last_world = ConfigItem("world", "last", {})
