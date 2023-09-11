@@ -12,8 +12,8 @@ class UniverseWindow(FramelessDialog, Ui_Frame):
     def __init_combobox(self):
         from config import cfg
         difficulty = ["1", "2", "3", "4", "5"]
-        fate = ["存护", "记忆", "虚无", "丰饶", "巡猎", "毁灭", "欢愉"]
-        number = ["1", "2", "3", "4", "5", "6", "7"]
+        fate = ["存护", "记忆", "虚无", "丰饶", "巡猎", "毁灭", "欢愉", "繁育"]
+        number = ["3", "4", "5", "6", "7"]
         self.combobox_difficulty.addItems(difficulty)
         self.combobox_difficulty.setCurrentText(str(cfg.get(cfg.universe_difficult)))
 

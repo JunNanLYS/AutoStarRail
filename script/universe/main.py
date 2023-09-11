@@ -3,6 +3,7 @@ import sys
 import traceback
 import log
 from config import cfg, abspath
+from script.utils.interface import UniverseUtils as Utiles
 
 sys.path.append(os.path.join(abspath, "Auto_Simulated_Universe"))
 
@@ -13,6 +14,11 @@ class Universe:
     @classmethod
     def run_universe(cls):
         from Auto_Simulated_Universe.states import SimulatedUniverse
+
+        my_utiles = Utiles()
+        my_utiles.start()
+        my_utiles.into_universe()
+        my_utiles.stop()
         # 改变工作目录，Auto_Simulated_Universe使用了大量相对路径
         os.chdir(os.path.join(abspath, "Auto_Simulated_Universe"))
         cls.config_to_auto_simulated_universe_config()

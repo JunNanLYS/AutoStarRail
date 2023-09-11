@@ -121,13 +121,14 @@ class Stamina:
                     pyautogui.click()
 
                 wait_text(game.get_screenshot, "战斗开始")  # 等待进入战斗界面
-                auto_fight_pos = match_template_gray(window.get_screenshot(), template_path.AUTO_FIGHT)
+                auto_fight_pos = match_template_gray(window.get_screenshot(), template_path.AUTO_FIGHT, threshold=0.9)
                 if auto_fight_pos != (-1, -1):
                     mouse.click_position(auto_fight_pos)
 
-                # 不会有人一个小时连个副本都打不完吧。。。
-                exit_pos = wait_text(window.get_screenshot, "退出关卡", timeout=3600)
-                mouse.click_positions(exit_pos)
+                wait_img(template_path.EXIT_COPIES)
+                exit_pos = match_template(window.get_screenshot(), template_path.EXIT_COPIES)
+                h, w = cv2.imread(template_path.EXIT_COPIES).shape[:2]
+                mouse.click_position((exit_pos[0] + w // 2, exit_pos[1] + h // 2))
         log.info("运行结束")
         win_message("AutoStarRail", "体力脚本运行结束")
 

@@ -1,6 +1,6 @@
 CN_NAME = {
-    "calyx_gold": "拟造花萼（金）",
-    "calyx_red": "拟造花萼（赤）",
+    "calyx_gold": "金",
+    "calyx_red": "赤",
     "cavern": "侵蚀隧洞",
     "shadow": "凝滞虚影",
     "echo": "历战余响"

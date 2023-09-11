@@ -131,7 +131,7 @@ def wait_img(template, threshold=0.8, mode="default"):
     else:
         raise ValueError(f"mode={mode} is not supported")
     screenshot = game.get_screenshot()
-    while not method(screenshot, template, threshold=threshold):
+    while method(screenshot, template, threshold=threshold) == (-1, -1):
         time.sleep(0.1)
         screenshot = game.get_screenshot()
 
