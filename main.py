@@ -55,7 +55,9 @@ class AutoStarRail(MainWindow):
             "委托": Commission.run,
             "深渊": Abyss.run,
         }
-        WarningDialog(self.window())
+        if self.is_first:
+            WarningDialog(self.window())
+        self.is_first = False
         if text not in d:
             return self.not_func_message_signal.emit, True
         return d[text], False

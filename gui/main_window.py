@@ -16,6 +16,8 @@ def get_icon_path(icon_name: str):
 class MainWindow(MSFluentWindow):
     def __init__(self):
         super().__init__()
+        self.is_first = True
+
         self.setting_interface = SettingInterface(self)
         self.script_interface = ScriptInterface(self)
         self.log_interface = LogInterface(self)
