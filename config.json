@@ -1,45 +1,84 @@
 {
-  "game_path": "D:/\u661f\u7a79\u94c1\u9053/Star Rail/launcher.exe",
-  "auto_fight": true,
-  "use_fuel": true,
-  "fuel_number": 1,
-  "use_explore": false,
-  "explore_number": 1,
-  "auto": {
-    "stamina": {
-      "calyx_1": 4,
-      "calyx_2": 0,
-      "calyx_3": 0,
-      "calyx_4": 2,
-      "calyx_5": 0,
-      "calyx_6": 0,
-      "calyx_7": 0,
-      "calyx_8": 0,
-      "calyx_9": 0,
-      "calyx_10": 0,
-      "shadow_1": 0,
-      "shadow_2": 0,
-      "shadow_3": 0,
-      "shadow_4": 0,
-      "shadow_5": 0,
-      "shadow_6": 0,
-      "shadow_7": 0,
-      "shadow_8": 0,
-      "shadow_9": 0,
-      "shadow_10": 0,
-      "cavern_1": 0,
-      "cavern_2": 0,
-      "cavern_3": 0,
-      "cavern_4": 0,
-      "cavern_5": 0,
-      "cavern_6": 0,
-      "cavern_7": 0,
-      "echo_1": 0,
-      "echo_2": 0,
-      "echo_3": 2
+    "abyss": {
+        "order_text": [
+            1,
+            2,
+            3,
+            4,
+            10,
+            9,
+            8,
+            7
+        ]
     },
-    "world": "\u652f\u63f4\u8231\u6bb5-1",
-    "universe": {}
-  },
-  "angle": 1.0235834899774117
+    "game": {
+        "auto_fight": false,
+        "game_path": "D:/星穹铁道/Star Rail/launcher.exe",
+        "open_map": "m"
+    },
+    "commission": {
+        "state": "已领取",
+        "time": "2023年9月3日 21:03:46"
+    },
+    "stamina": {
+        "last": {
+            "cavern_1": 0,
+            "cavern_2": 0,
+            "cavern_3": 0,
+            "cavern_4": 0,
+            "cavern_5": 0,
+            "cavern_6": 0,
+            "cavern_7": 0,
+            "calyx_gold_1": 1,
+            "calyx_gold_2": 0,
+            "calyx_gold_3": 0,
+            "calyx_red_1": 0,
+            "calyx_red_2": 0,
+            "calyx_red_3": 0,
+            "calyx_red_4": 0,
+            "calyx_red_5": 0,
+            "calyx_red_6": 0,
+            "calyx_red_7": 0,
+            "echo_1": 0,
+            "echo_2": 0,
+            "echo_3": 0,
+            "shadow_1": 0,
+            "shadow_2": 0,
+            "shadow_3": 0,
+            "shadow_4": 0,
+            "shadow_5": 0,
+            "shadow_6": 0,
+            "shadow_7": 0,
+            "shadow_8": 0,
+            "shadow_9": 0,
+            "shadow_10": 0,
+            "shadow_11": 0,
+            "shadow_12": 0
+        },
+        "time": "2023年09月11日 21:19:31",
+        "use_explore": false,
+        "use_fuel": false
+    },
+    "world": {
+        "last": {},
+        "angle": 1.0
+    },
+    "QFluentWidgets": {
+        "ThemeColor": "#ff009faa",
+        "ThemeMode": "Auto"
+    },
+    "universe": {
+        "angle": 1.0117566128294584,
+        "auto_angle": false,
+        "bonus": true,
+        "count": 1,
+        "debug": 0,
+        "difficulty": 3,
+        "fate": "丰饶",
+        "find": 1,
+        "number": 6,
+        "show_map": 0,
+        "speed": 0,
+        "update": 0
+    }
 }

@@ -1,0 +1,1 @@
+ERROR [2023-09-11 20:34:11,537] [log.py:60] 2023-09-11 20:34:11 [F:\AutoStarRail\main.py(exception_message)]: 捕获到异常: ModuleNotFoundError, No module named 'yaml'

@@ -1,0 +1,3 @@
+[submodule "Auto_Simulated_Universe"]
+	path = Auto_Simulated_Universe
+	url = git@github.com:CHNZYX/Auto_Simulated_Universe.git
