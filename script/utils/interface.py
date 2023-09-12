@@ -148,6 +148,17 @@ class AbyssUtils(AutoUtils):
         mouse.click_positions(pos)
 
 
+class DailyTaskUtils(AutoUtils):
+    def __init__(self):
+        super().__init__()
+        self.daily_task = ...
+
+
+class StaminaUtils(AutoUtils):
+    def __init__(self):
+        super().__init__()
+
+
 class UniverseUtils(AutoUtils):
     def __init__(self):
         super().__init__()

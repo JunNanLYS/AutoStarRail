@@ -28,6 +28,7 @@ class WarningDialog(SimpleCardWidget):
                                "本项目已经因为倒卖行为受到严重威胁，请帮助我们！\n"
                                "整合包链接：https://github.com/JunNanLYS/AutoStarRail\n"
                                "模拟宇宙作者链接：https://github.com/CHNZYX/Auto_Simulated_Universe\n"
+                               "QQ群号：831830526\n"
                                "如果喜欢该项目可以请喝杯奶茶捏\n"
                                "10s后关闭")
         self.sub_label.setAlignment(Qt.AlignmentFlag.AlignTop)

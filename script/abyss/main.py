@@ -32,7 +32,7 @@ class Abyss:
         path = os.path.join(abspath, r"Auto_Simulated_Universe\abyss\info.yml")
         with open(path, 'w', encoding='utf-8') as f:
             d = {
-                "order_text": cfg.abyss_list
+                "order_text": cfg.get(cfg.abyss_list)
             }
             yaml.dump(d, f)
 
