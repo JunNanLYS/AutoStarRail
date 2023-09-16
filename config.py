@@ -5,7 +5,7 @@ from qfluentwidgets import QConfig, ConfigItem, qconfig
 
 import log
 
-version = "0.6.0"
+version = "0.6.1"
 github_url = "https://github.com/JunNanLYS/AutoStarRail"
 abspath = os.path.dirname(os.path.abspath(__file__))  # 项目绝对路径
 
