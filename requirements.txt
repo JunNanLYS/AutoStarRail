@@ -42,3 +42,4 @@ shiboken6
 sympy
 tee
 urllib3
+pynput

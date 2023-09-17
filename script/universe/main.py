@@ -1,6 +1,8 @@
 import os
 import sys
 import traceback
+
+import game
 import log
 from config import cfg, abspath
 from script.utils.interface import UniverseUtils as Utiles
@@ -14,7 +16,7 @@ class Universe:
     @classmethod
     def run_universe(cls):
         from Auto_Simulated_Universe.states import SimulatedUniverse
-
+        game.set_foreground()
         my_utiles = Utiles()
         my_utiles.start()
         my_utiles.into_universe()

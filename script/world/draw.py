@@ -1,89 +1,76 @@
-import os
+import os.path
 from copy import deepcopy
-from math import atan
 
 import cv2
+import numpy as np
+from pynput import keyboard
 
-import config
-
-
-def get_big_map(world, name):
-    filename = os.path.join(
-        root,
-        r"world\map",
-        str(world),
-        name
-    )
-    image = cv2.imread(os.path.join(filename, 'default.png'))
-    return image
+from script.utils.interface import WorldUtils
 
 
-# 初始化
-root = config.abspath
-pen_size = 1  # 画笔大小
-world_number = 2  # 世界编号
-map_name = "1-1"  # 地区-传送点编号
+class DrawMap(WorldUtils):
+    def __init__(self):
+        super().__init__()
+        self._stop = False
 
-# 读取原图
-img = get_big_map(world_number, map_name)
+        self.draw_listener = keyboard.Listener()
+        self.draw_listener.on_press = self._on_press
 
-cv2.namedWindow("image")
+    def draw(self):
+        self.set_big_map(os.path.join(self.map_path, "default.png"))  # 设置原图
+        gray = cv2.cvtColor(self.big_map, cv2.COLOR_BGR2GRAY)
+        _, binary = cv2.threshold(gray, 210, 255, cv2.THRESH_BINARY)  # 大地图二值化
+        kernel = np.ones((2, 2), np.uint8)
+        binary = cv2.dilate(binary, kernel, iterations=1)
+        cv2.imwrite(os.path.join(self.map_path, "binary.png"), binary)  # 保存
+        binary = cv2.cvtColor(binary, cv2.COLOR_GRAY2BGR)
 
-# 定义鼠标回调函数
-ix, iy = 0, 0
-drawing = False
-is_first = True
-color = (0, 0, 255)
-blue = (255, 0, 0)
+        while not self._stop:
+            w, h, top_left = self.get_match_pos()
+            x1, y1 = top_left[0], top_left[1]
+            x2, y2 = x1 + w, y1 + h
+            changed = deepcopy(binary[y1: y2, x1: x2])
+
+            # 找小地图上的怪点
+            lower = np.array([46, 46, 214])
+            upper = np.array([120, 110, 233])
+            mask = cv2.inRange(self.local_map, lower, upper)
+
+            changed[mask > 0] = [46, 46, 214]
+            # 创建一个新的mask，将changed中不为白色的部分设置为True
+            not_white = np.all(changed != [255, 255, 255], axis=-1)
+            # 使用numpy的逻辑与运算符找到同时满足两个条件的像素
+            mask_black = np.logical_and(mask == 0, not_white)
+            # 将这些像素设置为黑色
+            changed[mask_black] = [0, 0, 0]
+            cv2.cvtColor(changed, cv2.COLOR_BGR2GRAY)
+            binary[y1: y2, x1: x2] = changed
+
+            cv2.imshow("big map", changed)
+            cv2.moveWindow("big map", 0, 0)
+            cv2.waitKey(100)
+
+        cv2.imwrite(os.path.join(self.map_path, "target.png"), binary)  # 保存怪点
+
+    def start(self):
+        self.draw_listener.start()
+        self.draw()
+
+    def stop(self):
+        self._stop = True
+        self.draw_listener.stop()
+
+    def _on_press(self, key):
+        try:
+            if key == keyboard.Key.f8:
+                self.stop()
+        except AttributeError:
+            pass
+        except Exception:
+            pass
 
 
-def is45angle(pos1, pos2):
-    x, y = pos2[0] - pos1[0], -(pos2[1] - pos1[1])
-    angle = int(abs(atan(y / x)) * (180 / 3.1415926535))
-    return angle == 45
-
-
-def draw_line(event, x, y, flags, param):
-    global ix, iy, drawing, is_first
-
-    if event == cv2.EVENT_LBUTTONDOWN:
-        drawing = True
-        ix, iy = x, y
-        cv2.circle(img, (x, y), 0, color)
-
-    elif event == cv2.EVENT_LBUTTONUP:
-        drawing = False
-        cv2.line(img, (ix, iy), (x, y), color, pen_size)
-        if is_first:
-            cv2.circle(img, (ix, iy), 0, (0, 255, 0))
-            is_first = False
-
-    elif event == cv2.EVENT_MOUSEMOVE:
-        copy_img = deepcopy(img)
-        if x == ix or y == iy:
-            use_color = color
-        elif is45angle((ix, iy), (x, y)):
-            use_color = color
-        else:
-            use_color = blue
-        cv2.line(copy_img, (ix, iy), (x, y), use_color, pen_size)
-        cv2.imshow("preview", copy_img)
-        cv2.moveWindow("preview", 0, 0)
-
-
-# 设置鼠标回调函数
-cv2.setMouseCallback('image', draw_line)
-
-while True:
-    cv2.imshow('image', img)
-    k = cv2.waitKey(1) & 0xFF
-    if k == ord('q'):
-        break
-
-cv2.destroyAllWindows()
-cv2.imwrite(os.path.join(
-    root,
-    r"world\map",
-    str(world_number),
-    map_name,
-    "road.png"), img)
+if __name__ == '__main__':
+    draw = DrawMap()
+    draw.set_map_path(r"F:\AutoStarRail\script\world\map\2\2\1")
+    draw.start()

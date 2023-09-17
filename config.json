@@ -70,7 +70,7 @@
     "universe": {
         "angle": 1.0117566128294584,
         "auto_angle": false,
-        "bonus": true,
+        "bonus": false,
         "count": 1,
         "debug": 0,
         "difficulty": 3,
