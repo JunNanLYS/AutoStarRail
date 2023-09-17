@@ -83,7 +83,7 @@ Python 3.11.4
 
 ## 感谢
 
-[Fluent-Widget仓库](https://github.com/zhiyiYo/PyQt-Fluent-Widgets)
+[Fluent-Widget仓库(GUI)](https://github.com/zhiyiYo/PyQt-Fluent-Widgets)
 
 [模拟宇宙与深渊作者](https://github.com/CHNZYX)
 
