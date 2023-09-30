@@ -7,7 +7,8 @@ import pyautogui
 import log
 import game
 from script.commission.data import TITLE_COUNT
-from script.utils import (get_text_position, wait_text, window, mouse, template_path, cv_utils, win_message)
+from script.utils import (get_text_position, wait_text, window, mouse, template_path, cv_utils, win_message,
+                          wait_img)
 
 
 class Commission:
@@ -19,7 +20,7 @@ class Commission:
         pyautogui.press("esc")
         pos = wait_text(window.get_screenshot, "委托")
         mouse.click_positions(pos)
-        # wait_text(window.get_screenshot, "专属材料")  # 等待进入委托界面，不会有人60秒连个界面都进不去把
+        wait_img(template_path.IS_COMMISSION)
 
     @classmethod
     def get_pending_point(cls) -> list:
@@ -63,6 +64,7 @@ class Commission:
         game.set_foreground()
         game.to_game_main()
         cls.to_commission()
+        time.sleep(1)
         if not cls.get_pending_point():
             log.info("没有需要清理的委托")
             win_message("委托", "没有需要清理的委托")
@@ -82,19 +84,28 @@ class Commission:
                 mouse.click_position(point)
                 time.sleep(1.5)
 
-                commission_pos = cls.get_pending_point()
-                for commission_point in commission_pos:
-                    if title_y_lower <= commission_point[1] <= title_y_upper:
-                        continue
-                    mouse.click_position(commission_point)
-                    time.sleep(1)
+                while commission_pos := cls.get_pending_point():
+                    for commission_point in commission_pos:
+                        if title_y_lower <= commission_point[1] <= title_y_upper:
+                            # 跳过标题
+                            continue
+                        else:
+                            # 委托任务
+                            mouse.click_position(commission_point)
+                            time.sleep(1)
 
-                    get_pos = get_text_position(window.get_screenshot(), "领取")
-                    mouse.click_positions(get_pos)
+                            get_pos = get_text_position(window.get_screenshot(), "领取")
+                            mouse.click_positions(get_pos)
 
-                    again = wait_text(window.get_screenshot, "再次派遣")
-                    mouse.click_positions(again)
-                    time.sleep(2)
+                            again = wait_text(window.get_screenshot, "再次派遣")
+                            mouse.click_positions(again)
+                            time.sleep(1)
+                            mouse.click_positions(again)
+                            time.sleep(3)
+                            break
+                    else:
+                        # 只剩标题
+                        break
         win_message("委托", "委托自动化完成")
 
 
