@@ -8,7 +8,7 @@ import log
 import game
 from script.commission.data import TITLE_COUNT
 from script.utils import (get_text_position, wait_text, window, mouse, template_path, cv_utils, win_message,
-                          wait_img)
+                          wait_img, match_template)
 
 
 class Commission:
@@ -94,13 +94,18 @@ class Commission:
                             mouse.click_position(commission_point)
                             time.sleep(1)
 
-                            get_pos = get_text_position(window.get_screenshot(), "领取")
-                            mouse.click_positions(get_pos)
+                            wait_img(template_path.GET_COMMISSION)
+                            get_pos = match_template(window.get_screenshot(),
+                                                     template_path.GET_COMMISSION)
+                            mouse.click_position(get_pos, direction="bottomRight", val=30)
 
-                            again = wait_text(window.get_screenshot, "再次派遣")
-                            mouse.click_positions(again)
+                            wait_img(template_path.RE_COMMISSION)
+                            again = match_template(window.get_screenshot(),
+                                                   template_path.RE_COMMISSION,
+                                                   threshold=0.9)
+                            mouse.click_position(again)
                             time.sleep(1)
-                            mouse.click_positions(again)
+                            mouse.click_position(again, direction="bottomRight", val=30)
                             time.sleep(3)
                             break
                     else:
