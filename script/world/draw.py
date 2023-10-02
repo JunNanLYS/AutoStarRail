@@ -22,6 +22,9 @@ class Image:
     def save_binary(self, img):
         cv2.imwrite(os.path.join(self.path, 'binary.png'), img)
 
+    def save_line(self, img):
+        cv2.imwrite(os.path.join(self.path, 'line.png'), img)
+
     def save_target(self, img):
         cv2.imwrite(os.path.join(self.path, 'target.png'), img)
 
@@ -52,12 +55,6 @@ class DrawMap(WorldUtils):
         b_map[
             np.sum((big_map - gray) ** 2, axis=-1) <= 3200 + find * 1600
             ] = 255
-        blk_map = deepcopy(bw_map)
-        blk_map[
-            np.sum((big_map - black) ** 2, axis=-1) <= 800 + find * 800
-            ] = 255
-        kernel = np.zeros((9, 9), np.uint8)  # 设置kenenel大小
-        kernel += 1
         kernel = np.zeros((5, 5), np.uint8)  # 设置kenenel大小
         kernel += 1
         b_map = cv2.dilate(b_map, kernel, iterations=1)
@@ -87,7 +84,7 @@ class DrawMap(WorldUtils):
                 width = 40
                 bottom_right = (top_left[0] + width, top_left[1] + width)
                 b_map[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]] = 0
-
+        self.img.save_line(bw_map)
         self.img.save_binary(b_map)  # 保存黑白图
 
         target = self.img.binary
