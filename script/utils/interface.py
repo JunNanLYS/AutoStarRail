@@ -274,10 +274,7 @@ class UniverseUtils(AutoUtils):
             mouse.mouse_scroll(3)
         target_pos = get_text_position(self.screenshot, target_text)[0]
 
-        transmission = where_img(window.get_screenshot(), template_path.TRANSMISSION)  # 获取所有传送按钮坐标
-        positions = []
-        for i in range(len(transmission[0])):
-            positions.append((transmission[1][i], transmission[0][i]))
+        positions = where_img(window.get_screenshot(), template_path.TRANSMISSION)  # 获取所有传送按钮坐标
         shortest_pos = calculate.calculate_shortest_position(target_pos, positions)
         h, w = cv2.imread(template_path.TRANSMISSION).shape[:2]
         mouse.click_position((shortest_pos[0] + w // 2, shortest_pos[1] + h // 2))
@@ -291,141 +288,11 @@ class WorldUtils(AutoUtils):
         super().__init__()
         self.last_pos = (0, 0)
         self.cur_pos = (0, 0)
-
-        self.map_path = ""
-        self.big_map = np.array([])
-        self.big_map_binary = np.array([])
-        self.big_map_target = np.array([])
-        self.local_map = np.array([])  # 小地图
-        self.point_img = np.array([])  # 传送点
-
-        self.world_name = 1
-        self.area_name = 1
+        self.local_map = None
 
         # 监听游戏角色状态
         self.role_state = RoleListener()
         self.role_state.start()
-
-    @classmethod
-    def in_area_navigation(cls):
-        return template_in_img(template_path.AREA_NAVIGATION, game.get_screenshot())
-
-    @classmethod
-    def in_ball_navigation(cls):
-        return template_in_img(template_path.BALL_NAVIGATION, game.get_screenshot())
-
-    def into_map(self):
-        game.to_game_main()
-        pyautogui.press(cfg.get(cfg.open_map))
-        wait_img(template_path.AREA_NAVIGATION)
-
-    def into_ball(self, world_name):
-        if not self.in_ball_navigation():
-            self.into_map()
-        pos = get_text_position(window.get_screenshot(), "星轨航图")
-        mouse.click_positions(pos)
-        wait_img(template_path.BALL_NAVIGATION)
-        pos = get_text_position(window.get_screenshot(), world_name)
-        mouse.click_positions(pos, direction="topLeft", val=100)
-        wait_img(template_path.AREA_NAVIGATION)
-
-    def into_area(self, area_name):
-        if not self.in_area_navigation():
-            self.into_map()
-        car_pos = get_text_position(window.get_screenshot(), "观景车厢")
-        if car_pos.size != 0:
-            mouse.click_positions(car_pos)
-        while True:
-            pos = get_text_position(window.get_screenshot(), area_name)
-            if pos.size == 0:
-                mouse.mouse_scroll(2)
-                continue
-            mouse.click_positions(pos)
-            break
-
-    def into_point(self, point_img):
-        """
-        地图缩放至最小
-        鼠标移动至游戏界面的 (800, 600)
-        查找不到坐标则尝试上下左右拉扯查找传送点
-        """
-        if not self.in_area_navigation():
-            self.into_map()
-        x1, y1, _, _ = game.get_rect()
-        map_center = (x1 + 800, y1 + 600)
-        mouse.click_position(map_center)
-        mouse.mouse_scroll(3)
-        move = 400
-        h, w = point_img.shape[:2]
-
-        def click_point_and_send(p):
-            mouse.click_position((p[0] + w // 2, p[1] + h // 2))
-            time.sleep(0.2)
-            send_p = get_text_position(window.get_screenshot(), "传送")
-            mouse.click_positions(send_p)
-
-        # 不移动查找
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
-        # 向上查找1
-        mouse.down_move(map_center, (map_center[0], map_center[1] - move))
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
-        # 向上查找2
-        mouse.down_move(map_center, (map_center[0], map_center[1] - move))
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
-
-        # 重新初始化地图
-        self.into_map()
-        # 向下查找1
-        mouse.down_move(map_center, (map_center[0], map_center[1] + move))
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
-        # 向下查找2
-        mouse.down_move(map_center, (map_center[0], map_center[1] + move))
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
-
-        # 重新初始化地图
-        self.into_map()
-        # 向左查找1
-        mouse.down_move(map_center, (map_center[0] - move, map_center[1]))
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
-        # 向左查找2
-        mouse.down_move(map_center, (map_center[0] - move, map_center[1]))
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
-
-        # 重新初始化地图
-        self.into_map()
-        # 向右查找1
-        mouse.down_move(map_center, (map_center[0] + move, map_center[1]))
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
-        # 向右查找2
-        mouse.down_move(map_center, (map_center[0] + move, map_center[1]))
-        pos = match_template(point_img, window.get_screenshot())
-        if pos != (-1, -1):
-            click_point_and_send(pos)
-            return
 
     def get_local_map(self) -> ndarray:
         """get top left map"""
@@ -453,42 +320,34 @@ class WorldUtils(AutoUtils):
 
         return angle
 
-    def get_match_pos(self):
+    def get_match_pos(self, m_line, cnt=0):
+        from .role import Role
         local_map = self.get_local_map()
         local_map = self.only_arrow(local_map, nt=True)
+        local_map = self.local_map_to_line(local_map)
         # 角色移动时小地图被缩小，需要将小地图放大再匹配
         if self.role_state.is_moving:
             local_map = cv2.resize(local_map, (0, 0), fx=1.256, fy=1.256)
             self.local_map = local_map
         h, w = local_map.shape[:2]
 
-        # 灰度图
-        local_map_gray = cv2.cvtColor(local_map, cv2.COLOR_BGR2GRAY)
-        big_map_gray = cv2.cvtColor(self.big_map, cv2.COLOR_BGR2GRAY)
-
-        # 二值化
-        _, local_map_binary = cv2.threshold(local_map_gray, 165, 255, cv2.THRESH_BINARY)
-        _, big_map_binary = cv2.threshold(big_map_gray, 210, 255, cv2.THRESH_BINARY)
-
-        # 膨胀
-        kernel = np.ones((2, 2), np.uint8)
-        big_binary = cv2.dilate(big_map_binary, kernel, iterations=1)
-        local_map_binary = cv2.dilate(local_map_binary, kernel, iterations=1)
-
-        res = cv2.matchTemplate(big_binary, local_map_binary, cv2.TM_CCOEFF_NORMED)
+        res = cv2.matchTemplate(m_line, local_map, cv2.TM_CCOEFF_NORMED)
         _, max_val, _, max_loc = cv2.minMaxLoc(res)
 
         # 阈值达不到递归查询
-        if max_val < 0.5:
-            log.debug(f"当前阈值: {max_val}, 阈值未达0.5开始递归查询")
-            time.sleep(0.5)
-            return self.get_match_pos()
+        if max_val < 0.45:
+            log.debug(f"当前阈值: {max_val}, 阈值未达0.45开始递归查询")
+            if cnt % 5 == 0:
+                log.debug("尝试随机移动再查询")
+                Role.random_move()
+            time.sleep(0.7)
+            return self.get_match_pos(m_line, cnt + 1)
 
         return w, h, max_loc
 
-    def locate_role_pos(self) -> Tuple[int, int]:
+    def locate_role_pos(self, m_line) -> Tuple[int, int]:
         """get current role position on big map"""
-        w, h, top_left = self.get_match_pos()
+        w, h, top_left = self.get_match_pos(m_line)
 
         pos = (top_left[0] + w // 2, top_left[1] + h // 2)
         self.last_pos = self.cur_pos
@@ -496,15 +355,27 @@ class WorldUtils(AutoUtils):
 
         return pos
 
-    def load_maps(self):
-        """load maps"""
-        get_img = os.path.join
-        log.info("加载地图")
-        self.big_map = cv2.imread(get_img(self.map_path, "default.png"))
-        self.big_map_binary = cv2.imread(get_img(self.map_path, "binary.png"))
-        self.big_map_target = cv2.imread(get_img(self.map_path, "target.png"))
-        self.point_img = cv2.imread(get_img(self.map_path, "point.png"))
-        log.info("地图加载完成")
+    @classmethod
+    def local_map_to_line(cls, local_map):
+        """返回的是灰度图"""
+        white = np.array([210, 210, 210])
+        gray = np.array([55, 55, 55])
+        find = 1
+        bw_map = np.zeros(local_map.shape[:2], dtype=np.uint8)
+        # 灰块、白线：小地图中的可移动区域、可移动区域的边缘
+        # b_map：当前像素点是否是灰块。只允许灰块附近（2像素）的像素被识别为白线
+        b_map = deepcopy(bw_map)
+        b_map[
+            np.sum((local_map - gray) ** 2, axis=-1) <= 3200 + find * 1600
+            ] = 255
+        kernel = np.zeros((5, 5), np.uint8)  # 设置kenenel大小
+        kernel += 1
+        b_map = cv2.dilate(b_map, kernel, iterations=1)
+        bw_map[
+            (np.sum((local_map - white) ** 2, axis=-1) <= 3200 + find * 1600)
+            & (b_map > 200)
+            ] = 255
+        return bw_map
 
     @classmethod
     def only_arrow(cls, img: ndarray, nt=False) -> ndarray:
@@ -520,18 +391,14 @@ class WorldUtils(AutoUtils):
             arrow = cv2.bitwise_and(img, img, mask=mask)
         else:
             arrow = cv2.bitwise_and(img, img, mask=cv2.bitwise_not(mask))
+            # 将角色箭头和角色移动过的路径颜色设置成马路颜色
+            zero = np.array([0, 0, 0])
+            black = np.array([57, 57, 57])
+            res = np.where(np.all(arrow == zero, axis=-1))
+            coords = np.stack(res, axis=-1)
+            arrow[tuple(coords.T)] = black
         return arrow
-
-    def set_big_map(self, path: str):
-        """set big map"""
-        self.big_map = cv2.imread(path)
-
-    def set_map_path(self, path: str):
-        """set map path"""
-        self.map_path = path
-        self.set_big_map(os.path.join(path, "default.png"))
 
 
 if __name__ == "__main__":
-    utils = WorldUtils()
-    utils.into_point(cv2.imread(r"F:\AutoStarRail\script\world\map\2\1\1\point.png"))
+    pass

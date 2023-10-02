@@ -4,7 +4,10 @@ import log
 
 
 def click_position(position, direction=None, val=0):
-    """鼠标移动至position并点击"""
+    """
+    鼠标移动至position并点击
+    direction: [topLeft, topRight, bottomLeft, bottomRight]
+    """
     import win32api
     import win32con
     import time
@@ -31,6 +34,7 @@ def click_position(position, direction=None, val=0):
 def click_positions(positions, direction=None, val=0):
     """
     传入单个值则点击该值，多个值则取索引为 元素个数/2 的坐标
+    direction: [topLeft, topRight, bottomLeft, bottomRight]
     """
     length = len(positions)
     mid = length // 2 - 1
