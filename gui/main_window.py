@@ -1,8 +1,7 @@
 import os
 
-from qfluentwidgets import (NavigationItemPosition, NavigationWidget,
-                            NavigationInterface, FluentIcon, MSFluentWindow)
 from PySide6.QtGui import QIcon
+from qfluentwidgets import (NavigationItemPosition, FluentIcon, MSFluentWindow)
 
 import config
 import log
