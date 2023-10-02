@@ -106,7 +106,6 @@ class Commission:
                             mouse.click_position(again)
                             time.sleep(1)
                             mouse.click_position(again, direction="bottomRight", val=30)
-                            time.sleep(3)
                             break
                     else:
                         # 只剩标题
