@@ -75,10 +75,7 @@ class Stamina:
 
                 # 处理传送点坐标位置
                 log.info("计算对应传送点按钮位置")
-                positions = where_img(window.get_screenshot(), template_path.TRANSMISSION)  # 获取所有传送按钮坐标
-                position_list = []
-                for i in range(len(positions[0])):
-                    position_list.append((positions[1][i], positions[0][i]))
+                position_list = where_img(window.get_screenshot(), template_path.TRANSMISSION)  # 获取所有传送按钮坐标
                 d = inf
                 pos = (-1, -1)
                 for positions in position_list:

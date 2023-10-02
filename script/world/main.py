@@ -14,7 +14,7 @@ import game
 import log
 from script.utils.cv_utils import remove_same_position
 from script.utils.interface import WorldUtils
-from script.utils import (fight, Role, wait_img, template_path, cv_utils, MoveDirection)
+from script.utils import (fight, Role, wait_img, template_path, cv_utils)
 from script.world.data import Map
 
 
@@ -198,7 +198,7 @@ class World:
             self.next_map()
             graph = Graph(self.map.target)
             targets = self.get_targets()
-            print("怪点数量", len(targets))
+            log.info(f"去重后怪点数量: {targets}")
 
             # 对怪物由近到远排序
             targets = sort_target_pos(graph, self.utils.locate_role_pos(self.map.line), targets)
@@ -206,14 +206,13 @@ class World:
 
             for target in targets:
                 # 角色处于战斗等待战斗结束再操作
-                while fight.is_fighting or self.utils.role_state.is_firing:
+                while fight.is_fighting() or self.utils.role_state.is_firing:
                     time.sleep(0.3)
                     continue
                 try:
                     road, _ = a_star(graph, self.utils.locate_role_pos(self.map.line), target)
                 except TypeError:
-                    log.error("TypeError, 可能处于战斗")
-                    while fight.is_fighting:
+                    while fight.is_fighting():
                         time.sleep(0.3)
                         continue
                     road, _ = a_star(graph, self.utils.locate_role_pos(self.map.line), target)
@@ -228,7 +227,7 @@ class World:
                 pos_i = 0
                 while pos_i <= len(road) - 1:
                     # 正在战斗或者正在开火则等待
-                    while fight.is_fighting or self.utils.role_state.is_firing:
+                    while fight.is_fighting() or self.utils.role_state.is_firing:
                         time.sleep(0.3)
                         Role.stop_move()
                         continue
@@ -255,7 +254,8 @@ class World:
                         target_angle = calculate_angle(cur_pos, road_pos)
                         Role.set_angle(cur_angle, target_angle)
                 Role.stop_move()
-            fight.close()
+            fight.stop()
+        fight.close()
 
     def get_targets(self):
         targets = []
@@ -283,8 +283,6 @@ class World:
         cv2.imshow('road', img)
         cv2.moveWindow('road', 0, 0)
         cv2.waitKey(1000)
-
-
 
 
 if __name__ == '__main__':

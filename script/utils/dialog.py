@@ -1,12 +1,15 @@
-from plyer import notification
+import os
+
+import config
+
+from winotify import Notification
 
 
 def win_message(title, content):
-    notification.notify(
-        title=title,
-        message=content,
-        app_name="AutoStarRail",
-    )
+    Notification(
+        app_id="AutoStarRail", title=title, msg=content,
+        icon=os.path.join(config.abspath, r"doc\help.ico")
+    ).show()
 
 
 if __name__ == '__main__':

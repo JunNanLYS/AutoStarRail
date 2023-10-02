@@ -14,12 +14,11 @@ def get_somthing():
         x1, y1, x2, y2 = win32gui.GetClientRect(hwnd)
         w = x2 - x1
         h = y2 - y1
-        print(x1, y1, x2, y2)
+        # print(x1, y1, x2, y2)
         s = ctypes.windll.user32.GetDpiForWindow(hwnd) / 96.0
         if text != "崩坏：星穹铁道":
             time.sleep(0.3)
         else:
-            time.sleep(1)
             return w * s, h * s, s
 
 
