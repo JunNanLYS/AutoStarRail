@@ -55,13 +55,13 @@
             "shadow_11": 0,
             "shadow_12": 0
         },
-        "time": "2023年09月11日 21:19:31",
+        "time": "2023年10月02日 21:24:26",
         "use_explore": false,
         "use_fuel": false
     },
     "world": {
         "last": {},
-        "angle": 1.0
+        "angle": 1.0117566128294584
     },
     "QFluentWidgets": {
         "ThemeColor": "#ff009faa",
