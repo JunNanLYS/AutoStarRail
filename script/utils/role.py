@@ -45,7 +45,7 @@ class Role:
             y = angle
         # 分多次移动，防止鼠标移动离开游戏窗口
         _, _, s = game.get_somthing()
-        dx = int(16.5 * y * cfg.world_angle * s)
+        dx = int(16.5 * y * cfg.get(cfg.world_angle) * s)
         win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, dx, 0)  # 进行视角移动
         time.sleep(0.05)
         if angle != y:
@@ -82,6 +82,39 @@ class Role:
         return future
 
     @classmethod
+    def move(cls):
+        pyautogui.keyDown('w')
+        pyautogui.press('shift')
+        cls.direct = 'w'
+
+    @classmethod
+    def random_move(cls):
+        """
+        随便移动
+        """
+        from random import randint
+        moves = ['w', 'a', 's', 'd']
+        d = moves[randint(0, 3)]
+        pyautogui.keyDown(d)
+        time.sleep(1)
+        pyautogui.keyUp(d)
+        cls.direct = d
+
+    @classmethod
+    def obstacles(cls):
+        """越障"""
+        from random import randint
+        moves = ['a', 'd']
+        d = moves[randint(0, 1)]
+        pyautogui.keyDown('s')
+        time.sleep(1)
+        pyautogui.keyUp('s')
+        pyautogui.keyDown(d)
+        time.sleep(1)
+        pyautogui.keyUp(d)
+        cls.direct = d
+
+    @classmethod
     def stop_move(cls):
         """
         停止角色移动
@@ -91,7 +124,7 @@ class Role:
     @classmethod
     def get_angle(cls, map_screen) -> int:
         """
-        传入小地图或者大地图截图，返回角色朝向角度
+        传入小地图或者大地图截图，返回角色朝向角度。（已不使用）
         :param map_screen: 大地图或小地图
         :return: 角色朝向角度
         """
@@ -137,10 +170,4 @@ class Role:
             else:
                 cls.move_view(-(360 - angle))
 
-        # time.sleep(0.5)
-        # pyautogui.press('ctrl')
-        # time.sleep(0.1)
-        # pyautogui.press('w')
-        # pyautogui.press('ctrl')
-        # time.sleep(0.1)
         cls.angle = target

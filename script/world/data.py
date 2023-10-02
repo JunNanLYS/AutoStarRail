@@ -1,4 +1,11 @@
-from typing import Dict, List
+import time
+from typing import Dict, List, Optional
+
+import cv2
+import numpy as np
+from numpy import ndarray
+
+from script.utils import (mouse, wait_img, template_path, get_text_position, window, template_in_img, match_template)
 
 # key星球编号 value星球名称
 BALL_NAME: Dict[int, str] = {
@@ -27,3 +34,203 @@ AREA_SCROLL: Dict[str, int] = {
     "机械聚落": 2,
     "鳞渊境": 1,
 }
+
+
+class Map:
+    def __init__(self, map_path):
+        from collections import deque
+        self.map_path = map_path
+
+        self.last_ball = ""
+        self.last_area = ""
+
+        self.cur_ball = ""
+        self.cur_area = ""
+
+        self.data = deque()
+
+        # current map image
+        self.default: Optional[ndarray] = None
+        self.binary: Optional[ndarray] = None
+        self.line: Optional[ndarray] = None
+        self.target: Optional[ndarray] = None
+        self.point: Optional[ndarray] = None
+
+        self.load()
+
+    @classmethod
+    def change_ball(cls, ball: str):
+        pos = get_text_position(window.get_screenshot(), "星轨航图")
+        mouse.click_positions(pos)
+        wait_img(template_path.BALL_NAVIGATION)
+        pos = get_text_position(window.get_screenshot(), ball)
+        mouse.click_positions(pos, direction="topLeft", val=100)
+        wait_img(template_path.AREA_NAVIGATION)
+
+    @classmethod
+    def change_area(cls, area: str):
+        import game
+        # (1470 300) 这个地图第一个区域的位置
+        x1, y1, _, _ = game.get_rect()
+        mouse.click_position((x1 + 1470, y1 + 300))
+        while True:
+            pos = get_text_position(window.get_screenshot(), area)
+            if pos.size == 0:
+                mouse.mouse_scroll(2)
+                continue
+            mouse.click_positions(pos)
+            time.sleep(0.2)
+            break
+
+    @classmethod
+    def change_point(cls, p_img: ndarray):
+        import game
+        x1, y1, _, _ = game.get_rect()
+        map_center = (x1 + 800, y1 + 600)
+        mouse.click_position(map_center)
+        move = 400
+        h, w = p_img.shape[:2]
+
+        def click_point_and_send(p):
+            mouse.click_position((p[0] + w // 2, p[1] + h // 2))
+            time.sleep(0.5)
+            send_p = get_text_position(window.get_screenshot(), "传送")
+            mouse.click_positions(send_p)
+            wait_img(template_path.MANDATE, mode='gray')
+            time.sleep(2)
+
+        # 不移动查找
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+        # 向上查找1
+        mouse.down_move(map_center, (map_center[0], map_center[1] - move))
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+        # 向上查找2
+        mouse.down_move(map_center, (map_center[0], map_center[1] - move))
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+
+        # 向下查找1
+        mouse.down_move(map_center, (map_center[0], map_center[1] + move))
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+        # 向下查找2
+        mouse.down_move(map_center, (map_center[0], map_center[1] + move))
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+
+        # 向左查找1
+        mouse.down_move(map_center, (map_center[0] - move, map_center[1]))
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+        # 向左查找2
+        mouse.down_move(map_center, (map_center[0] - move, map_center[1]))
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+
+        # 向右查找1
+        mouse.down_move(map_center, (map_center[0] + move, map_center[1]))
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+        # 向右查找2
+        mouse.down_move(map_center, (map_center[0] + move, map_center[1]))
+        pos = match_template(window.get_screenshot(), p_img)
+        if pos != (-1, -1):
+            click_point_and_send(pos)
+            return
+
+    @classmethod
+    def open_game_map(cls):
+        import pyautogui
+        import game
+        from config import cfg
+        game.to_game_main()
+        pyautogui.press(cfg.get(cfg.open_map))
+        wait_img(template_path.AREA_NAVIGATION)
+        mouse.mouse_scroll(3)  # 地图缩放至最小
+
+    def load(self):
+        """load my game map images"""
+        import os
+        from collections import deque
+        self.data = deque()
+        balls = os.listdir(self.map_path)
+        for ball_str in balls:
+            areas = os.listdir(os.path.join(self.map_path, ball_str))
+            ball_int = int(ball_str)
+            for area_str in areas:
+                points = os.listdir(os.path.join(self.map_path, ball_str, area_str))
+                area_int = int(area_str)
+                area_name = AREA_NAME[ball_int][area_int - 1]
+                ball_name = BALL_NAME[ball_int]
+                for point_str in points:
+                    path = os.path.join(self.map_path, ball_str, area_str, point_str)
+                    self.data.appendleft((ball_name, area_name, path))
+
+    def next(self) -> bool:
+        """进入下一场地图"""
+        import os
+        import log
+        # 已经锄完了
+        if not self.data:
+            log.info("没有待锄地图")
+            return False
+        ball_name, area_name, img_path = self.data.pop()
+        log.info(f"星球：{ball_name}，地区：{area_name}，传送点：{img_path[-1]}")
+        # 加载地图图片
+        get_path = os.path.join
+        self.default = cv2.imread(get_path(img_path, 'default.png'))
+        self.binary = cv2.imread(get_path(img_path, 'binary.png'))
+        self.binary = cv2.cvtColor(self.binary, cv2.COLOR_BGR2GRAY)
+        self.line = cv2.imread(get_path(img_path, 'line.png'))
+        self.line = cv2.cvtColor(self.line, cv2.COLOR_BGR2GRAY)
+        self.target = cv2.imread(get_path(img_path, 'target.png'))
+        self.point = cv2.imread(get_path(img_path, 'point.png'))
+
+        if self.cur_ball != ball_name:
+            self.open_game_map()
+            self.change_ball(ball_name)
+            self.change_area(area_name)
+            self.change_point(self.point)
+        elif self.cur_area != area_name:
+            self.open_game_map()
+            self.change_area(area_name)
+            self.change_point(self.point)
+        else:
+            self.open_game_map()
+            self.change_point(self.point)
+        self.last_ball = self.cur_ball
+        self.last_area = self.cur_area
+        self.cur_ball = ball_name
+        self.cur_area = area_name
+
+    @classmethod
+    def in_map(cls):
+        """判断是否地图界面"""
+        return template_in_img(template_path.AREA_NAVIGATION, window.get_screenshot())
+
+
+if __name__ == '__main__':
+    m = Map(r"F:\AutoStarRail\script\world\map")
+    print(m.data)
+    m.next()
+    m.next()
+    m.next()
+    m.next()

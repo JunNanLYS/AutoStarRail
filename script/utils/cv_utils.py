@@ -15,10 +15,10 @@ def is_same_position(position1: tuple, position2: tuple, error_value: int):
     :param position2: 点2
     :param error_value: 误差值
     """
-    for add_x in range(-error_value, error_value + 1):
-        for add_y in range(-error_value, error_value + 1):
-            if position1 == (position2[0] + add_x, position2[1] + add_y):
-                return True
+    top_left = (position1[0] - error_value, position1[1] - error_value)
+    bottom_right = (position1[0] + error_value, position1[1] + error_value)
+    if top_left[0] <= position2[0] <= bottom_right[0] and top_left[1] <= position2[1] <= bottom_right[1]:
+        return True
     return False
 
 
@@ -101,6 +101,7 @@ def match_template(img: Union[str, ndarray], template: Union[str, ndarray], thre
     _, max_val, _, max_loc = cv2.minMaxLoc(res)
     if max_val >= threshold:
         return max_loc
+    log.info(f"模板匹配失败, val={max_val}, threshold={threshold}")
     return -1, -1
 
 
@@ -116,6 +117,7 @@ def match_template_gray(img: Union[str, ndarray], template: Union[str, ndarray],
     _, max_val, _, max_loc = cv2.minMaxLoc(res)
     if max_val >= threshold:
         return max_loc
+    log.info(f"模板匹配失败, val={max_val}, threshold={threshold}")
     return -1, -1
 
 
@@ -136,12 +138,39 @@ def wait_img(template, threshold=0.8, mode="default"):
         screenshot = game.get_screenshot()
 
 
-def where_img(img: Union[str, ndarray], template: Union[str, ndarray], threshold=0.8) -> ndarray:
+def where_img(img: Union[str, ndarray], template: Union[str, ndarray], threshold=0.8) -> list:
+    """
+    :return: list[(y, x), (y, x)]
+    """
     img = to_ndarray(img)
     template = to_ndarray(template)
     res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
     positions = np.where(res >= threshold)
-    return positions
+    return list(zip(*positions[::-1]))
+
+
+def get_max_min_hsv(img: Union[str, ndarray]):
+    """
+    获取图像最大最小HSV値
+    :param img:
+    :return:
+    """
+    from math import inf
+    img = to_ndarray(img)
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    hsv = hsv.reshape(-1, 3)
+    ma = [-inf, -inf, -inf]
+    mi = [inf, inf, inf]
+    for i in range(len(hsv)):
+        h, s, v = hsv[i]
+        ma[0] = max(ma[0], h)
+        ma[1] = max(ma[1], s)
+        ma[2] = max(ma[2], v)
+
+        mi[0] = min(mi[0], h)
+        mi[1] = min(mi[1], s)
+        mi[2] = min(mi[2], v)
+    return np.array(ma), np.array(mi)
 
 
 if __name__ == '__main__':
