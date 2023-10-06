@@ -110,7 +110,7 @@ class Role:
         time.sleep(1)
         pyautogui.keyUp('s')
         pyautogui.keyDown(d)
-        time.sleep(1)
+        time.sleep(0.8)
         pyautogui.keyUp(d)
         cls.direct = d
 
