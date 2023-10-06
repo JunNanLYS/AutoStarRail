@@ -3,7 +3,7 @@ import pyautogui
 import log
 
 
-def click_position(position, direction=None, val=0):
+def click_position(position, direction=None, val=0, game_pos=False):
     """
     鼠标移动至position并点击
     direction: [topLeft, topRight, bottomLeft, bottomRight]
@@ -11,6 +11,7 @@ def click_position(position, direction=None, val=0):
     import win32api
     import win32con
     import time
+    import game
     x, y = int(position[0]), int(position[1])
     if direction == 'topLeft':
         x -= val
@@ -24,6 +25,11 @@ def click_position(position, direction=None, val=0):
     elif direction == 'bottomRight':
         x += val
         y += val
+    if game_pos:
+        x1, y1, _, _ = game.get_rect()
+        x += x1
+        y += y1
+    x, y = int(x), int(y)  # x，y必须是int类型
     win32api.SetCursorPos((x, y))
     log.info(f"点击({x},{y})")
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, x, y, 0, 0)
@@ -31,10 +37,11 @@ def click_position(position, direction=None, val=0):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, x, y, 0, 0)
 
 
-def click_positions(positions, direction=None, val=0):
+def click_positions(positions, direction=None, val=0, game_pos=False):
     """
     传入单个值则点击该值，多个值则取索引为 元素个数/2 的坐标
     direction: [topLeft, topRight, bottomLeft, bottomRight]
+    将game_pos设置为true则由全局坐标转至游戏坐标
     """
     length = len(positions)
     mid = length // 2 - 1
@@ -42,7 +49,7 @@ def click_positions(positions, direction=None, val=0):
         mid = 0
     pos = positions[mid]
     x, y = int(pos[0]), int(pos[1])
-    click_position((x, y), direction=direction, val=val)
+    click_position((x, y), direction=direction, val=val, game_pos=game_pos)
 
 
 def mouse_scroll(count: int):
