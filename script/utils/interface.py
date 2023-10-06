@@ -298,6 +298,12 @@ class WorldUtils(AutoUtils):
         """get top left map"""
         local = game.get_screenshot()
         local = local[131:131 + 128, 88: 88 + 128]
+        w, h = local.shape[:2]
+        center = (w // 2, h // 2)
+        radius = 44  # 精准裁剪88 * 88 大小，以角色为中心
+        x1, y1 = center[0] - radius, center[1] - radius
+        x2, y2 = center[0] + radius, center[1] + radius
+        local = local[y1:y2, x1:x2]
         self.local_map = local
         return local
 
@@ -320,34 +326,54 @@ class WorldUtils(AutoUtils):
 
         return angle
 
-    def get_match_pos(self, m_line, cnt=0):
+    def get_match_pos(self, m_line, m_default=None, cnt=0, model=0, is_fighting=None):
+        """
+        :param m_line:  只有线条的地图
+        :param m_default:  地图未经处理的原图
+        :param cnt:  递归查询次数
+        :param model:  查询模式    0：线条图查询  1：原图查询
+        :param is_fighting: 查询方法，若正在战斗则会返回(0, 0)
+        当模式为1时，但是m_default为None则切换至模式0
+        """
         from .role import Role
+        if is_fighting is not None:
+            while is_fighting():
+                time.sleep(1)
+                continue
         local_map = self.get_local_map()
         local_map = self.only_arrow(local_map, nt=True)
-        local_map = self.local_map_to_line(local_map)
         # 角色移动时小地图被缩小，需要将小地图放大再匹配
         if self.role_state.is_moving:
             local_map = cv2.resize(local_map, (0, 0), fx=1.256, fy=1.256)
-            self.local_map = local_map
         h, w = local_map.shape[:2]
+        # 没有传入原图
+        if model and m_default is None:
+            log.debug("没有传入原图，将模式切换至0")
+            model = 0
 
-        res = cv2.matchTemplate(m_line, local_map, cv2.TM_CCOEFF_NORMED)
+        if model:
+            res = cv2.matchTemplate(m_default, local_map, cv2.TM_CCOEFF_NORMED)
+        else:
+            local_map = self.local_map_to_line(local_map)
+            res = cv2.matchTemplate(m_line, local_map, cv2.TM_CCOEFF_NORMED)
         _, max_val, _, max_loc = cv2.minMaxLoc(res)
 
         # 阈值达不到递归查询
-        if max_val < 0.45:
-            log.debug(f"当前阈值: {max_val}, 阈值未达0.45开始递归查询")
+        if max_val < 0.4:
+            log.debug(f"当前阈值: {max_val}, 阈值未达0.4开始递归查询")
             if cnt % 5 == 0:
                 log.debug("尝试随机移动再查询")
                 Role.random_move()
-            time.sleep(0.7)
-            return self.get_match_pos(m_line, cnt + 1)
+                model ^= 1
+                log.debug(f"切换模式至 {model}")
+            time.sleep(0.8)
+            return self.get_match_pos(m_line, m_default, cnt + 1, model)
 
         return w, h, max_loc
 
-    def locate_role_pos(self, m_line) -> Tuple[int, int]:
+    def locate_role_pos(self, m_line, m_default=None, model=0, is_fighting=None) -> Tuple[int, int]:
         """get current role position on big map"""
-        w, h, top_left = self.get_match_pos(m_line)
+        w, h, top_left = self.get_match_pos(m_line, m_default, model=model, is_fighting=is_fighting)
 
         pos = (top_left[0] + w // 2, top_left[1] + h // 2)
         self.last_pos = self.cur_pos
