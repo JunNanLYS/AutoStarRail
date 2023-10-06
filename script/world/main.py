@@ -1,6 +1,7 @@
 import heapq
 import os
 import time
+from collections import Counter
 from functools import lru_cache
 from math import atan
 from typing import Tuple
@@ -100,7 +101,7 @@ def a_star(graph, start, goal):
                 cost_so_far[nex] = new_cost
                 came_from[nex] = current
 
-    log.debug(f"未找到路线, start={start}")
+    log.debug(f"未找到路线, start={start}, goal={goal}")
     return None
 
 
@@ -173,6 +174,7 @@ def init_road(road, err_val=10):
 
 
 def sort_target_pos(graph, start, targets):
+    """对怪点进行由近到远排序"""
     pos_cost = dict()
     log.info(f"对目标点进行排序, start = {start},  targets = {targets}")
     print(start, targets)
@@ -184,6 +186,15 @@ def sort_target_pos(graph, start, targets):
     return res
 
 
+def wait_fight_end(cnt=1):
+    while fight.is_fighting():
+        if cnt:
+            log.info("等待战斗结束")
+            cnt = 0
+        time.sleep(1)
+        continue
+
+
 class World:
     def __init__(self):
         self.utils = WorldUtils()
@@ -193,79 +204,87 @@ class World:
 
     def run(self, debug=False):
         game.set_foreground()
+        self._stop = False
         # 锄大地
         while self.map.data and not self._stop:
             self.next_map()
-            graph = Graph(self.map.target)
+            graph = Graph(self.map.binary)
             targets = self.get_targets()
             log.info(f"去重后怪点数量: {targets}")
 
             # 对怪物由近到远排序
             targets = sort_target_pos(graph, self.utils.locate_role_pos(self.map.line), targets)
             fight.start()  # 战斗模块开启
+            target_idx = 0
+            while target_idx < len(targets) and self.map.reload_cnt <= 2:
+                wait_fight_end()
+                target_pos = targets[target_idx]
+                road = None
+                # 战斗时以及获取当前角色坐标时有时会出错，导致程序抛出TypeError这个错误
+                while road is None:
+                    try:
+                        road, _ = a_star(graph, self.utils.locate_role_pos(self.map.line), target_pos)
+                    except TypeError:
+                        log.error("获取路径出错，2S后重试，若正在战斗则等待战斗结束")
+                        time.sleep(2)
+                        wait_fight_end()
+                        road, _ = a_star(graph, self.utils.locate_role_pos(self.map.line), target_pos)
+                road = remove_same_position(init_road(road, err_val=8), 5)  # 初始化路径并去除重复节点
 
-            for target in targets:
-                # 角色处于战斗等待战斗结束再操作
-                while fight.is_fighting() or self.utils.role_state.is_firing:
-                    time.sleep(0.3)
-                    continue
-                try:
-                    road, _ = a_star(graph, self.utils.locate_role_pos(self.map.line), target)
-                except TypeError:
-                    while fight.is_fighting():
-                        time.sleep(0.3)
-                        continue
-                    road, _ = a_star(graph, self.utils.locate_role_pos(self.map.line), target)
-                if debug:
-                    self.show_road(road)
-                road = remove_same_position(init_road(road, err_val=8), 5)
-                # 移动前先校准一下视角
+                # 移动前先调整一下视角
                 target_angle = calculate_angle(self.utils.locate_role_pos(self.map.line), road[0])
                 Role.set_angle(self.utils.get_angle(), target_angle)
-
                 Role.move()
-                pos_i = 0
-                while pos_i <= len(road) - 1:
-                    # 正在战斗或者正在开火则等待
-                    while fight.is_fighting() or self.utils.role_state.is_firing:
-                        time.sleep(0.3)
+                time.sleep(2)
+                road_idx = 0
+                obs_positions = Counter()
+                # 遍历路径节点
+                while road_idx < len(road):
+                    if fight.is_fighting():
+                        # 停止移动直到结束战斗
                         Role.stop_move()
-                        continue
-                    else:
+                        wait_fight_end()
                         Role.move()
-                    road_pos = road[pos_i]
-                    cur_pos = self.utils.locate_role_pos(self.map.line)  # 获取当前坐标
+                    road_pos = road[road_idx]
+                    cur_pos = self.utils.locate_role_pos(self.map.line,
+                                                         self.map.default,
+                                                         is_fighting=fight.is_fighting)
                     cur_angle = self.utils.get_angle()
-                    is_same = cv_utils.is_same_position(cur_pos, road_pos, error_value=8)
+                    is_same = cv_utils.is_same_position(cur_pos, road_pos, 15)
                     if is_same:
-                        log.info(f"到达目标点，剩余：{len(road) - pos_i - 1}")
-                        pos_i += 1
-                        if pos_i == len(road):
-                            fight.fire()
+                        road_idx += 1
                         continue
                     else:
                         # 可能遇到障碍物了
                         if cur_pos == self.utils.last_pos:
-                            log.info("可能遇到障碍物了，尝试避开障碍物")
+                            log.debug("可能遇到障碍物了")
                             Role.stop_move()
+                            obs_positions[cur_pos] += 1
+                            if obs_positions[cur_pos] == 3:
+                                road, _ = a_star(graph, cur_pos, target_pos)
+                                road = remove_same_position(init_road(road, err_val=8), 5)  # 初始化路径并去除重复节点
+                                road_idx = 0
+                            elif obs_positions[cur_pos] >= 5:
+                                log.info("多次在该地方遇到障碍物，重载地图")
+                                self.map.reload_current_map()
+                                break
                             Role.obstacles()
                             Role.move()
-                        print(cur_pos, road_pos)
                         target_angle = calculate_angle(cur_pos, road_pos)
                         Role.set_angle(cur_angle, target_angle)
+                if road_idx == len(road):
+                    target_idx += 1
                 Role.stop_move()
             fight.stop()
         fight.close()
 
     def get_targets(self):
-        targets = []
         red = np.array([46, 46, 214])
 
         # 查找所有怪点
         lis = np.where(np.all(self.map.target == red, axis=-1))
-        for i in range(len(lis[0])):
-            targets.append((lis[1][i], lis[0][i]))
-        targets = remove_same_position(targets, 15)  # 去重
+        targets = list(zip(*lis[::-1]))
+        targets = remove_same_position(targets, 20)  # 去重
         return targets
 
     def next_map(self):
