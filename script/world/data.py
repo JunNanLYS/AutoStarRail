@@ -15,8 +15,8 @@ BALL_NAME: Dict[int, str] = {
 }
 # key为星球编号 value为该星球中所有含有怪物的区域名
 AREA_NAME: Dict[int, List[str]] = {
-    1: ["主控舱段", "基座舱段", "收容舱段", "支援舱段"],
-    2: ["城郊雪原", "边缘通路", "铁卫禁区", "残响回廊", "永冬岭", "大矿区", "铆钉镇", "机械聚落"],
+    1: ["基座舱段", "收容舱段", "支援舱段"],
+    2: ["城郊雪原", "边缘通路", "残响回廊", "永冬岭", "大矿区", "铆钉镇", "机械聚落"],
     3: ["流云渡", "迴星港", "太卜司", "工造司", "丹鼎司", "鳞渊境"],
 }
 # key为地区名 value是该地区传送点个数
@@ -26,13 +26,6 @@ AREA_NAME: Dict[int, List[str]] = {
 AREA_POINT: Dict[str, int] = {
     "主控舱段": 1,
     "城郊雪原": 2,
-}
-# 有些地区需要滚动鼠标滚轮才能查找的得到，一次滚动差不多一格半间隔
-AREA_SCROLL: Dict[str, int] = {
-    "大矿区": 1,
-    "铆钉镇": 1,
-    "机械聚落": 2,
-    "鳞渊境": 1,
 }
 
 
@@ -48,6 +41,7 @@ class Map:
         self.cur_area = ""
 
         self.data = deque()
+        self.reload_cnt = 0
 
         # current map image
         self.default: Optional[ndarray] = None
@@ -55,16 +49,19 @@ class Map:
         self.line: Optional[ndarray] = None
         self.target: Optional[ndarray] = None
         self.point: Optional[ndarray] = None
+        self.spare_point: Optional[ndarray] = None
+        self.select: Optional[ndarray] = None
 
         self.load()
 
     @classmethod
     def change_ball(cls, ball: str):
-        pos = get_text_position(window.get_screenshot(), "星轨航图")
-        mouse.click_positions(pos)
+        import game
+        pos = get_text_position(game.get_screenshot(), "星轨航图")
+        mouse.click_positions(pos, game_pos=True)
         wait_img(template_path.BALL_NAVIGATION)
-        pos = get_text_position(window.get_screenshot(), ball)
-        mouse.click_positions(pos, direction="topLeft", val=100)
+        pos = get_text_position(game.get_screenshot(), ball)
+        mouse.click_positions(pos, direction="topLeft", val=100, game_pos=True)
         wait_img(template_path.AREA_NAVIGATION)
 
     @classmethod
@@ -74,16 +71,15 @@ class Map:
         x1, y1, _, _ = game.get_rect()
         mouse.click_position((x1 + 1470, y1 + 300))
         while True:
-            pos = get_text_position(window.get_screenshot(), area)
+            pos = get_text_position(game.get_screenshot(), area)
             if pos.size == 0:
                 mouse.mouse_scroll(2)
                 continue
-            mouse.click_positions(pos)
+            mouse.click_positions(pos, game_pos=True)
             time.sleep(0.2)
             break
 
-    @classmethod
-    def change_point(cls, p_img: ndarray):
+    def change_point(self, p_img: ndarray):
         import game
         x1, y1, _, _ = game.get_rect()
         map_center = (x1 + 800, y1 + 600)
@@ -94,8 +90,13 @@ class Map:
         def click_point_and_send(p):
             mouse.click_position((p[0] + w // 2, p[1] + h // 2))
             time.sleep(0.5)
-            send_p = get_text_position(window.get_screenshot(), "传送")
-            mouse.click_positions(send_p)
+            # 部分传送点点击后会出现菜单让你再次确定
+            if self.select is not None:
+                select_p = match_template(game.get_screenshot(), self.select)
+                mouse.click_position(select_p, game_pos=True)
+            wait_img(template_path.SEND_TEXT)
+            send_p = match_template(game.get_screenshot(), template_path.SEND_TEXT)
+            mouse.click_position(send_p, game_pos=True)
             wait_img(template_path.MANDATE, mode='gray')
             time.sleep(2)
 
@@ -166,6 +167,13 @@ class Map:
         wait_img(template_path.AREA_NAVIGATION)
         mouse.mouse_scroll(3)  # 地图缩放至最小
 
+    def reload_current_map(self):
+        """重新进入当前地图"""
+        self.reload_cnt += 1
+        self.open_game_map()
+        self.change_point(self.point)
+
+
     def load(self):
         """load my game map images"""
         import os
@@ -198,11 +206,18 @@ class Map:
         get_path = os.path.join
         self.default = cv2.imread(get_path(img_path, 'default.png'))
         self.binary = cv2.imread(get_path(img_path, 'binary.png'))
-        self.binary = cv2.cvtColor(self.binary, cv2.COLOR_BGR2GRAY)
         self.line = cv2.imread(get_path(img_path, 'line.png'))
         self.line = cv2.cvtColor(self.line, cv2.COLOR_BGR2GRAY)
         self.target = cv2.imread(get_path(img_path, 'target.png'))
         self.point = cv2.imread(get_path(img_path, 'point.png'))
+        if os.path.exists(get_path(img_path, 'sparePoint.png')):
+            self.spare_point = cv2.imread(get_path(img_path, "sparePoint.png"))
+        else:
+            self.spare_point = None
+        if os.path.exists(get_path(img_path, 'select.png')):
+            self.select = cv2.imread(get_path(img_path, 'select.png'))
+        else:
+            self.select = None
 
         if self.cur_ball != ball_name:
             self.open_game_map()
@@ -220,6 +235,7 @@ class Map:
         self.last_area = self.cur_area
         self.cur_ball = ball_name
         self.cur_area = area_name
+        self.reload_cnt = 0  # 置零
 
     @classmethod
     def in_map(cls):
@@ -230,7 +246,5 @@ class Map:
 if __name__ == '__main__':
     m = Map(r"F:\AutoStarRail\script\world\map")
     print(m.data)
-    m.next()
-    m.next()
-    m.next()
-    m.next()
+    while m.data:
+        m.next()
