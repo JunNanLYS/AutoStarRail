@@ -2,7 +2,7 @@ import os
 import time
 from copy import deepcopy
 from threading import Thread, Lock
-from typing import Optional, Tuple, Callable
+from typing import Optional, Tuple, Callable, Union
 
 import cv2
 import pyautogui
@@ -326,20 +326,16 @@ class WorldUtils(AutoUtils):
 
         return angle
 
-    def get_match_pos(self, m_line, m_default=None, cnt=0, model=0, is_fighting=None):
+    def get_match_pos(self, m_line, m_default=None, cnt=1, max_cnt=20, model=0) -> Tuple:
         """
         :param m_line:  只有线条的地图
         :param m_default:  地图未经处理的原图
         :param cnt:  递归查询次数
+        :param max_cnt: 最大查询上线
         :param model:  查询模式    0：线条图查询  1：原图查询
-        :param is_fighting: 查询方法，若正在战斗则会返回(0, 0)
         当模式为1时，但是m_default为None则切换至模式0
         """
         from .role import Role
-        if is_fighting is not None:
-            while is_fighting():
-                time.sleep(1)
-                continue
         local_map = self.get_local_map()
         local_map = self.only_arrow(local_map, nt=True)
         # 角色移动时小地图被缩小，需要将小地图放大再匹配
@@ -359,21 +355,27 @@ class WorldUtils(AutoUtils):
         _, max_val, _, max_loc = cv2.minMaxLoc(res)
 
         # 阈值达不到递归查询
-        if max_val < 0.4:
-            log.debug(f"当前阈值: {max_val}, 阈值未达0.4开始递归查询")
+        if max_val < 0.45:
+            if cnt > max_cnt:
+                log.debug("达到递归上限，返回None")
+                return None, None, None
+            log.debug(f"当前阈值: {max_val}, 阈值未达0.45开始递归查询")
             if cnt % 5 == 0:
-                log.debug("尝试随机移动再查询")
-                Role.random_move()
+                Role.obstacles()
                 model ^= 1
                 log.debug(f"切换模式至 {model}")
-            time.sleep(0.8)
-            return self.get_match_pos(m_line, m_default, cnt + 1, model)
+            time.sleep(1)
+            return self.get_match_pos(m_line, m_default=m_default, cnt=cnt + 1, model=model)
 
         return w, h, max_loc
 
-    def locate_role_pos(self, m_line, m_default=None, model=0, is_fighting=None) -> Tuple[int, int]:
+    def locate_role_pos(self, m_line, m_default=None, max_cnt=None, model=0) -> Tuple[int, int]:
         """get current role position on big map"""
-        w, h, top_left = self.get_match_pos(m_line, m_default, model=model, is_fighting=is_fighting)
+        if max_cnt is None:
+            max_cnt = 20
+        w, h, top_left = self.get_match_pos(m_line, m_default=m_default, max_cnt=max_cnt, model=model)
+        if top_left is None:
+            return -1, -1
 
         pos = (top_left[0] + w // 2, top_left[1] + h // 2)
         self.last_pos = self.cur_pos
@@ -382,7 +384,7 @@ class WorldUtils(AutoUtils):
         return pos
 
     @classmethod
-    def local_map_to_line(cls, local_map):
+    def local_map_to_line(cls, local_map: ndarray):
         """返回的是灰度图"""
         white = np.array([210, 210, 210])
         gray = np.array([55, 55, 55])
@@ -410,7 +412,7 @@ class WorldUtils(AutoUtils):
         nt True get only deleted arrow map
         """
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)  # 转HSV
-        lower = np.array([93, 90, 60])  # 90 改成120只剩箭头，但是角色移动过的印记会消失
+        lower = np.array([93, 120, 60])  # s90 改成s120只剩箭头，但是角色移动过的印记会消失
         upper = np.array([97, 255, 255])
         mask = cv2.inRange(hsv, lower, upper)  # 创建掩膜
         if not nt:
