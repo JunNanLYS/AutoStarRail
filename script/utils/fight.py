@@ -20,10 +20,7 @@ __stop_lock = Lock()
 
 def fire() -> None:
     """游戏角色开火（主界面）"""
-    s = time.time()
-    while time.time() - s <= 1:
-        pyautogui.click()
-        time.sleep(0.2)
+    pyautogui.click()
     time.sleep(0.5)
 
 

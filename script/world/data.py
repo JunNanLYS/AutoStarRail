@@ -128,7 +128,6 @@ class Map:
         pos = get_text_position(game.get_screenshot(), "星轨航图")
         mouse.click_positions(pos, game_pos=True)
         wait_img(template_path.BALL_NAVIGATION)
-        time.sleep(1)
         pos = get_text_position(game.get_screenshot(), self.cur_ball)
         mouse.click_positions(pos, direction="topLeft", val=100, game_pos=True)
         wait_img(template_path.AREA_NAVIGATION)
