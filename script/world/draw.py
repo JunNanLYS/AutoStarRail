@@ -33,7 +33,7 @@ class Image:
 
 
 class DrawMap(WorldUtils):
-    def __init__(self, m: Image):
+    def __init__(self, m: Image, mode=0):
         super().__init__()
         self._stop = False
         self._pause = False
@@ -41,6 +41,7 @@ class DrawMap(WorldUtils):
         self.draw_listener = keyboard.Listener()
         self.draw_listener.on_press = self._on_press
         self.img = m
+        self.mode = mode
 
     def draw(self):
         gray = np.array([55, 55, 55])
@@ -77,13 +78,14 @@ class DrawMap(WorldUtils):
         m[np.where(mask != 0)] = [57, 57, 57]
         send_paths = [template_path.SEND1, template_path.SEND2, template_path.SEND3,
                       template_path.SEND4, template_path.SEND5]
-        for send_path in send_paths:
-            send = where_img(m, send_path, threshold=0.68)
-            positions = send
-            for top_left in positions:
-                width = 40
-                bottom_right = (top_left[0] + width, top_left[1] + width)
-                b_map[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]] = 0
+        if self.mode:
+            for send_path in send_paths:
+                send = where_img(m, send_path, threshold=0.68)
+                positions = send
+                for top_left in positions:
+                    width = 40
+                    bottom_right = (top_left[0] + width, top_left[1] + width)
+                    b_map[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]] = 0
         self.img.save_line(bw_map)
         self.img.save_binary(b_map)  # 保存黑白图
         self.img.reload()
@@ -147,6 +149,6 @@ class DrawMap(WorldUtils):
 
 
 if __name__ == '__main__':
-    my_map = Image(r"F:\AutoStarRail\script\world\map\2\3\1")  # 修改地图路径则可以绘制地图
-    draw = DrawMap(my_map)
+    my_map = Image(r"F:\AutoStarRail\script\world\map\2\7\1")  # 修改地图路径则可以绘制地图
+    draw = DrawMap(my_map, mode=1)
     draw.start()
