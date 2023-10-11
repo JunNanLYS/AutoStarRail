@@ -120,7 +120,7 @@ def main(_stop: Value, _stop_lock: Lock, _fighting: Value, _fighting_lock: Lock,
         if in_fighting():
             with _fighting_lock:
                 _fighting.value = True
-                time.sleep(1)
+                time.sleep(2)
                 continue
         else:
             with _fighting_lock:
