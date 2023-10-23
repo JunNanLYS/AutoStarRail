@@ -33,7 +33,7 @@ class Image:
 
 
 class DrawMap(WorldUtils):
-    def __init__(self, m: Image):
+    def __init__(self, m: Image, mode=0):
         super().__init__()
         self._stop = False
         self._pause = False
@@ -41,9 +41,9 @@ class DrawMap(WorldUtils):
         self.draw_listener = keyboard.Listener()
         self.draw_listener.on_press = self._on_press
         self.img = m
+        self.mode = mode
 
     def draw(self):
-        black = np.array([0, 0, 0])
         gray = np.array([55, 55, 55])
         white = np.array([210, 210, 210])
         find = 1
@@ -76,16 +76,19 @@ class DrawMap(WorldUtils):
         hsv = cv2.cvtColor(m, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv, lower, upper)
         m[np.where(mask != 0)] = [57, 57, 57]
-        send_paths = [template_path.SEND1, template_path.SEND2, template_path.SEND3, template_path.SEND4]
-        for send_path in send_paths:
-            send = where_img(m, send_path, threshold=0.68)
-            positions = send
-            for top_left in positions:
-                width = 40
-                bottom_right = (top_left[0] + width, top_left[1] + width)
-                b_map[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]] = 0
+        send_paths = [template_path.SEND1, template_path.SEND2, template_path.SEND3,
+                      template_path.SEND4, template_path.SEND5]
+        if self.mode:
+            for send_path in send_paths:
+                send = where_img(m, send_path, threshold=0.68)
+                positions = send
+                for top_left in positions:
+                    width = 40
+                    bottom_right = (top_left[0] + width, top_left[1] + width)
+                    b_map[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]] = 0
         self.img.save_line(bw_map)
         self.img.save_binary(b_map)  # 保存黑白图
+        self.img.reload()
 
         target = self.img.binary
 
@@ -93,14 +96,16 @@ class DrawMap(WorldUtils):
             if self._pause:
                 time.sleep(0.3)
                 continue
-            w, h, top_left = self.get_match_pos(big_map)
+            w, h, top_left = self.get_match_pos(bw_map, m_default=self.img.default)
             x1, y1 = top_left[0], top_left[1]
             x2, y2 = x1 + w, y1 + h
             changed = deepcopy(target[y1: y2, x1: x2])
+            if self.role_state.is_moving:
+                self.local_map = cv2.resize(self.local_map, (0, 0), fx=1.256, fy=1.256)
 
             # 找小地图上的怪点
-            lower = np.array([46, 46, 214])
-            upper = np.array([120, 110, 233])
+            lower = np.array([46, 46, 183])
+            upper = np.array([124, 114, 233])
             mask = cv2.inRange(self.local_map, lower, upper)
 
             changed[mask > 0] = [46, 46, 214]
@@ -112,7 +117,7 @@ class DrawMap(WorldUtils):
             changed[mask_black] = [0, 0, 0]
             target[y1: y2, x1: x2] = changed
 
-            cv2.imshow("big map", changed)
+            cv2.imshow("big map", target)
             cv2.moveWindow("big map", 0, 0)
             cv2.waitKey(100)
 
@@ -144,6 +149,6 @@ class DrawMap(WorldUtils):
 
 
 if __name__ == '__main__':
-    my_map = Image(r"F:\AutoStarRail\script\world\map\2\2\2")  # 修改地图路径则可以绘制地图
-    draw = DrawMap(my_map)
+    my_map = Image(r"F:\AutoStarRail\script\world\map\2\7\1")  # 修改地图路径则可以绘制地图
+    draw = DrawMap(my_map, mode=1)
     draw.start()

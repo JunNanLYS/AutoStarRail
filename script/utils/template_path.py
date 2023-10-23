@@ -112,3 +112,5 @@ SEND1 = WORLD_PATH + r"send1.png"  # 普通传送点
 SEND2 = WORLD_PATH + r"send2.png"  # 拟造花萼（金）传送点
 SEND3 = WORLD_PATH + r"send3.png"  # 拟造花草（赤）传送点
 SEND4 = WORLD_PATH + r"send4.png"  # 凝滞虚影传送点
+SEND5 = WORLD_PATH + r"send5.png"  # 侵蚀隧洞传送点
+SEND_TEXT = WORLD_PATH + r"sendText.png"  # 传送

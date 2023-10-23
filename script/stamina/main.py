@@ -114,7 +114,9 @@ class Stamina:
                 if "shadow" in name:
                     log.info("需要移动后攻击")
                     time.sleep(1)
-                    Role.move_position(20).result()  # 等待移动结束后再攻击
+                    pyautogui.keyDown('w')
+                    time.sleep(3)
+                    pyautogui.keyUp('w')
                     pyautogui.click()
 
                 wait_text(game.get_screenshot, "战斗开始")  # 等待进入战斗界面

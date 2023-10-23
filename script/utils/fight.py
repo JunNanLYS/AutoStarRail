@@ -4,7 +4,10 @@ from typing import Optional
 
 import cv2
 import pyautogui
+import numpy as np
 from numpy import ndarray
+
+import log
 
 __image: Optional[ndarray] = None
 __process: Optional[Process] = None
@@ -17,10 +20,7 @@ __stop_lock = Lock()
 
 def fire() -> None:
     """游戏角色开火（主界面）"""
-    s = time.time()
-    while time.time() - s <= 1:
-        pyautogui.click()
-        time.sleep(0.2)
+    pyautogui.click()
     time.sleep(0.5)
 
 
@@ -34,20 +34,40 @@ def have_jar() -> bool:
     return template_in_img(img, template, threshold=0.7)
 
 
-def have_monster() -> bool:
+def have_monster(switch=False, debug=False) -> bool:
     """
-    1. 查找问号
-    2. 查找感叹号
-    3. 查找锁定敌人标志(暂时还没办法解决)
+    静止的小地图
+    远程角色索敌范围半径30像素
+    近战角色索敌范围半径15像素
+    默认按照远程角色来搜索
     """
-    from script.utils import template_in_img, template_path
-    template1 = cv2.imread(template_path.QUESTION_MASK)
-    template2 = cv2.imread(template_path.WARNING)
-    res1 = template_in_img(__image, template1)
-    res2 = template_in_img(__image, template2)
-    if res1 or res2:
-        return True
-    return False
+    if switch:
+        radius = 15
+    else:
+        radius = 30
+    local_map = get_local_map()
+    h, w = local_map.shape[:2]
+    lower = np.array([46, 46, 163])
+    upper = np.array([124, 114, 233])
+    mask = cv2.inRange(local_map, lower, upper)
+
+    center = (w // 2, h // 2)
+    x1, y1 = center[0] - radius, center[1] - radius
+    x2, y2 = center[0] + radius, center[1] + radius
+
+    local_map = cv2.bitwise_and(local_map, local_map, mask=mask)
+    local_map = local_map[y1: y2, x1: x2]
+    if debug:
+        cv2.imshow("monster", local_map)
+        cv2.waitKey(10)
+    return np.sum(local_map) != 0
+
+
+def get_local_map() -> ndarray:
+    """get top left map"""
+    from copy import deepcopy
+    local = deepcopy(__image[131:131 + 128, 88: 88 + 128])
+    return local
 
 
 def in_fighting() -> bool:
@@ -97,11 +117,16 @@ def main(_stop: Value, _stop_lock: Lock, _fighting: Value, _fighting_lock: Lock,
         if in_fighting():
             with _fighting_lock:
                 _fighting.value = True
-                time.sleep(1)
+                time.sleep(2)
                 continue
-        elif have_jar():
+        else:
+            with _fighting_lock:
+                _fighting.value = False
+        if have_jar():
+            log.info("发现罐子")
             fire()
         elif have_monster():
+            log.info("发现怪物")
             fire()
 
 
@@ -152,10 +177,5 @@ def close() -> None:
 if __name__ == '__main__':
     # 开启子进程
     start()
-    stop()
-    print(__stop.value)
-    time.sleep(2)
-    start()
-    time.sleep(5)
+    time.sleep(100)
     close()
-    time.sleep(1)
